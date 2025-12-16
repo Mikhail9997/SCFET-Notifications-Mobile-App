@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Scfet.Notification.Views.CreateNotificationPage"
+             xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
+             xmlns:models="clr-namespace:Scfet.Notification.Models"
+             xmlns:views="clr-namespace:Scfet.Notification.Views"
+             x:DataType="vm:CreateNotificationViewModel"
+             Title="Создать">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="20">
+
+            <Entry Placeholder="Заголовок уведомления" 
+                   Text="{Binding Title}" />
+
+            <Editor Placeholder="Текст уведомления..." 
+                    Text="{Binding Message}"
+                    HeightRequest="120" />
+
+            <Image Source="{Binding ImagePreview}"
+
+                           HeightRequest="250"
+                           IsVisible="{Binding ImagePreview, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+            <Button Text="Выбрать изображение" 
+                           Command="{Binding SelectImageCommand}"
+                           BackgroundColor="#F18F01"
+                           TextColor="White"/>
+
+            <Button Text="Удалить изображение" 
+                           Command="{Binding ClearImageCommand}"
+                           BackgroundColor="Red"
+                           TextColor="White"
+                           IsVisible="{Binding ImagePreview, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+            <Picker Title="Тип уведомления"
+                    ItemsSource="{Binding NotificationTypes}"
+                    SelectedItem="{Binding SelectedType}"
+                    ItemDisplayBinding="{Binding DisplayValue}"/>
+
+            <Picker Title="Кому отправить"
+                    ItemsSource="{Binding AudienceTypes}"
+                    SelectedItem="{Binding SelectedAudience}"
+                    ItemDisplayBinding="{Binding DisplayValue}"/>
+
+            <!-- Фильтрация групп -->
+            <Border IsVisible="{Binding ShowGroupSelector}"
+                   BackgroundColor="#f0f0f0"
+                   Padding="10">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="5"/>
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Фильтрация групп:" 
+                           FontSize="14" 
+                           FontAttributes="Bold" />
+
+                    <Entry Placeholder="Название группы"
+                           Text="{Binding GroupFilter.Name}" />
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Button Text="Применить фильтр"
+                                Command="{Binding ApplyGroupFiltersCommand}"
+                                BackgroundColor="#2E86AB"
+                                TextColor="White"
+                                CornerRadius="5"
+                                HorizontalOptions="FillAndExpand"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+
+                        <Button Text="Сбросить"
+                                Command="{Binding ResetGroupFiltersCommand}"
+                                BackgroundColor="#6c757d"
+                                TextColor="White"
+                                CornerRadius="5"
+                                HorizontalOptions="FillAndExpand"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                    </HorizontalStackLayout>
+
+                    <Label Text="Выберите группу:" 
+                           FontSize="14" 
+                           FontAttributes="Bold" />
+                    <Picker Title="Группа"
+                            ItemsSource="{Binding Groups}"
+                            ItemDisplayBinding="{Binding Name}"
+                            SelectedItem="{Binding SelectedGroup}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Фильтрация пользователей -->
+            <Border IsVisible="{Binding ShowUserSelector}"
+                   BackgroundColor="#f0f0f0"
+                   Padding="10">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="5"/>
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Фильтрация пользователей:" 
+                           FontSize="14" 
+                           FontAttributes="Bold" />
+
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*" ColumnSpacing="10" RowSpacing="10">
+                        <Entry Placeholder="Имя"
+                               Text="{Binding UserFilter.FirstName}"
+                               Grid.Column="0" Grid.Row="0"/>
+
+                        <Entry Placeholder="Фамилия"
+                               Text="{Binding UserFilter.LastName}"
+                               Grid.Column="1" Grid.Row="0"/>
+
+                        <Entry Placeholder="Email"
+                               Text="{Binding UserFilter.Email}"
+                               Grid.Column="0" Grid.Row="1"
+                               Grid.ColumnSpan="2"/>
+                    </Grid>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Button Text="Применить фильтр"
+                                Command="{Binding ApplyUserFiltersCommand}"
+                                BackgroundColor="#2E86AB"
+                                TextColor="White"
+                                CornerRadius="5"
+                                HorizontalOptions="FillAndExpand"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+
+                        <Button Text="Сбросить"
+                                Command="{Binding ResetUserFiltersCommand}"
+                                BackgroundColor="#6c757d"
+                                TextColor="White"
+                                CornerRadius="5"
+                                HorizontalOptions="FillAndExpand"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                    </HorizontalStackLayout>
+
+                    <Label Text="Выберите пользователя:" 
+                           FontSize="14" 
+                           FontAttributes="Bold" />
+                    <Picker Title="Пользователь"
+                            ItemsSource="{Binding Users}"
+                            ItemDisplayBinding="{Binding FullName}"
+                            SelectedItem="{Binding SelectedUser}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Индикатор загрузки -->
+            <ActivityIndicator IsVisible="{Binding IsBusy}"
+                              IsRunning="{Binding IsBusy}"
+                              HorizontalOptions="Center"
+                              Color="#2E86AB"/>
+
+            <Button Text="Отправить уведомление" 
+                    Command="{Binding SendNotificationCommand}"
+                    BackgroundColor="#2E86AB"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Margin="0,20,0,0"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

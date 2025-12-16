@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Scfet.Notification.Views.ProfilePage"
+             xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
+             xmlns:models="clr-namespace:Scfet.Notification.Models"
+             x:DataType="vm:ProfileViewModel"
+             Title="Профиль">
+
+    <ScrollView>
+
+        <Grid>
+            <!-- Состояние загрузки -->
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               HeightRequest="50"
+                               WidthRequest="50"
+                               Color="#2E86AB"/>
+            
+            <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}">
+                
+                <StackLayout HorizontalOptions="Center" 
+                         VerticalOptions="Center"
+                         IsVisible="{Binding IsCurrentUserEnable, Converter={StaticResource InverseBoolConverter}}">
+                    <Label Text="Не удалось загрузить профиль" FontSize="16"/>
+                </StackLayout>
+
+                <VerticalStackLayout Spacing="20" Padding="20" 
+                                     IsVisible="{Binding IsCurrentUserEnable}">
+                    
+                    <!-- Информация о пользователе -->
+                    <Border BackgroundColor="#f0f8ff" Padding="15">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
+
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="{Binding CurrentUser.FullName}" 
+                                   FontSize="20" 
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding UserRoleDisplay}" 
+                                   FontSize="14" 
+                                   TextColor="Gray" />
+                            <Label Text="{Binding CurrentUser.Email}" 
+                                   FontSize="14" 
+                                   TextColor="Gray" />
+                            <Label Text="{Binding CurrentUser.Group, StringFormat='Группа: {0}'}" 
+                                   FontSize="14" 
+                                   TextColor="Gray" 
+                                   IsVisible="{Binding CurrentUser.Group, Converter={StaticResource StringNotEmptyConverter}}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Редактирование профиля -->
+                    <Border BackgroundColor="#f5f5f5" 
+                            Padding="15"
+                            IsVisible="{Binding CanSendNotifications}">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
+
+                        <VerticalStackLayout Spacing="15">
+                            <Label Text="Редактировать профиль" 
+                                   FontSize="16" 
+                                   FontAttributes="Bold" />
+
+                            <Entry Placeholder="Имя" 
+                                   Text="{Binding FirstName}" />
+
+                            <Entry Placeholder="Фамилия" 
+                                   Text="{Binding LastName}" />
+
+                            <Entry Placeholder="Email" 
+                                   Text="{Binding Email}"
+                                   Keyboard="Email" />
+
+                            <Button Text="Обновить профиль" 
+                                    Command="{Binding UpdateProfileCommand}"
+                                    BackgroundColor="#2E86AB"
+                                    TextColor="White"
+                                    CornerRadius="10" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Действия -->
+                    <VerticalStackLayout Spacing="10">
+                        <Button Text="Сменить пароль" 
+                                Command="{Binding ChangePasswordCommand}"
+                                BackgroundColor="#A23B72"
+                                TextColor="White"
+                                CornerRadius="10" />
+
+                        <Button Text="Создать уведомление" 
+                                Command="{Binding GoToCommand}"
+                                CommandParameter="CreateNotificationPage"
+                                BackgroundColor="#F18F01"
+                                TextColor="White"
+                                CornerRadius="10"
+                                IsVisible="{Binding CanSendNotifications}" />
+
+                        <Button Text="Мои отправленные уведомления" 
+                                Command="{Binding GoToCommand}"
+                                CommandParameter="SentNotificationsPage"
+                                BackgroundColor="#C73E1D"
+                                TextColor="White"
+                                CornerRadius="10"
+                                IsVisible="{Binding CanSendNotifications}" />
+
+                        <Border IsVisible="{Binding IsCacheEnable}">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="10"/>
+                            </Border.StrokeShape>
+
+                            <Grid ColumnDefinitions="Auto,Auto"                                 
+                                  ColumnSpacing="5"
+                                  BackgroundColor="Coral">
+                                
+                                <Button Text="Очистить кэш приложения:" 
+                                    Command="{Binding CleanCacheCommand}"                                     
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Grid.Column="0"
+                                    BackgroundColor="Coral"/>
+
+                                <Label Text="{Binding CacheSize}"
+                                   Grid.Column="1"
+                                   TextColor="White"
+                                   VerticalOptions="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <Button Text="Выйти" 
+                                Command="{Binding LogoutCommand}"
+                                BackgroundColor="#FF6B6B"
+                                TextColor="White"
+                                CornerRadius="10" />
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Grid>
+
+        </Grid>
+
+
+    </ScrollView>
+</ContentPage>

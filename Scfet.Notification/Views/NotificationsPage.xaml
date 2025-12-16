@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Scfet.Notification.Views.NotificationsPage"
+             xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
+             xmlns:models="clr-namespace:Scfet.Notification.Models"
+             xmlns:views="clr-namespace:Scfet.Notification.Views"
+             x:DataType="vm:NotificationsViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <StackLayout Padding="10,0">
+
+            <!-- Основной контент -->
+            <Grid>
+                
+                <!-- Состояние загрузки -->
+                <VerticalStackLayout IsVisible="{Binding IsBusy}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Spacing="20">
+                    <ActivityIndicator IsRunning="True" 
+                             Color="#2E86AB"
+                             HeightRequest="50"
+                             WidthRequest="50" />
+                    <Label Text="Загрузка уведомлений..." 
+                   FontSize="16"
+                   HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <!-- Список уведомлений -->
+                <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                             Spacing="20">
+                    
+                    <!-- Фильтрация уведомлений-->
+                    <Border BackgroundColor="#f0f0f0"
+                           Padding="10">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="5"/>
+                        </Border.StrokeShape>
+
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Фильтрация уведомлений:" 
+                                   FontSize="14" 
+                                   FontAttributes="Bold" />
+
+                            <Picker Title="Размер страницы"
+                                    ItemsSource="{Binding PageSizes}"
+                                    SelectedItem="{Binding Filter.PageSize}" />
+
+                            <Picker Title="Сортировать По:"
+                                    ItemsSource="{Binding SortByItems}"
+                                    SelectedItem="{Binding SelectedSortBy}"
+                                    ItemDisplayBinding="{Binding DisplayName}"/>
+
+                            <Picker Title="Упорядочить:" 
+                                    ItemsSource="{Binding SortOrderItems}"
+                                    SelectedItem="{Binding SelectedSortOrder}"
+                                    ItemDisplayBinding="{Binding DisplayName}"/>
+                            
+                            <Picker Title="Выберите период"
+                                    ItemsSource="{Binding DateRangeOptions}"
+                                    SelectedItem="{Binding SelectedDateRange}"
+                                    ItemDisplayBinding="{Binding DisplayName}"/>
+                            
+                            <Grid ColumnDefinitions="Auto,Auto" 
+                                  ColumnSpacing="5"
+                                  IsVisible="{Binding ShowCustomDateInput}">
+                                <StackLayout Grid.Column="0" Padding="10">
+                                    <Label Text="С:"/>
+                                    <DatePicker Date="{Binding SelectedStartDate}"/>
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" Padding="10">
+                                    <Label Text="По:"/>
+                                    <DatePicker Date="{Binding SelectedEndDate}"/>
+                                </StackLayout>
+                            </Grid>
+                            
+                            <HorizontalStackLayout Spacing="10">
+                                <Button Text="Применить фильтр"
+                                        Command="{Binding ApplyFiltersCommand}"
+                                        BackgroundColor="#2E86AB"
+                                        TextColor="White"
+                                        CornerRadius="5"
+                                        HorizontalOptions="FillAndExpand"
+                                        IsEnabled="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}"/>
+
+                                <Button Text="Сбросить"
+                                        Command="{Binding ResetFiltersCommand}"
+                                        BackgroundColor="#6c757d"
+                                        TextColor="White"
+                                        CornerRadius="5"
+                                        HorizontalOptions="FillAndExpand"
+                                        IsEnabled="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <CollectionView ItemsSource="{Binding Notifications}"
+                                SelectionMode="None">
+
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout HorizontalOptions="Center" 
+                                           VerticalOptions="Center"
+                                           Spacing="20"
+                                           Padding="30">
+                                <Label Text="📭" 
+                                   FontSize="48" 
+                                   HorizontalOptions="Center" />
+                                <Label Text="Нет уведомлений" 
+                                   FontSize="18" 
+                                   HorizontalOptions="Center" />
+                                <Label Text="Здесь будут появляться новые уведомления от преподавателей и администрации" 
+                                   FontSize="14" 
+                                   TextColor="Gray"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Notification">
+                                <Border Padding="15" 
+                                         Margin="10,5"
+                                         BackgroundColor="{Binding Type, Converter={StaticResource NotificationTypeToColorConverter}}">
+                                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+                                      ColumnDefinitions="*,Auto"
+                                      RowSpacing="5">
+
+                                        <Image Grid.Row="0"
+                                               Grid.ColumnSpan="2"
+                                               HeightRequest="350"
+                                               IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}">
+                                            <Image.Source>
+                                                <UriImageSource Uri="{Binding ImageUrl}"/>
+                                            </Image.Source>
+                                        </Image>
+
+                                        <!-- Заголовок -->
+                                        <Label Grid.Row="1" 
+                                           Grid.Column="0"
+                                           Text="{Binding Title}" 
+                                           FontSize="16" 
+                                           FontAttributes="Bold" />
+
+                                        <!-- Дата -->
+                                        <Label Grid.Row="2" 
+                                           Grid.Column="1"
+                                           Text="{Binding FormattedDate}" 
+                                           FontSize="12" 
+                                           TextColor="Gray" />
+
+                                        <!-- Отправитель -->
+                                        <Label Grid.Row="3" 
+                                           Grid.Column="0"
+                                           Text="{Binding SenderName}" 
+                                           FontSize="12" 
+                                           TextColor="Gray" />
+
+                                        <!-- Сообщение -->
+                                        <Label Grid.Row="4" 
+                                           Grid.ColumnSpan="2"
+                                           Text="{Binding Message}" 
+                                           FontSize="14" 
+                                           LineBreakMode="WordWrap" />
+
+                                        <!-- Статус прочтения -->
+                                        <Label Grid.Row="5" 
+                                           Grid.Column="0"
+                                           Text="{Binding IsRead, Converter={StaticResource ReadStatusConverter}}"
+                                           FontSize="12" 
+                                           TextColor="Gray" />
+
+                                    </Grid>
+
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotificationsViewModel}}, Path=MarkAsReadCommand}"
+                                                                 CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </Grid>
+
+            <!-- Действия -->
+            <Grid IsVisible="{Binding IsPaginationEnable}">
+
+                <!-- Состояние загрузки пагинации-->
+                <VerticalStackLayout IsVisible="{Binding IsPagination}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Spacing="20">
+                    <ActivityIndicator IsRunning="True" 
+                             Color="#2E86AB"
+                             HeightRequest="50"
+                             WidthRequest="50" />
+                    <Label Text="Загрузка уведомлений..." 
+                   FontSize="16"
+                   HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <!-- Кнопка Загрузить еще -->
+                <Grid Margin="0,10,0,0" ColumnDefinitions="*"
+                      IsVisible="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}">
+
+                    <Button Grid.Column="0" 
+                            Text="Загрузить еще" 
+                            Command="{Binding LoadNotificationsPaginationCommand}"
+                            BackgroundColor="#2E86AB"/>
+                </Grid>
+            </Grid>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

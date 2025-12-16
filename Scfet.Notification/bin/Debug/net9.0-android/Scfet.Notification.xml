@@ -1,0 +1,733 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Scfet.Notification</name>
+    </assembly>
+    <members>
+        <member name="T:Scfet.Notification.ViewModels.BaseViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.BaseViewModel.IsBusy">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.BaseViewModel.isBusy"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.BaseViewModel.Title">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.BaseViewModel.title"/>
+        </member>
+        <member name="T:Scfet.Notification.ViewModels.CreateNotificationViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.CurrentUser">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.currentUser"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.Title">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.title"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.Message">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.message"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedGroup">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.selectedGroup"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedUser">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.selectedUser"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.Groups">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel._groups"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.Students">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel._students"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.Teachers">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel._teachers"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.Administrators">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel._administrators"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.Users">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel._users"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedImage">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel._selectedImage"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ImagePreview">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel._imagePreview"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.NotificationTypes">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.notificationTypes"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.AudienceTypes">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.audienceTypes"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedType">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.selectedType"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedAudience">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.selectedAudience"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.UserFilter">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.userFilter"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.GroupFilter">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.groupFilter"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.IsUserFiltersVisible">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.isUserFiltersVisible"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.IsGroupFiltersVisible">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.isGroupFiltersVisible"/>
+        </member>
+        <member name="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.OnSelectedGroupChanged(Scfet.Notification.Models.Group)">
+            <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedGroup"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedGroup"/> is changed.</remarks>
+        </member>
+        <member name="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.OnSelectedAudienceChanged(Scfet.Notification.ViewModels.PickerItem)">
+            <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedAudience"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedAudience"/> is changed.</remarks>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.sendNotificationCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SendNotificationCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SendNotificationCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.SendNotificationAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.selectImageCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectImageCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectImageCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectImageAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.clearImageCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ClearImageCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ClearImageCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.ClearImage"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.applyUserFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ApplyUserFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ApplyUserFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.ApplyUserFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.applyGroupFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ApplyGroupFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ApplyGroupFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.ApplyGroupFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.resetUserFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ResetUserFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ResetUserFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.ResetUserFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.CreateNotificationViewModel.resetGroupFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ResetGroupFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ResetGroupFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.ResetGroupFiltersAsync"/>.</summary>
+        </member>
+        <member name="T:Scfet.Notification.ViewModels.LoginViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.LoginViewModel.Email">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.LoginViewModel.email"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.LoginViewModel.Password">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.LoginViewModel.password"/>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.LoginViewModel.loginCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.LoginViewModel.LoginCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.LoginViewModel.LoginCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.LoginViewModel.LoginAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.LoginViewModel.logoutCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.LoginViewModel.LogoutCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.LoginViewModel.LogoutCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.LoginViewModel.LogoutAsync"/>.</summary>
+        </member>
+        <member name="T:Scfet.Notification.ViewModels.NotificationsViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.Notifications">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.notifications"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.PageResult">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.pageResult"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.Filter">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.filter"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.PageSizes">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.pageSizes"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.SortOrderItems">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.sortOrderItems"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.SortByItems">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.sortByItems"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.DateRangeOptions">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.dateRangeOptions"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.SelectedDateRange">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.selectedDateRange"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.SelectedSortOrder">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.selectedSortOrder"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.SelectedSortBy">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.selectedSortBy"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.ShowCustomDateInput">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.showCustomDateInput"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.SelectedStartDate">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.selectedStartDate"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.SelectedEndDate">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.selectedEndDate"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.IsRefreshing">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.isRefreshing"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.IsPagination">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.isPagination"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.IsPaginationEnable">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.isPaginationEnable"/>
+        </member>
+        <member name="M:Scfet.Notification.ViewModels.NotificationsViewModel.OnSelectedDateRangeChanged(Scfet.Notification.ViewModels.PickerItem{System.String})">
+            <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.SelectedDateRange"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.SelectedDateRange"/> is changed.</remarks>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.NotificationsViewModel.startCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.StartCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.StartCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.NotificationsViewModel.StartAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.NotificationsViewModel.loadNotificationsCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.LoadNotificationsCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.LoadNotificationsCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.NotificationsViewModel.LoadNotificationsAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.NotificationsViewModel.loadNotificationsPaginationCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.LoadNotificationsPaginationCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.LoadNotificationsPaginationCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.NotificationsViewModel.LoadNotificationsPaginationAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.NotificationsViewModel.applyFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.ApplyFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.ApplyFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.NotificationsViewModel.ApplyFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.NotificationsViewModel.resetFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.ResetFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.ResetFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.NotificationsViewModel.ResetFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.NotificationsViewModel.markAsReadCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.MarkAsReadCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.MarkAsReadCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.NotificationsViewModel.MarkAsReadAsync(Scfet.Notification.Models.Notification)"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.NotificationsViewModel.refreshCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.RefreshCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.RefreshCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.NotificationsViewModel.RefreshAsync"/>.</summary>
+        </member>
+        <member name="T:Scfet.Notification.ViewModels.ProfileViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.CurrentUser">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ProfileViewModel.currentUser"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.FirstName">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ProfileViewModel.firstName"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.LastName">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ProfileViewModel.lastName"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.Email">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ProfileViewModel.email"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.IsCacheEnable">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ProfileViewModel.isCacheEnable"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.CacheSize">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ProfileViewModel.cacheSize"/>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.ProfileViewModel.loadProfileCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ProfileViewModel.LoadProfileCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.LoadProfileCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ProfileViewModel.LoadProfileAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.ProfileViewModel.updateProfileCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ProfileViewModel.UpdateProfileCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.UpdateProfileCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ProfileViewModel.UpdateProfileAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.ProfileViewModel.changePasswordCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ProfileViewModel.ChangePasswordCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.ChangePasswordCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ProfileViewModel.ChangePasswordAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.ProfileViewModel.logoutCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ProfileViewModel.LogoutCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.LogoutCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ProfileViewModel.LogoutAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.ProfileViewModel.cleanCacheCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ProfileViewModel.CleanCacheCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.CleanCacheCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ProfileViewModel.CleanCacheAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.ProfileViewModel.goToCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ProfileViewModel.GoToCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.GoToCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ProfileViewModel.GoToAsync(System.String)"/>.</summary>
+        </member>
+        <member name="T:Scfet.Notification.ViewModels.SentNotificationsViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.Notifications">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.notifications"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.SelectedNotification">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.selectedNotification"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.Filter">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.filter"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.PageSizes">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.pageSizes"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.PagedResult">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.pagedResult"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.SortOrderItems">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.sortOrderItems"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.SortByItems">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.sortByItems"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.DateRangeOptions">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.dateRangeOptions"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.SelectedDateRange">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.selectedDateRange"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.SelectedSortOrder">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.selectedSortOrder"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.SelectedSortBy">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.selectedSortBy"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.ShowCustomDateInput">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.showCustomDateInput"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.SelectedStartDate">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.selectedStartDate"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.SelectedEndDate">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.selectedEndDate"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.IsRefreshing">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.isRefreshing"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.IsPagination">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.isPagination"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.IsPaginationEnable">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.isPaginationEnable"/>
+        </member>
+        <member name="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.OnSelectedDateRangeChanged(Scfet.Notification.ViewModels.PickerItem{System.String})">
+            <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.SelectedDateRange"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.SelectedDateRange"/> is changed.</remarks>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.startCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.StartCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.StartCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.StartAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.loadNotificationsCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.LoadNotificationsCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.LoadNotificationsCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.LoadNotificationsAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.loadNotificationsPaginationCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.LoadNotificationsPaginationCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.LoadNotificationsPaginationCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.LoadNotificationsPaginationAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.applyFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.ApplyFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.ApplyFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.ApplyFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.resetFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.ResetFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.ResetFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.ResetFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.deleteNotificationCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.DeleteNotificationCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.DeleteNotificationCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.DeleteNotificationAsync(Scfet.Notification.Models.SentNotification)"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.showDetailsCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.ShowDetailsCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.ShowDetailsCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.ShowDetailsAsync(Scfet.Notification.Models.SentNotification)"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.refreshCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.RefreshCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.RefreshCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.RefreshAsync"/>.</summary>
+        </member>
+        <member name="T:Scfet.Notification.Resource">
+            <summary>
+            Android Resource Designer class.
+            Exposes the Android Resource designer assembly into the project Namespace.
+            </summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsBusy">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsBusy" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Title">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Title" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CurrentUser">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CurrentUser" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Message">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Message" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedGroup">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedGroup" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedUser">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedUser" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Groups">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Groups" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Students">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Students" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Teachers">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Teachers" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Administrators">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Administrators" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Users">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Users" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedImage">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedImage" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ImagePreview">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ImagePreview" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.NotificationTypes">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "NotificationTypes" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.AudienceTypes">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "AudienceTypes" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedType">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedType" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedAudience">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedAudience" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.UserFilter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "UserFilter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.GroupFilter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "GroupFilter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsUserFiltersVisible">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsUserFiltersVisible" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsGroupFiltersVisible">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsGroupFiltersVisible" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Email">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Email" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Password">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Password" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Notifications">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Notifications" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.PageResult">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "PageResult" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Filter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Filter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.PageSizes">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "PageSizes" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SortOrderItems">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SortOrderItems" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SortByItems">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SortByItems" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.DateRangeOptions">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "DateRangeOptions" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedDateRange">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedDateRange" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedSortOrder">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedSortOrder" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedSortBy">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedSortBy" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ShowCustomDateInput">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ShowCustomDateInput" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedStartDate">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedStartDate" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedEndDate">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedEndDate" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsRefreshing">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsRefreshing" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsPagination">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsPagination" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsPaginationEnable">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsPaginationEnable" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.FirstName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "FirstName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.LastName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "LastName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsCacheEnable">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsCacheEnable" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CacheSize">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CacheSize" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedNotification">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedNotification" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.PagedResult">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "PagedResult" generated properties.</summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsBusy">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsBusy" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Title">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Title" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CurrentUser">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CurrentUser" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Message">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Message" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedGroup">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedGroup" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedUser">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedUser" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Groups">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Groups" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Students">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Students" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Teachers">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Teachers" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Administrators">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Administrators" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Users">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Users" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedImage">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedImage" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ImagePreview">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ImagePreview" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.NotificationTypes">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "NotificationTypes" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.AudienceTypes">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "AudienceTypes" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedType">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedType" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedAudience">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedAudience" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.UserFilter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "UserFilter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.GroupFilter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "GroupFilter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsUserFiltersVisible">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsUserFiltersVisible" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsGroupFiltersVisible">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsGroupFiltersVisible" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Email">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Email" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Password">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Password" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Notifications">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Notifications" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.PageResult">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "PageResult" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Filter">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Filter" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.PageSizes">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "PageSizes" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SortOrderItems">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SortOrderItems" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SortByItems">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SortByItems" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.DateRangeOptions">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "DateRangeOptions" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedDateRange">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedDateRange" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedSortOrder">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedSortOrder" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedSortBy">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedSortBy" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ShowCustomDateInput">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ShowCustomDateInput" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedStartDate">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedStartDate" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedEndDate">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedEndDate" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsRefreshing">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsRefreshing" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsPagination">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsPagination" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsPaginationEnable">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsPaginationEnable" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.FirstName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "FirstName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.LastName">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "LastName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsCacheEnable">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsCacheEnable" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CacheSize">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CacheSize" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedNotification">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedNotification" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.PagedResult">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "PagedResult" generated properties.</summary>
+        </member>
+    </members>
+</doc>

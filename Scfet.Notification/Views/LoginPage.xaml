@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Scfet.Notification.Views.LoginPage"
+             xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
+             x:DataType="vm:LoginViewModel"
+             Title="{Binding Title}">
+    
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="30">
+
+            <Image Source="scfet_logo.jpg" 
+                   HeightRequest="100" 
+                   HorizontalOptions="Center" />
+
+            <Label Text="СКФЭТ Уведомления" 
+                   FontSize="24" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center" />
+
+            <!-- Войти -->
+            <Border BackgroundColor="#f5f5f5" Padding="15" 
+                    IsVisible="{Binding isAuth, Converter={StaticResource InverseBoolConverter}}">
+                
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+                
+                <VerticalStackLayout Spacing="15">
+
+                    <Entry Placeholder="Email" 
+                           Text="{Binding Email}"
+                           Keyboard="Email" />
+
+                    <Entry Placeholder="Пароль" 
+                           Text="{Binding Password}"
+                           IsPassword="True" />
+
+                    <Button Text="Войти" 
+                            Command="{Binding LoginCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                            BackgroundColor="#2E86AB"
+                            TextColor="White"
+                            CornerRadius="10" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Выйти -->
+            <Border BackgroundColor="#f5f5f5" Padding="15" 
+                IsVisible="{Binding isAuth}">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="15">
+
+                    <Label Text="Вы уже вошли в систему"  
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               HorizontalOptions="Center" />
+
+                    <Button Text="Выйти" 
+                            Command="{Binding LogoutCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                            BackgroundColor="#2E86AB"
+                            TextColor="White"
+                            CornerRadius="10" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                               IsVisible="{Binding IsBusy}"
+                               HorizontalOptions="Center" 
+                               Color="#2E86AB"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

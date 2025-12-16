@@ -1,0 +1,22 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Scfet.Notification"
+             xmlns:converters="clr-namespace:Scfet.Notification.Converters"
+             x:Class="Scfet.Notification.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:NotificationTypeToColorConverter x:Key="NotificationTypeToColorConverter" />
+            <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter" />
+            <converters:PercentageToProgressConverter x:Key="PercentageToProgressConverter" />
+            <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+            <converters:ReadStatusConverter x:Key="ReadStatusConverter"/>
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

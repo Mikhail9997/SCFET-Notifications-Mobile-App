@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Scfet.Notification.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Scfet.Notification"
+    xmlns:views="clr-namespace:Scfet.Notification.Views"
+    FlyoutBehavior="Flyout"
+    Title="СКФЭТ Уведомления">
+
+    <Shell.FlyoutHeader>
+        <Grid HeightRequest="180" Margin="0,0,0,20">
+            <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                <Image Source="scfet_logo.jpg" HeightRequest="140" WidthRequest="140" 
+                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Text="СКФЭТ Уведомления" TextColor="Black" 
+                       FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+            </StackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <FlyoutItem Title="Уведомления" Icon="notif.png">
+        <ShellContent Title="Уведомления"
+                  ContentTemplate="{DataTemplate views:NotificationsPage}"
+                  Route="MainPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Профиль" Icon="profile.png">
+        <ShellContent Title="Профиль"
+                    ContentTemplate="{DataTemplate views:ProfilePage}"
+                    Route="ProfilePage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Войти" Icon="login.png">
+        <ShellContent Title="Войти"
+                  ContentTemplate="{DataTemplate views:LoginPage}"
+                  Route="LoginPage" />
+    </FlyoutItem>
+
+</Shell>
