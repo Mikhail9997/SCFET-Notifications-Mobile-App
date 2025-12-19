@@ -216,6 +216,12 @@
         <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.IsPaginationEnable">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.isPaginationEnable"/>
         </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.IsLoadNotificationsFailed">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.isLoadNotificationsFailed"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.IsStartLoadNotificationsFailed">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.NotificationsViewModel.isStartLoadNotificationsFailed"/>
+        </member>
         <member name="M:Scfet.Notification.ViewModels.NotificationsViewModel.OnSelectedDateRangeChanged(Scfet.Notification.ViewModels.PickerItem{System.String})">
             <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.SelectedDateRange"/> just changed.</summary>
             <param name="value">The new property value that was set.</param>
@@ -271,6 +277,7 @@
             <inheritdoc/>
             <inheritdoc/>
             <inheritdoc/>
+            <inheritdoc/>
         </member>
         <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.CurrentUser">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.ProfileViewModel.currentUser"/>
@@ -319,6 +326,12 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.CleanCacheCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ProfileViewModel.CleanCacheAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.ProfileViewModel.refreshCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ProfileViewModel.RefreshCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.RefreshCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ProfileViewModel.RefreshAsync"/>.</summary>
         </member>
         <member name="F:Scfet.Notification.ViewModels.ProfileViewModel.goToCommand">
             <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ProfileViewModel.GoToCommand"/>.</summary>
@@ -387,6 +400,12 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.IsPaginationEnable">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.isPaginationEnable"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.IsLoadNotificationsFailed">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.isLoadNotificationsFailed"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.IsStartLoadNotificationsFailed">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.isStartLoadNotificationsFailed"/>
         </member>
         <member name="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.OnSelectedDateRangeChanged(Scfet.Notification.ViewModels.PickerItem{System.String})">
             <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.SelectedDateRange"/> just changed.</summary>
@@ -570,6 +589,12 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsPaginationEnable">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsPaginationEnable" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsLoadNotificationsFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsLoadNotificationsFailed" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsStartLoadNotificationsFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsStartLoadNotificationsFailed" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.FirstName">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "FirstName" generated properties.</summary>
         </member>
@@ -710,6 +735,12 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsPaginationEnable">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsPaginationEnable" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsLoadNotificationsFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsLoadNotificationsFailed" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsStartLoadNotificationsFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsStartLoadNotificationsFailed" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.FirstName">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "FirstName" generated properties.</summary>

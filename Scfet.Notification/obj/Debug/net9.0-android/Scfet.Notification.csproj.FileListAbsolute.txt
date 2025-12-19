@@ -1010,3 +1010,5 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\src\plugin\LocalNotification\GeofenceTransitionsIntentReceiver.java
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\src\plugin\LocalNotification\NotificationActionReceiver.java
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\src\plugin\LocalNotification\ScheduledAlarmReceiver.java
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\Scfet.Notification.sourcelink.json
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\no_wifi.png

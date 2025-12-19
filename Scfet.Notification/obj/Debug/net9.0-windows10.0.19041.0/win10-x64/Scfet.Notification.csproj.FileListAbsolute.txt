@@ -539,3 +539,6 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Win32.SystemEvents.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Plugin.LocalNotification.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\System.Drawing.Common.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\Scfet.Notification.sourcelink.json
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\no_wifi.scale-100.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\r\no_wifi.scale-100.png

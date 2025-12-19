@@ -82,6 +82,12 @@ namespace Scfet.Notification.ViewModels
         [ObservableProperty]
         private bool isPaginationEnable;
 
+        [ObservableProperty]
+        private bool isLoadNotificationsFailed;
+
+        [ObservableProperty]
+        private bool isStartLoadNotificationsFailed;
+
 
         public async Task InitializeAsync()
         {
@@ -101,6 +107,14 @@ namespace Scfet.Notification.ViewModels
                 await LoadNotificationsAsync();
 
                 Notifications.Clear();
+                if (IsLoadNotificationsFailed)
+                {
+                    IsStartLoadNotificationsFailed = true;
+                    return;
+                }
+
+                IsStartLoadNotificationsFailed = false;
+
                 if (PageResult?.Items != null)
                 {
                     foreach (var notification in PageResult.Items)
@@ -129,8 +143,13 @@ namespace Scfet.Notification.ViewModels
             {
                 var pageResult = await _apiService.GetNotificationsAsync(Filter);
 
-                if (pageResult == null) return;
+                if (pageResult == null)
+                {
+                    IsLoadNotificationsFailed = true;
+                    return;
+                }
 
+                IsLoadNotificationsFailed = false;
                 PageResult = pageResult;
 
                 if (!pageResult.Items.Any()) return;
@@ -159,7 +178,11 @@ namespace Scfet.Notification.ViewModels
 
                 await LoadNotificationsAsync();
 
-                if (PageResult == null) return;
+                if (PageResult == null || IsLoadNotificationsFailed)
+                {
+                    await Shell.Current.DisplayAlert("Ошибка","не удалось загрузить уведомления.\nПроверьте подключение к интернету", "ОК");
+                    return;
+                }
 
                 if (PageResult?.Items != null && PageResult.Items.Any())
                 {
@@ -181,7 +204,6 @@ namespace Scfet.Notification.ViewModels
             }
             finally
             {
-
                 IsPagination = false;
             }
         }
@@ -320,8 +342,15 @@ namespace Scfet.Notification.ViewModels
         [RelayCommand]
         private async Task RefreshAsync()
         {
-            IsRefreshing = true;
-            await LoadNotificationsAsync();
+            try
+            {
+                IsStartLoadNotificationsFailed = false;
+                await StartAsync();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", $"Ошибка загрузки: {ex.Message}", "OK");
+            }
         }
 
         private void OnNotificationReceived(Models.Notification notification)

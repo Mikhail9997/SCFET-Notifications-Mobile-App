@@ -7,78 +7,95 @@
              x:DataType="vm:SentNotificationsViewModel"
              xmlns:views="clr-namespace:Scfet.Notification.Views"
              Title="Отправленные уведомления">
+    <Grid>
 
-    <ScrollView>
-        <StackLayout Padding="5,0" Spacing="10">
+        <!-- Ошибка загрузки уведомлений -->
+        <StackLayout HorizontalOptions="Center" 
+                         VerticalOptions="Center"
+                         IsVisible="{Binding IsStartLoadNotificationsFailed}">
 
-            <!-- Основной контент -->
-            <Grid>
-                
-                <!-- Состояние загрузки -->
-                <VerticalStackLayout IsVisible="{Binding IsBusy}"
+            <Image Source="no_wifi.png" HeightRequest="200" WidthRequest="200" Margin="0,0,0,70"/>
+            <Label Text="Не удалось загрузить уведомления" FontSize="16"/>
+            <Label Text="Проверьте подключение к интернету" FontSize="16"/>
+            <Button Text="Перезагрузить"
+                    Command="{Binding RefreshCommand}"
+                    BackgroundColor="#2E86AB"
+                    TextColor="White"
+                    CornerRadius="5"
+                    Margin="0,10,0,0"/>
+        </StackLayout>
+
+        <!-- Состояние загрузки -->
+        <VerticalStackLayout IsVisible="{Binding IsBusy}"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"
                            Spacing="20">
-                    <ActivityIndicator IsRunning="True" 
+            <ActivityIndicator IsRunning="True" 
                              Color="#2E86AB"
                              HeightRequest="50"
                              WidthRequest="50" />
-                    <Label Text="Загрузка уведомлений..." 
-                   FontSize="16"
-                   HorizontalOptions="Center" />
-                </VerticalStackLayout>
+            <Label Text="Загрузка уведомлений..." 
+                               FontSize="16"
+                               HorizontalOptions="Center" />
+        </VerticalStackLayout>
 
-                <!-- Список уведомлений -->
-                <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+        <ScrollView IsVisible="{Binding IsStartLoadNotificationsFailed, Converter={StaticResource InverseBoolConverter}}">
+            <StackLayout Padding="5,0" Spacing="10">
+
+                <!-- Основной контент -->
+                <Grid>
+
+                    <!-- Список уведомлений -->
+                    <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
                              Spacing="20">
 
-                    <!-- Фильтрация уведомлений-->
-                    <Border BackgroundColor="#f0f0f0"
+                        <!-- Фильтрация уведомлений-->
+                        <Border BackgroundColor="#f0f0f0"
                            Padding="10">
 
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="5"/>
-                        </Border.StrokeShape>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="5"/>
+                            </Border.StrokeShape>
 
-                        <VerticalStackLayout Spacing="10">
-                            <Label Text="Фильтрация уведомлений:" 
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Фильтрация уведомлений:" 
                                    FontSize="14" 
                                    FontAttributes="Bold" />
 
-                            <Picker Title="Размер страницы:"
+                                <Picker Title="Размер страницы:"
                                     ItemsSource="{Binding PageSizes}"
                                     SelectedItem="{Binding Filter.PageSize}" />
 
-                            <Picker Title="Сортировать По:"
+                                <Picker Title="Сортировать По:"
                                     ItemsSource="{Binding SortByItems}"
                                     SelectedItem="{Binding SelectedSortBy}"
                                     ItemDisplayBinding="{Binding DisplayName}"/>
 
-                            <Picker Title="Упорядочить:" 
+                                <Picker Title="Упорядочить:" 
                                     ItemsSource="{Binding SortOrderItems}"
                                     SelectedItem="{Binding SelectedSortOrder}"
                                     ItemDisplayBinding="{Binding DisplayName}"/>
 
-                            <Picker Title="Выберите период"
+                                <Picker Title="Выберите период"
                                     ItemsSource="{Binding DateRangeOptions}"
                                     SelectedItem="{Binding SelectedDateRange}"
                                     ItemDisplayBinding="{Binding DisplayName}"/>
 
-                            <Grid ColumnDefinitions="Auto,Auto" 
+                                <Grid ColumnDefinitions="Auto,Auto" 
                                   ColumnSpacing="5"
                                   IsVisible="{Binding ShowCustomDateInput}">
-                                <StackLayout Grid.Column="0" Padding="10">
-                                    <Label Text="С:"/>
-                                    <DatePicker Date="{Binding SelectedStartDate}"/>
-                                </StackLayout>
-                                <StackLayout Grid.Column="1" Padding="10">
-                                    <Label Text="По:"/>
-                                    <DatePicker Date="{Binding SelectedEndDate}"/>
-                                </StackLayout>
-                            </Grid>
+                                    <StackLayout Grid.Column="0" Padding="10">
+                                        <Label Text="С:"/>
+                                        <DatePicker Date="{Binding SelectedStartDate}"/>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1" Padding="10">
+                                        <Label Text="По:"/>
+                                        <DatePicker Date="{Binding SelectedEndDate}"/>
+                                    </StackLayout>
+                                </Grid>
 
-                            <HorizontalStackLayout Spacing="10">
-                                <Button Text="Применить фильтр"
+                                <HorizontalStackLayout Spacing="10">
+                                    <Button Text="Применить фильтр"
                                         Command="{Binding ApplyFiltersCommand}"
                                         BackgroundColor="#2E86AB"
                                         TextColor="White"
@@ -86,74 +103,74 @@
                                         HorizontalOptions="FillAndExpand"
                                         IsEnabled="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}"/>
 
-                                <Button Text="Сбросить"
+                                    <Button Text="Сбросить"
                                         Command="{Binding ResetFiltersCommand}"
                                         BackgroundColor="#6c757d"
                                         TextColor="White"
                                         CornerRadius="5"
                                         HorizontalOptions="FillAndExpand"
                                         IsEnabled="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}"/>
-                            </HorizontalStackLayout>
-                        </VerticalStackLayout>
-                    </Border>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
 
-                    <CollectionView ItemsSource="{Binding Notifications}"
+                        <CollectionView ItemsSource="{Binding Notifications}"
                             SelectionMode="None">
 
-                        <CollectionView.EmptyView>
-                            <VerticalStackLayout HorizontalOptions="Center" 
+                            <CollectionView.EmptyView>
+                                <VerticalStackLayout HorizontalOptions="Center" 
                                        VerticalOptions="Center"
                                        Spacing="20"
                                        Padding="40">
-                                <Label Text="📤" 
+                                    <Label Text="📤" 
                                          FontSize="48" 
                                          HorizontalOptions="Center" />
-                                <Label Text="Нет отправленных уведомлений" 
+                                    <Label Text="Нет отправленных уведомлений" 
                                         FontSize="18" 
                                         HorizontalOptions="Center" />
-                            </VerticalStackLayout>
-                        </CollectionView.EmptyView>
+                                </VerticalStackLayout>
+                            </CollectionView.EmptyView>
 
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:SentNotification">
-                                <SwipeView>
-                                    <SwipeView.RightItems>
-                                        <SwipeItem Text="Удалить" 
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:SentNotification">
+                                    <SwipeView>
+                                        <SwipeView.RightItems>
+                                            <SwipeItem Text="Удалить" 
                                            BackgroundColor="Red"
                                            Command="{Binding Source={RelativeSource AncestorType={x:Type views:SentNotificationsPage}}, Path=BindingContext.DeleteNotificationCommand}"
                                            CommandParameter="{Binding .}" />
-                                    </SwipeView.RightItems>
+                                        </SwipeView.RightItems>
 
-                                    <Border Padding="15" 
+                                        <Border Padding="15" 
                                            Margin="10,5"
                                            BackgroundColor="{Binding Type, Converter={StaticResource NotificationTypeToColorConverter}}">
 
-                                        <Grid ColumnDefinitions="*,Auto"
+                                            <Grid ColumnDefinitions="*,Auto"
                                               RowDefinitions="Auto,Auto,Auto,Auto,Auto"
                                               RowSpacing="10">
 
-                                            <Image Grid.Row="0"
+                                                <Image Grid.Row="0"
                                                    Grid.ColumnSpan="2"
                                                    HeightRequest="350"
                                                    IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}">
-                                                <Image.Source>
-                                                    <UriImageSource Uri="{Binding ImageUrl}"/>
-                                                </Image.Source>
-                                            </Image>
+                                                    <Image.Source>
+                                                        <UriImageSource Uri="{Binding ImageUrl}"/>
+                                                    </Image.Source>
+                                                </Image>
 
-                                            <Label Grid.Column="0" 
+                                                <Label Grid.Column="0" 
                                                    Grid.Row="1"
                                                    Text="{Binding Title}" 
                                                    FontSize="16" 
                                                    FontAttributes="Bold" />
 
-                                            <Label Grid.Column="1" 
+                                                <Label Grid.Column="1" 
                                                    Grid.Row="1"
                                                    Text="{Binding FormattedDate}" 
                                                    FontSize="12" 
                                                     FontAttributes="Bold" />
 
-                                            <Label Grid.Column="0" 
+                                                <Label Grid.Column="0" 
                                                    Grid.ColumnSpan="2"
                                                    Grid.Row="2"
                                                    Text="{Binding Message}" 
@@ -161,13 +178,13 @@
                                                    Margin="0,5,0,0"
                                                    LineBreakMode="TailTruncation" />
 
-                                            <ProgressBar Grid.Column="0" 
+                                                <ProgressBar Grid.Column="0" 
                                                  Grid.ColumnSpan="2"
                                                  Grid.Row="3"
                                                  Progress="{Binding ReadPercentage, Converter={StaticResource PercentageToProgressConverter}}"
                                                  Margin="0,10,0,5" />
 
-                                            <Label Grid.Column="0" 
+                                                <Label Grid.Column="0" 
                                                    Grid.ColumnSpan="2"
                                                    Grid.Row="4"
                                                    Text="{Binding ReadReceivers, StringFormat='{0} прочитано'}" 
@@ -175,57 +192,59 @@
                                                    TextColor="Gray"
                                                    HorizontalOptions="Start" />
 
-                                            <Label Grid.Column="1" 
+                                                <Label Grid.Column="1" 
                                                    Grid.Row="5"
                                                    Text="{Binding ReadPercentage, StringFormat='{0:F1}%'}" 
                                                    FontSize="12" 
                                                    TextColor="Gray"
                                                    HorizontalOptions="End" />
 
-                                        </Grid>
+                                            </Grid>
 
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type views:SentNotificationsPage}}, Path=BindingContext.ShowDetailsCommand}"
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type views:SentNotificationsPage}}, Path=BindingContext.ShowDetailsCommand}"
                                                           CommandParameter="{Binding .}" />
-                                        </Border.GestureRecognizers>
+                                            </Border.GestureRecognizers>
 
-                                    </Border>
-                                </SwipeView>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </StackLayout>
+                                        </Border>
+                                    </SwipeView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
 
-            </Grid>
+                </Grid>
 
-            <!-- Действия -->
-            <Grid IsVisible="{Binding IsPaginationEnable}">
+                <!-- Действия -->
+                <Grid IsVisible="{Binding IsPaginationEnable}">
 
-                <!-- Состояние загрузки пагинации-->
-                <VerticalStackLayout IsVisible="{Binding IsPagination}"
+                    <!-- Состояние загрузки пагинации-->
+                    <VerticalStackLayout IsVisible="{Binding IsPagination}"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"
                            Spacing="20">
-                    <ActivityIndicator IsRunning="True" 
+                        <ActivityIndicator IsRunning="True" 
                              Color="#2E86AB"
                              HeightRequest="50"
                              WidthRequest="50" />
-                    <Label Text="Загрузка уведомлений..." 
+                        <Label Text="Загрузка уведомлений..." 
                    FontSize="16"
                    HorizontalOptions="Center" />
-                </VerticalStackLayout>
+                    </VerticalStackLayout>
 
-                <!-- Кнопка Загрузить еще -->
-                <Grid Margin="0,10,0,0" ColumnDefinitions="*"
+                    <!-- Кнопка Загрузить еще -->
+                    <Grid Margin="0,10,0,0" ColumnDefinitions="*"
                       IsVisible="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}">
 
-                    <Button Grid.Column="0" 
+                        <Button Grid.Column="0" 
                             Text="Загрузить еще" 
                             Command="{Binding LoadNotificationsPaginationCommand}"
                             BackgroundColor="#2E86AB"/>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </StackLayout>
-    </ScrollView>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+
 
 </ContentPage>

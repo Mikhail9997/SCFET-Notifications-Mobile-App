@@ -63,12 +63,14 @@ namespace Scfet.Notification.ViewModels
             try
             {
                 var profile = await _apiService.GetCurrentUserAsync();
+                CurrentUser = profile.User;
+
                 if (profile.User == null)
                 {
                     OnPropertyChanged(nameof(IsCurrentUserEnable));
                     return;
                 }
-                CurrentUser = profile.User;
+
                 FirstName = CurrentUser.FirstName;
                 LastName = CurrentUser.LastName;
                 Email = CurrentUser.Email;
@@ -210,6 +212,19 @@ namespace Scfet.Notification.ViewModels
             catch
             {
                 await Shell.Current.DisplayAlert("Ошибка", "не удалось очистить кеш", "ОК");
+            }
+        }
+
+        [RelayCommand]
+        private async Task RefreshAsync()
+        {
+            try
+            {
+                await LoadProfileAsync();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", $"Ошибка загрузки профиля: {ex.Message}", "OK");
             }
         }
 

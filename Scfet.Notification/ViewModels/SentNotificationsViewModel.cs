@@ -73,6 +73,12 @@ namespace Scfet.Notification.ViewModels
         [ObservableProperty]
         private bool isPaginationEnable;
 
+        [ObservableProperty]
+        private bool isLoadNotificationsFailed;
+
+        [ObservableProperty]
+        private bool isStartLoadNotificationsFailed;
+
         public async Task InitializeAsync()
         {
             await StartAsync();
@@ -88,7 +94,17 @@ namespace Scfet.Notification.ViewModels
             try
             {
                 await LoadNotificationsAsync();
+
                 Notifications.Clear();
+
+                if (IsLoadNotificationsFailed)
+                {
+                    IsStartLoadNotificationsFailed = true;
+                    return;
+                }
+
+                IsStartLoadNotificationsFailed = false;
+
                 if (PagedResult?.Items != null)
                 {
                     foreach (var notification in PagedResult.Items)
@@ -115,8 +131,14 @@ namespace Scfet.Notification.ViewModels
             {
                 var pageResult = await _apiService.GetSentNotificationsAsync(Filter);
 
-                if (pageResult == null) return;
 
+                if (pageResult == null)
+                {
+                    IsLoadNotificationsFailed = true;
+                    return;
+                }
+
+                IsLoadNotificationsFailed = false;
                 PagedResult = pageResult;
 
                 if (!pageResult.Items.Any()) return;
@@ -145,7 +167,11 @@ namespace Scfet.Notification.ViewModels
 
                 await LoadNotificationsAsync();
 
-                if (PagedResult == null) return;
+                if (PagedResult == null || IsLoadNotificationsFailed)
+                {
+                    await Shell.Current.DisplayAlert("Ошибка", "не удалось загрузить уведомления.\nПроверьте подключение к интернету", "ОК");
+                    return;
+                }
 
                 if (PagedResult?.Items != null && PagedResult.Items.Any())
                 {
@@ -250,6 +276,18 @@ namespace Scfet.Notification.ViewModels
                     SelectedStartDate = lastMonthStart;
                     SelectedEndDate = lastMonthEndStart;
                     break;
+                case "this_year":
+                    var yearStart = new DateTime(today.Year, 1, 1);
+                    var yearEnd = today;
+                    SelectedStartDate = yearStart;
+                    SelectedEndDate = yearEnd;
+                    break;
+                case "last_year":
+                    var lastYearStart = new DateTime(today.Year, 1, 1).AddYears(-1);
+                    var lastYearEnd = lastYearStart.AddMonths(11);
+                    SelectedStartDate = lastYearStart;
+                    SelectedEndDate = lastYearEnd;
+                    break;
                 case "all":
                 default:
                     SelectedStartDate = null;
@@ -324,8 +362,15 @@ namespace Scfet.Notification.ViewModels
         [RelayCommand]
         private async Task RefreshAsync()
         {
-            IsRefreshing = true;
-            await LoadNotificationsAsync();
+            try
+            {
+                IsStartLoadNotificationsFailed = false;
+                await StartAsync();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", $"Ошибка загрузки: {ex.Message}", "OK");
+            }
         }
 
         private async Task InitializeFields()
@@ -366,6 +411,8 @@ namespace Scfet.Notification.ViewModels
                 new() { DisplayName = "Прошлая неделя", Value = "last_week" },
                 new() { DisplayName = "Этот месяц", Value = "this_month" },
                 new() { DisplayName = "Прошлый месяц", Value = "last_month" },
+                new() { DisplayName = "Этот год", Value = "this_year"},
+                new() { DisplayName = "Прошлый год", Value = "last_year"},
                 new() { DisplayName = "Произвольный период", Value = "custom" }
             };
             SelectedSortBy = SortByItems[0];
