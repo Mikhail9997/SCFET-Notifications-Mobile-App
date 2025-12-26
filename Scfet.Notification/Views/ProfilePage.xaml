@@ -127,18 +127,18 @@
                             <Grid ColumnDefinitions="Auto,Auto"                                 
                                   ColumnSpacing="5"
                                   BackgroundColor="Coral">
-                                
+
                                 <Button Text="Очистить кэш приложения:" 
-                                    Command="{Binding CleanCacheCommand}"                                     
-                                    TextColor="White"
-                                    CornerRadius="10"
-                                    Grid.Column="0"
-                                    BackgroundColor="Coral"/>
+                                        Command="{Binding CleanCacheCommand}"                                     
+                                        TextColor="White"
+                                        CornerRadius="10"
+                                        Grid.Column="0"
+                                        BackgroundColor="Coral"/>
 
                                 <Label Text="{Binding CacheSize}"
-                                   Grid.Column="1"
-                                   TextColor="White"
-                                   VerticalOptions="Center"/>
+                                       Grid.Column="1"
+                                       TextColor="White"
+                                       VerticalOptions="Center"/>
                             </Grid>
                         </Border>
 

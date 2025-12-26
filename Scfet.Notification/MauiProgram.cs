@@ -29,6 +29,7 @@ namespace Scfet.Notification
             builder.Services.AddSingleton<NotificationService>();
             builder.Services.AddSingleton<LoginService>();
             builder.Services.AddSingleton<FileService>();
+            builder.Services.AddSingleton<NotificationPermissionsService>();
 
             // ViewModels
             builder.Services.AddTransient<LoginViewModel>();
@@ -36,6 +37,7 @@ namespace Scfet.Notification
             builder.Services.AddTransient<ProfileViewModel>();
             builder.Services.AddTransient<CreateNotificationViewModel>();
             builder.Services.AddTransient<SentNotificationsViewModel>();
+            builder.Services.AddTransient<EditNotificationViewModel>();
 
             // Pages
             builder.Services.AddTransient<LoginPage>();
@@ -43,6 +45,7 @@ namespace Scfet.Notification
             builder.Services.AddTransient<ProfilePage>();
             builder.Services.AddTransient<CreateNotificationPage>();
             builder.Services.AddTransient<SentNotificationsPage>();
+            builder.Services.AddTransient<EditNotificationPage>();
 
             return builder.Build();
         }

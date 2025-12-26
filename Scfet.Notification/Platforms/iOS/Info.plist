@@ -28,5 +28,9 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+	<key>CFBundleDisplayName</key>
+	<string>СКФЭТ Уведомления</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.scfet.notifications</string>
 </dict>
 </plist>

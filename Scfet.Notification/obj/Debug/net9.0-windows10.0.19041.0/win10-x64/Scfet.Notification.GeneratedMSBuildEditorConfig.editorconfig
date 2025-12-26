@@ -63,6 +63,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.C
 build_metadata.AdditionalFiles.TargetPath = Views\CreateNotificationPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\CreateNotificationPage.xaml
 
+[C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/EditNotificationPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.EditNotificationPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\EditNotificationPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\EditNotificationPage.xaml
+
 [C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/LoginPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.LoginPage.xaml

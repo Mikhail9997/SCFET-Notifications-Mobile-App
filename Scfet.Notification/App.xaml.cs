@@ -9,17 +9,20 @@ namespace Scfet.Notification
     {
         private readonly IApiService _apiService;
         private readonly LoginService _loginService;
-        public App(IApiService apiService, LoginService loginService)
+        private readonly NotificationPermissionsService _permissionsService;
+        public App(IApiService apiService, LoginService loginService, NotificationPermissionsService permissionsService)
         {
             InitializeComponent();
             _apiService = apiService;
             _loginService = loginService;
+            _permissionsService = permissionsService;
         }
 
         protected override void OnStart()
         {
             // Проверка авторизации при запуске
             CheckAuthStatus();
+            CheckNotificationPermissionOnStart();
         }
 
         private async void CheckAuthStatus()
@@ -40,6 +43,12 @@ namespace Scfet.Notification
             {
                 await Shell.Current.GoToAsync("//LoginPage");
             }
+        }
+
+        private void CheckNotificationPermissionOnStart()
+        {
+
+            var hasPermission = _permissionsService.CheckAndRequestNotificationPermission();
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

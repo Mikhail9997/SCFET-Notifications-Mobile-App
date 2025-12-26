@@ -135,6 +135,153 @@
         <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.ResetGroupFiltersCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.ResetGroupFiltersAsync"/>.</summary>
         </member>
+        <member name="T:Scfet.Notification.ViewModels.EditNotificationViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.UpdateNotificationRequest">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.updateNotificationRequest"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.NotificationToEdit">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.notificationToEdit"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.IsInitializeFailed">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.isInitializeFailed"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.IsUpdating">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.isUpdating"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.CurrentUser">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.currentUser"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.Title">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.title"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.Message">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.message"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ImageUrl">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.imageUrl"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.IsImageExist">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.isImageExist"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedGroup">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.selectedGroup"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedUser">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.selectedUser"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.Groups">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel._groups"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.Students">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel._students"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.Teachers">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel._teachers"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.Administrators">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel._administrators"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.Users">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel._users"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedImage">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel._selectedImage"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ImagePreview">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel._imagePreview"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.NotificationTypes">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.notificationTypes"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.AudienceTypes">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.audienceTypes"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedType">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.selectedType"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedAudience">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.selectedAudience"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.UserFilter">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.userFilter"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.GroupFilter">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.groupFilter"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.IsUserFiltersVisible">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.isUserFiltersVisible"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.IsGroupFiltersVisible">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel.isGroupFiltersVisible"/>
+        </member>
+        <member name="M:Scfet.Notification.ViewModels.EditNotificationViewModel.OnSelectedGroupChanged(Scfet.Notification.Models.Group)">
+            <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedGroup"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedGroup"/> is changed.</remarks>
+        </member>
+        <member name="M:Scfet.Notification.ViewModels.EditNotificationViewModel.OnSelectedAudienceChanged(Scfet.Notification.ViewModels.PickerItem)">
+            <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedAudience"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedAudience"/> is changed.</remarks>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.EditNotificationViewModel.refreshCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.RefreshCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.RefreshCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.EditNotificationViewModel.RefreshAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.EditNotificationViewModel.updateCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.UpdateCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.UpdateCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.EditNotificationViewModel.UpdateAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.EditNotificationViewModel.selectImageCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectImageCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectImageCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectImageAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.EditNotificationViewModel.clearImageCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ClearImageCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ClearImageCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.EditNotificationViewModel.ClearImage"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.EditNotificationViewModel.applyUserFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ApplyUserFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ApplyUserFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.EditNotificationViewModel.ApplyUserFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.EditNotificationViewModel.applyGroupFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ApplyGroupFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ApplyGroupFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.EditNotificationViewModel.ApplyGroupFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.EditNotificationViewModel.resetUserFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ResetUserFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ResetUserFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.EditNotificationViewModel.ResetUserFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.EditNotificationViewModel.resetGroupFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ResetGroupFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ResetGroupFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.EditNotificationViewModel.ResetGroupFiltersAsync"/>.</summary>
+        </member>
         <member name="T:Scfet.Notification.ViewModels.LoginViewModel">
             <inheritdoc/>
             <inheritdoc/>
@@ -349,6 +496,7 @@
             <inheritdoc/>
             <inheritdoc/>
             <inheritdoc/>
+            <inheritdoc/>
         </member>
         <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.Notifications">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.notifications"/>
@@ -442,6 +590,12 @@
         <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.ResetFiltersCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.ResetFiltersAsync"/>.</summary>
         </member>
+        <member name="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.editNotificationCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.EditNotificationCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.EditNotificationCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.SentNotificationsViewModel.EditNotificationAsync(Scfet.Notification.Models.SentNotification)"/>.</summary>
+        </member>
         <member name="F:Scfet.Notification.ViewModels.SentNotificationsViewModel.deleteNotificationCommand">
             <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.SentNotificationsViewModel.DeleteNotificationCommand"/>.</summary>
         </member>
@@ -534,6 +688,24 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsGroupFiltersVisible">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsGroupFiltersVisible" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.UpdateNotificationRequest">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "UpdateNotificationRequest" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.NotificationToEdit">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "NotificationToEdit" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsInitializeFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsInitializeFailed" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsUpdating">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsUpdating" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ImageUrl">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ImageUrl" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsImageExist">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsImageExist" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Email">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Email" generated properties.</summary>
@@ -681,6 +853,24 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsGroupFiltersVisible">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsGroupFiltersVisible" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.UpdateNotificationRequest">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "UpdateNotificationRequest" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.NotificationToEdit">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "NotificationToEdit" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsInitializeFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsInitializeFailed" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsUpdating">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsUpdating" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ImageUrl">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ImageUrl" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsImageExist">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsImageExist" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Email">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Email" generated properties.</summary>

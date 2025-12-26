@@ -327,11 +327,11 @@ namespace Scfet.Notification.ViewModels
         {
             if (result == null) return;
 
-            // Проверяем размер файла (макс 5MB)
+            // Проверяем размер файла (макс 15MB)
             var fileInfo = new FileInfo(result.FullPath);
-            if (fileInfo.Exists && fileInfo.Length > 5 * 1024 * 1024)
+            if (fileInfo.Exists && fileInfo.Length > 15 * 1024 * 1024)
             {
-                await Shell.Current.DisplayAlert("Ошибка", "Размер изображения не должен превышать 5MB", "OK");
+                await Shell.Current.DisplayAlert("Ошибка", "Размер изображения не должен превышать 15MB", "OK");
                 return;
             }
 

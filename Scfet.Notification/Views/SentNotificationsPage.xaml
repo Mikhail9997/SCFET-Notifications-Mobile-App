@@ -40,13 +40,13 @@
         </VerticalStackLayout>
 
         <ScrollView IsVisible="{Binding IsStartLoadNotificationsFailed, Converter={StaticResource InverseBoolConverter}}">
-            <StackLayout Padding="5,0" Spacing="10">
+            <StackLayout Padding="5,0" Spacing="10" IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}">
 
                 <!-- Основной контент -->
                 <Grid>
 
                     <!-- Список уведомлений -->
-                    <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                    <StackLayout 
                              Spacing="20">
 
                         <!-- Фильтрация уведомлений-->
@@ -136,9 +136,13 @@
                                     <SwipeView>
                                         <SwipeView.RightItems>
                                             <SwipeItem Text="Удалить" 
-                                           BackgroundColor="Red"
-                                           Command="{Binding Source={RelativeSource AncestorType={x:Type views:SentNotificationsPage}}, Path=BindingContext.DeleteNotificationCommand}"
-                                           CommandParameter="{Binding .}" />
+                                                       BackgroundColor="Red"
+                                                       Command="{Binding Source={RelativeSource AncestorType={x:Type views:SentNotificationsPage}}, Path=BindingContext.DeleteNotificationCommand}"
+                                                       CommandParameter="{Binding .}" />
+                                            <SwipeItem Text="Изменить" 
+                                                       BackgroundColor="Orange"
+                                                       Command="{Binding Source={RelativeSource AncestorType={x:Type views:SentNotificationsPage}}, Path=BindingContext.EditNotificationCommand}"
+                                                       CommandParameter="{Binding .}" />
                                         </SwipeView.RightItems>
 
                                         <Border Padding="15" 
@@ -228,8 +232,8 @@
                              HeightRequest="50"
                              WidthRequest="50" />
                         <Label Text="Загрузка уведомлений..." 
-                   FontSize="16"
-                   HorizontalOptions="Center" />
+                               FontSize="16"
+                               HorizontalOptions="Center" />
                     </VerticalStackLayout>
 
                     <!-- Кнопка Загрузить еще -->

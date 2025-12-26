@@ -317,6 +317,13 @@ namespace Scfet.Notification.ViewModels
         }
 
         [RelayCommand]
+        private async Task EditNotificationAsync(SentNotification notification)
+        {
+            var id = notification.Id;
+            await Shell.Current.GoToAsync($"EditNotificationPage?id={id}");
+        }
+
+        [RelayCommand]
         private async Task DeleteNotificationAsync(SentNotification notification)
         {
             var confirm = await Shell.Current.DisplayAlert("Удаление",

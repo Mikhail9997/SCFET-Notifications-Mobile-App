@@ -15,6 +15,7 @@ namespace Scfet.Notification.Services
         public event Action<Models.Notification>? OnNotificationReceived;
         public event Action<Guid>? OnNotificationRemove;
         public event Action<Guid>? OnNotificationRead;
+        public event Action<Models.Notification>? OnNotificationUpdate;
 
         private readonly string BaseUrl = "https://amorously-preeminent-godwit.cloudpub.ru";
         //http://localhost:5050/notificationHub
@@ -60,6 +61,14 @@ namespace Scfet.Notification.Services
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     OnNotificationRead?.Invoke(notificationId);
+                });
+            });
+
+            _hubConnection.On<Models.Notification>("UpdateNotification", (notification) =>
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    OnNotificationUpdate?.Invoke(notification);
                 });
             });
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNet.SignalR.Client.Http;
 using Scfet.Notification.Handlers;
 using Scfet.Notification.Models;
 using Scfet.Notification.Utils;
@@ -16,13 +17,15 @@ namespace Scfet.Notification.Services
         Task Logout();
         Task<Profile> GetCurrentUserAsync();
         Task<GetNotification<Models.Notification>?> GetNotificationsAsync(NotificationFilter filter);
+        Task<NotificationDetail?> GetNotificationById(Guid id);
         Task<bool> MarkAsReadAsync(Guid notificationId);
         Task<List<Group>> GetGroupsAsync(GroupFilter filter);
         Task<List<User>> GetStudentsAsync(UserFilter filter);
         Task<List<User>> GetTeachersAsync(UserFilter filter);
         Task<List<User>> GetAdministratorsAsync(UserFilter filter);
         Task<GetNotification<SentNotification>?> GetSentNotificationsAsync(NotificationFilter filter);
-        Task<bool> SendNotificationAsync(CreateNotification notification);
+        Task<bool> SendNotificationAsync(CreateNotification request);
+        Task<bool> UpdateNotificationAsync(UpdateNotification request);
         Task<bool> RemoveNotificationAsync(Guid id);
         Task<bool> UpdateProfileAsync(string firstName, string lastName, string email);
         Task<bool> ChangePasswordAsync(string currentPassword, string newPassword);
@@ -214,6 +217,29 @@ namespace Scfet.Notification.Services
                 Console.WriteLine($"Get notifications error: {ex.Message}");
             }
 
+            return null;
+        }
+
+        public async Task<NotificationDetail?> GetNotificationById(Guid id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{BaseUrl}/notifications/{id}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonSerializer.Deserialize<NotificationDetail>(content, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Get notification error: {ex.Message}");
+            }
             return null;
         }
 
@@ -412,6 +438,47 @@ namespace Scfet.Notification.Services
             catch(Exception ex)
             {
                 Console.WriteLine($"Send notification error: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateNotificationAsync(UpdateNotification request)
+        {
+            try
+            {
+                AddAuthHeader();
+                using var content = new MultipartFormDataContent();
+
+                content.Add(new StringContent(request.Title), "Title");
+                content.Add(new StringContent(request.Message), "Message");
+                content.Add(new StringContent(request.Type.ToString()), "Type");
+
+                if(request.TargetUserIds != null && request.TargetUserIds.Any())
+                {
+                    foreach(var userId in request.TargetUserIds)
+                    {
+                        content.Add(new StringContent(userId.ToString()), "TargetUserIds");
+                    }
+                }
+
+                if (request.TargetGroupId.HasValue)
+                {
+                    content.Add(new StringContent(request.TargetGroupId.Value.ToString()), "TargetGroupId");
+                }
+
+                if (request.Image != null)
+                {
+                    var imageContent = new StreamContent(await request.Image.OpenReadAsync());
+                    imageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(request.Image.ContentType);
+                    content.Add(imageContent, "Image", request.Image.FileName);
+                }
+
+                var response = await _httpClient.PutAsync($"{BaseUrl}/notifications/{request.NotificationId}/update", content);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Update notification error: {ex.Message}");
                 return false;
             }
         }

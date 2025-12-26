@@ -18,4 +18,11 @@ namespace Scfet.Notification.Models
 
         public string FullName => $"{FirstName} {LastName}";
     }
+
+    public enum UserRole
+    {
+        Student = 1,
+        Teacher = 2,
+        Administrator = 3
+    }
 }

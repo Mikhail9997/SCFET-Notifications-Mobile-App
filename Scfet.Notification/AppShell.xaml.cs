@@ -15,6 +15,7 @@ namespace Scfet.Notification
         {
             Routing.RegisterRoute("CreateNotificationPage", typeof(CreateNotificationPage));
             Routing.RegisterRoute("SentNotificationsPage", typeof(SentNotificationsPage));
+            Routing.RegisterRoute("EditNotificationPage", typeof(EditNotificationPage));
         }
     }
 }

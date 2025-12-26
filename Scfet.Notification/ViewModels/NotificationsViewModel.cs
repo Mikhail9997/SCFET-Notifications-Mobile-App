@@ -29,6 +29,7 @@ namespace Scfet.Notification.ViewModels
             _notificationService.OnNotificationReceived += OnNotificationReceived;
             _notificationService.OnNotificationRemove += OnNotificationRemove;
             _notificationService.OnNotificationRead += OnNotificationRead;
+            _notificationService.OnNotificationUpdate += OnNotificationUpdate;
 
             Title = "Уведомления";
             _ = InitializeFields();
@@ -357,7 +358,7 @@ namespace Scfet.Notification.ViewModels
         {
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                Notifications.Insert(0, notification);
+                if(!Notifications.Any(n => n.Id == notification.Id)) Notifications.Insert(0, notification);
                 OnPropertyChanged(nameof(Notifications));
 
                 // Показать локальное уведомление
@@ -410,6 +411,23 @@ namespace Scfet.Notification.ViewModels
                 if (notification != null)
                 {
                     notification.IsRead = true;
+                    OnPropertyChanged(nameof(Notifications));
+                }
+            });
+        }
+
+        private void OnNotificationUpdate(Models.Notification notificationUpdated)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                var notification = Notifications.FirstOrDefault(n => n.Id == notificationUpdated.Id);
+                if(notification != null)
+                {
+                    var index = Notifications.IndexOf(notification);
+
+                    Notifications.RemoveAt(index);
+                    Notifications.Insert(index, notificationUpdated);
+
                     OnPropertyChanged(nameof(Notifications));
                 }
             });

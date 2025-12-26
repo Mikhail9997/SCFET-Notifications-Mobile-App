@@ -32,6 +32,18 @@ namespace Scfet.Notification.Models
         public Guid? TargetGroupId { get; set; }
         public FileResult? Image { get; set; }
     }
+
+    public class UpdateNotification
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
+        public NotificationType Type { get; set; } = NotificationType.Info;
+        public List<Guid>? TargetUserIds { get; set; }
+        public Guid? TargetGroupId { get; set; }
+        public Guid NotificationId { get; set; }
+        public FileResult? Image { get; set; }
+    }
+
     public class SentNotification
     {
         public Guid Id { get; set; }
@@ -56,6 +68,27 @@ namespace Scfet.Notification.Models
         public int TotalPages { get; set; }
     }
 
+    public class NotificationDetail
+    {
+        public Guid Id { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
+        public NotificationType Type { get; set; }
+        public string SenderName { get; set; } = string.Empty;
+        public Guid SenderId { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public List<NotificationReceiver> Receivers { get; set; } = new();
+        public string? ImageUrl { get; set; } = string.Empty;
+    }
+
+    public class NotificationReceiver
+    {
+        public Guid UserId { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public UserRole Role { get; set; } = UserRole.Student;
+        public bool IsRead { get; set; }
+    }
+
     public enum NotificationType
     {
         Info = 1,
@@ -63,4 +96,5 @@ namespace Scfet.Notification.Models
         Urgent = 3,
         Event = 4
     }
+
 }
