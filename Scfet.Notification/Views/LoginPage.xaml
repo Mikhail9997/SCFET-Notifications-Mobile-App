@@ -9,7 +9,7 @@
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="30">
 
-            <Image Source="scfet_logo.jpg" 
+            <Image Source="scfet_logo.png" 
                    HeightRequest="100" 
                    HorizontalOptions="Center" />
 

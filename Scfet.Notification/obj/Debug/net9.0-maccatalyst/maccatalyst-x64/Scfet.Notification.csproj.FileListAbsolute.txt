@@ -28,6 +28,7 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-maccatalyst\maccatalyst-x64\Microsoft.Maui.Essentials.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-maccatalyst\maccatalyst-x64\Microsoft.Maui.Graphics.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-maccatalyst\maccatalyst-x64\Newtonsoft.Json.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-maccatalyst\maccatalyst-x64\Plugin.LocalNotification.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-maccatalyst\maccatalyst-x64\System.Net.ServerSentEvents.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-maccatalyst\maccatalyst-x64\ar\Microsoft.Maui.Controls.resources.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-maccatalyst\maccatalyst-x64\ca\Microsoft.Maui.Controls.resources.dll
@@ -265,6 +266,13 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\mauifont.inputs
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\mauisplash.inputs
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\mauisplash.stamp
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Resources\profile.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Resources\notif.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\dotnet_bot@3x.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\dotnet_bot@2x.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\dotnet_bot.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Resources\scfet_logo.jpg
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Resources\login.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Assets.xcassets\appicon.appiconset\appiconItunesArtwork.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Assets.xcassets\appicon.appiconset\appicon83.5x83.5@2x.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Assets.xcassets\appicon.appiconset\appicon76x76@2x.png
@@ -277,10 +285,7 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Assets.xcassets\appicon.appiconset\appicon20x20@3x.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Assets.xcassets\appicon.appiconset\appicon20x20@2x.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Assets.xcassets\appicon.appiconset\Contents.json
-C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Resources\scfet_logo.jpg
-C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\dotnet_bot@3x.png
-C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\dotnet_bot@2x.png
-C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\dotnet_bot.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\r\Resources\no_wifi.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\mauiimage.stamp
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\mauiimage.outputs
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\resizetizer\f\MauiInfo.plist
@@ -302,6 +307,7 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\Scfet.Notification.AssemblyInfoInputs.cache
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\Scfet.Notification.AssemblyInfo.cs
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\Scfet.Notification.csproj.CoreCompileInputs.cache
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\Scfet.Notification.sourcelink.json
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\XamlC.stamp
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\Scfet.No.58D96E68.Up2Date
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\Scfet.Notification.dll
@@ -309,3 +315,7 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\Scfet.Notification.pdb
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\Scfet.Notification.genruntimeconfig.cache
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-maccatalyst\maccatalyst-x64\ref\Scfet.Notification.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-maccatalyst\maccatalyst-x64\Microsoft.Maui.Controls.HotReload.Forms.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-maccatalyst\maccatalyst-x64\Microsoft.VisualStudio.DesignTools.MobileTapContracts.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-maccatalyst\maccatalyst-x64\Microsoft.VisualStudio.DesignTools.TapContract.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-maccatalyst\maccatalyst-x64\Microsoft.VisualStudio.DesignTools.XamlTapContract.dll

@@ -11,7 +11,7 @@
     <Shell.FlyoutHeader>
         <Grid HeightRequest="180" Margin="0,0,0,20">
             <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
-                <Image Source="scfet_logo.jpg" HeightRequest="140" WidthRequest="140" 
+                <Image Source="scfet_logo.png" HeightRequest="140" WidthRequest="140" 
                        HorizontalOptions="Center" VerticalOptions="Center"/>
                 <Label Text="СКФЭТ Уведомления" TextColor="Black" 
                        FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>

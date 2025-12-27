@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Maui.Controls;
 using Scfet.Notification.Services;
 using Scfet.Notification.ViewModels;
 using Scfet.Notification.Views;
@@ -18,10 +19,11 @@ namespace Scfet.Notification
             _permissionsService = permissionsService;
         }
 
-        protected override void OnStart()
+        protected override async void OnStart()
         {
             // Проверка авторизации при запуске
             CheckAuthStatus();
+            // Проверка разрешения на уведомления
             CheckNotificationPermissionOnStart();
         }
 
@@ -32,7 +34,7 @@ namespace Scfet.Notification
             if (!string.IsNullOrEmpty(token))
             {
                 var result = await _apiService.GetCurrentUserAsync();
-                if(result.Code == 404)
+                if (result.Code == 404)
                 {
                     await _loginService.Logout();
                     return;
