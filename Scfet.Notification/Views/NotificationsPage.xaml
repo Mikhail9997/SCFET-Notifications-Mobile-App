@@ -41,9 +41,10 @@
         </VerticalStackLayout>
 
         <!-- Основной контент -->
-        <ScrollView IsVisible="{Binding IsStartLoadNotificationsFailed, Converter={StaticResource InverseBoolConverter}}">
+        <ScrollView IsVisible="{Binding IsStartLoadNotificationsFailed, Converter={StaticResource InverseBoolConverter}}"
+                    x:Name="MainScrollView">
             <StackLayout Padding="10,0">
-                
+
                 <Grid>
 
                     <!-- Список уведомлений -->
@@ -146,6 +147,7 @@
                                               ColumnDefinitions="*,Auto"
                                               RowSpacing="5">
 
+                                            <!-- Изображение -->
                                             <Image Grid.Row="0"
                                                Grid.ColumnSpan="2"
                                                HeightRequest="350"
@@ -233,6 +235,24 @@
                 </Grid>
             </StackLayout>
         </ScrollView>
+
+        <!-- Кнопка прокрутки наверх -->
+        <Button x:Name="ScrollToTopButton"
+                Text="↑"
+                FontSize="24"
+                FontAttributes="Bold"
+                TextColor="White"
+                BackgroundColor="#2E86AB"
+                CornerRadius="30"
+                WidthRequest="60"
+                HeightRequest="60"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0,0,20,50"
+                IsVisible="False"
+                Opacity="0.9">
+
+        </Button>
     </Grid>
 
 </ContentPage>

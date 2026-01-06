@@ -35,11 +35,12 @@
                              HeightRequest="50"
                              WidthRequest="50" />
             <Label Text="Загрузка уведомлений..." 
-                               FontSize="16"
-                               HorizontalOptions="Center" />
+                    FontSize="16"
+                    HorizontalOptions="Center" />
         </VerticalStackLayout>
 
-        <ScrollView IsVisible="{Binding IsStartLoadNotificationsFailed, Converter={StaticResource InverseBoolConverter}}">
+        <ScrollView IsVisible="{Binding IsStartLoadNotificationsFailed, Converter={StaticResource InverseBoolConverter}}"
+                    x:Name="MainScrollView">
             <StackLayout Padding="5,0" Spacing="10" IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}">
 
                 <!-- Основной контент -->
@@ -248,6 +249,23 @@
                 </Grid>
             </StackLayout>
         </ScrollView>
+
+        <!-- Кнопка прокрутки наверх -->
+        <Button x:Name="ScrollToTopButton"
+                Text="↑"
+                FontSize="24"
+                FontAttributes="Bold"
+                TextColor="White"
+                BackgroundColor="#2E86AB"
+                CornerRadius="30"
+                WidthRequest="60"
+                HeightRequest="60"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0,0,20,50"
+                IsVisible="False"
+                Opacity="0.9">
+        </Button>
     </Grid>
 
 

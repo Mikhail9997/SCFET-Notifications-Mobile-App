@@ -14,7 +14,7 @@ using Scfet.Notification.Utils;
 
 namespace Scfet.Notification.ViewModels
 {
-    public partial class NotificationsViewModel: BaseViewModel
+    public partial class NotificationsViewModel : BaseViewModel
     {
         private readonly IApiService _apiService;
         private readonly NotificationService _notificationService;
@@ -181,7 +181,7 @@ namespace Scfet.Notification.ViewModels
 
                 if (PageResult == null || IsLoadNotificationsFailed)
                 {
-                    await Shell.Current.DisplayAlert("Ошибка","не удалось загрузить уведомления.\nПроверьте подключение к интернету", "ОК");
+                    await Shell.Current.DisplayAlert("Ошибка", "не удалось загрузить уведомления.\nПроверьте подключение к интернету", "ОК");
                     return;
                 }
 
@@ -197,7 +197,7 @@ namespace Scfet.Notification.ViewModels
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Ошибка", $"Ошибка загрузки: {ex.Message}", "OK");
                 // Откатываем страницу при ошибке
@@ -328,7 +328,7 @@ namespace Scfet.Notification.ViewModels
 
                     var index = Notifications.IndexOf(notification);
 
-                    if(index >= 0)
+                    if (index >= 0)
                     {
                         Notifications[index] = notification;
                     }
@@ -358,7 +358,7 @@ namespace Scfet.Notification.ViewModels
         {
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                if(!Notifications.Any(n => n.Id == notification.Id)) Notifications.Insert(0, notification);
+                if (!Notifications.Any(n => n.Id == notification.Id)) Notifications.Insert(0, notification);
                 OnPropertyChanged(nameof(Notifications));
 
                 // Показать локальное уведомление
@@ -386,7 +386,7 @@ namespace Scfet.Notification.ViewModels
                     {
                         request.Image = new NotificationImage
                         {
-                            FilePath = localImagePath                            
+                            FilePath = localImagePath
                         };
                     }
                     await LocalNotificationCenter.Current.Show(request);
@@ -399,7 +399,7 @@ namespace Scfet.Notification.ViewModels
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 var notification = Notifications.FirstOrDefault(n => n.Id == notificationId);
-                if(notification != null) Notifications.Remove(notification);
+                if (notification != null) Notifications.Remove(notification);
             });
         }
 
@@ -421,7 +421,7 @@ namespace Scfet.Notification.ViewModels
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 var notification = Notifications.FirstOrDefault(n => n.Id == notificationUpdated.Id);
-                if(notification != null)
+                if (notification != null)
                 {
                     var index = Notifications.IndexOf(notification);
 
