@@ -30,6 +30,7 @@
                            HorizontalOptions="Center"
                            VerticalOptions="Center"
                            Spacing="20">
+            
             <ActivityIndicator IsRunning="True" 
                              Color="#2E86AB"
                              HeightRequest="50"
@@ -39,10 +40,10 @@
                                HorizontalOptions="Center" />
         </VerticalStackLayout>
 
+        <!-- Основной контент -->
         <ScrollView IsVisible="{Binding IsStartLoadNotificationsFailed, Converter={StaticResource InverseBoolConverter}}">
             <StackLayout Padding="10,0">
-
-                <!-- Основной контент -->
+                
                 <Grid>
 
                     <!-- Список уведомлений -->
@@ -59,31 +60,31 @@
 
                             <VerticalStackLayout Spacing="10">
                                 <Label Text="Фильтрация уведомлений:" 
-                                   FontSize="14" 
-                                   FontAttributes="Bold" />
+                                        FontSize="14" 
+                                        FontAttributes="Bold" />
 
                                 <Picker Title="Размер страницы"
-                                    ItemsSource="{Binding PageSizes}"
-                                    SelectedItem="{Binding Filter.PageSize}" />
+                                        ItemsSource="{Binding PageSizes}"
+                                        SelectedItem="{Binding Filter.PageSize}" />
 
                                 <Picker Title="Сортировать По:"
-                                    ItemsSource="{Binding SortByItems}"
-                                    SelectedItem="{Binding SelectedSortBy}"
-                                    ItemDisplayBinding="{Binding DisplayName}"/>
+                                        ItemsSource="{Binding SortByItems}"
+                                        SelectedItem="{Binding SelectedSortBy}"
+                                        ItemDisplayBinding="{Binding DisplayName}"/>
 
                                 <Picker Title="Упорядочить:" 
-                                    ItemsSource="{Binding SortOrderItems}"
-                                    SelectedItem="{Binding SelectedSortOrder}"
-                                    ItemDisplayBinding="{Binding DisplayName}"/>
+                                        ItemsSource="{Binding SortOrderItems}"
+                                        SelectedItem="{Binding SelectedSortOrder}"
+                                         ItemDisplayBinding="{Binding DisplayName}"/>
 
                                 <Picker Title="Выберите период"
-                                    ItemsSource="{Binding DateRangeOptions}"
-                                    SelectedItem="{Binding SelectedDateRange}"
-                                    ItemDisplayBinding="{Binding DisplayName}"/>
+                                      ItemsSource="{Binding DateRangeOptions}"
+                                       SelectedItem="{Binding SelectedDateRange}"
+                                      ItemDisplayBinding="{Binding DisplayName}"/>
 
                                 <Grid ColumnDefinitions="Auto,Auto" 
-                                  ColumnSpacing="5"
-                                  IsVisible="{Binding ShowCustomDateInput}">
+                                     ColumnSpacing="5"
+                                     IsVisible="{Binding ShowCustomDateInput}">
                                     <StackLayout Grid.Column="0" Padding="10">
                                         <Label Text="С:"/>
                                         <DatePicker Date="{Binding SelectedStartDate}"/>
@@ -115,7 +116,7 @@
                         </Border>
 
                         <CollectionView ItemsSource="{Binding Notifications}"
-                                SelectionMode="None">
+                                        SelectionMode="None">
 
                             <CollectionView.EmptyView>
                                 <VerticalStackLayout HorizontalOptions="Center" 
@@ -123,27 +124,27 @@
                                            Spacing="20"
                                            Padding="30">
                                     <Label Text="📭" 
-                                   FontSize="48" 
-                                   HorizontalOptions="Center" />
+                                          FontSize="48" 
+                                          HorizontalOptions="Center" />
                                     <Label Text="Нет уведомлений" 
-                                   FontSize="18" 
-                                   HorizontalOptions="Center" />
+                                         FontSize="18" 
+                                        HorizontalOptions="Center" />
                                     <Label Text="Здесь будут появляться новые уведомления от преподавателей и администрации" 
-                                   FontSize="14" 
-                                   TextColor="Gray"
-                                   HorizontalOptions="Center"
-                                   HorizontalTextAlignment="Center" />
+                                        FontSize="14" 
+                                         TextColor="Gray"
+                                         HorizontalOptions="Center"
+                                         HorizontalTextAlignment="Center" />
                                 </VerticalStackLayout>
                             </CollectionView.EmptyView>
 
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="models:Notification">
                                     <Border Padding="15" 
-                                         Margin="10,5"
-                                         BackgroundColor="{Binding Type, Converter={StaticResource NotificationTypeToColorConverter}}">
+                                            Margin="10,5"
+                                            BackgroundColor="{Binding Type, Converter={StaticResource NotificationTypeToColorConverter}}">
                                         <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
-                                      ColumnDefinitions="*,Auto"
-                                      RowSpacing="5">
+                                              ColumnDefinitions="*,Auto"
+                                              RowSpacing="5">
 
                                             <Image Grid.Row="0"
                                                Grid.ColumnSpan="2"

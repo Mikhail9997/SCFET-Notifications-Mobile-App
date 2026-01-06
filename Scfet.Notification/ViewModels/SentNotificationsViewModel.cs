@@ -131,7 +131,6 @@ namespace Scfet.Notification.ViewModels
             {
                 var pageResult = await _apiService.GetSentNotificationsAsync(Filter);
 
-
                 if (pageResult == null)
                 {
                     IsLoadNotificationsFailed = true;

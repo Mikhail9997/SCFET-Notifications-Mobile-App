@@ -295,7 +295,7 @@ namespace Scfet.Notification.ViewModels
                     break;
                 case "last_year":
                     var lastYearStart = new DateTime(today.Year, 1, 1).AddYears(-1);
-                    var lastYearEnd = lastYearStart.AddMonths(11);
+                    var lastYearEnd = new DateTime(today.Year, 12, 31).AddYears(-1);
                     SelectedStartDate = lastYearStart;
                     SelectedEndDate = lastYearEnd;
                     break;
