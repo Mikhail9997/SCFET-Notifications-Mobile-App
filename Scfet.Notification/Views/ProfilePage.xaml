@@ -119,27 +119,33 @@
                                 CornerRadius="10"
                                 IsVisible="{Binding CanSendNotifications}" />
 
-                        <Border IsVisible="{Binding IsCacheEnable}">
+                        <Border IsVisible="{Binding IsCacheEnable}"
+                                HeightRequest="50"
+                                BackgroundColor="Coral">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="10"/>
                             </Border.StrokeShape>
-
+    
                             <Grid ColumnDefinitions="Auto,Auto"                                 
                                   ColumnSpacing="5"
-                                  BackgroundColor="Coral">
+                                  HorizontalOptions="Center">
 
-                                <Button Text="Очистить кэш приложения:" 
-                                        Command="{Binding CleanCacheCommand}"                                     
+                                <Label Text="Очистить кэш приложения:"                                   
                                         TextColor="White"
-                                        CornerRadius="10"
                                         Grid.Column="0"
-                                        BackgroundColor="Coral"/>
+                                        BackgroundColor="Coral"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"/>
 
                                 <Label Text="{Binding CacheSize}"
                                        Grid.Column="1"
                                        TextColor="White"
                                        VerticalOptions="Center"/>
                             </Grid>
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CleanCacheCommand}"/>
+                            </Border.GestureRecognizers>
                         </Border>
 
                         <Button Text="Выйти" 
