@@ -79,6 +79,8 @@ namespace Scfet.Notification.ViewModels
         [ObservableProperty]
         private bool isStartLoadNotificationsFailed;
 
+        public bool IsShowScrollButtons => IsBusy != true && IsStartLoadNotificationsFailed != true && Notifications.Any();
+
         public async Task InitializeAsync()
         {
             await StartAsync();
@@ -91,6 +93,7 @@ namespace Scfet.Notification.ViewModels
 
             IsBusy = true;
 
+            OnPropertyChanged(nameof(IsShowScrollButtons));
             try
             {
                 await LoadNotificationsAsync();
@@ -121,6 +124,8 @@ namespace Scfet.Notification.ViewModels
             {
                 IsBusy = false;
                 IsRefreshing = false;
+
+                OnPropertyChanged(nameof(IsShowScrollButtons));
             }
         }
 
@@ -192,7 +197,6 @@ namespace Scfet.Notification.ViewModels
             }
             finally
             {
-
                 IsPagination = false;
             }
         }

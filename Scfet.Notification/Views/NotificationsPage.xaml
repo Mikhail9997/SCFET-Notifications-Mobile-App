@@ -43,7 +43,8 @@
         <!-- Основной контент -->
         <ScrollView IsVisible="{Binding IsStartLoadNotificationsFailed, Converter={StaticResource InverseBoolConverter}}"
                     x:Name="MainScrollView">
-            <StackLayout Padding="10,0">
+            <StackLayout Padding="10,0"
+                         x:Name="contentLayout">
 
                 <Grid>
 
@@ -236,23 +237,37 @@
             </StackLayout>
         </ScrollView>
 
-        <!-- Кнопка прокрутки наверх -->
-        <Button x:Name="ScrollToTopButton"
+        <!-- Контейнер для плавающих кнопок -->
+        <VerticalStackLayout
+                        VerticalOptions="End"
+                        HorizontalOptions="End"
+                        Margin="20"
+                        Spacing="10"
+                        IsVisible="{Binding IsShowScrollButtons}">   
+
+            <!-- Кнопка вверх -->
+            <Button 
+                x:Name="scrollToTopButton"
                 Text="↑"
-                FontSize="24"
-                FontAttributes="Bold"
-                TextColor="White"
-                BackgroundColor="#2E86AB"
-                CornerRadius="30"
                 WidthRequest="60"
                 HeightRequest="60"
-                HorizontalOptions="End"
-                VerticalOptions="End"
-                Margin="0,0,20,50"
-                IsVisible="False"
-                Opacity="0.9">
+                CornerRadius="30"
+                BackgroundColor="#2E86AB"
+                TextColor="White"
+                FontSize="20"
+                IsVisible="false"/>
 
-        </Button>
+            <!-- Кнопка вниз -->
+            <Button 
+                x:Name="scrollToBottomButton"
+                Text="↓"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                BackgroundColor="#2E86AB"
+                FontSize="20"
+                TextColor="White"/>
+        </VerticalStackLayout>
     </Grid>
 
 </ContentPage>

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Scfet.Notification")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+7f8a89e8929c5dc7a6eb6ae2c9c43abd95b5a7ef")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+5ca547700f024e4320d7bd5358d9202263d584f2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Scfet.Notification")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Scfet.Notification")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
