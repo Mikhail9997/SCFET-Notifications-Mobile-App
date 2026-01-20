@@ -233,7 +233,8 @@ namespace Scfet.Notification.ViewModels
             // Если Конкретный
             if (recipients.Count == 1)
             {
-                SelectedAudience = AudienceTypes[5];
+                int index = IsAdministrator ? 5 : 4;
+                SelectedAudience = AudienceTypes[index];
 
                 SelectedUser = recipients[0];
                 return;

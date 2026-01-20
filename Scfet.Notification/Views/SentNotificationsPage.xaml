@@ -279,7 +279,8 @@
                 CornerRadius="30"
                 BackgroundColor="#2E86AB"
                 FontSize="20"
-                TextColor="White"/>
+                TextColor="White"
+                IsVisible="False"/>
         </VerticalStackLayout>
     </Grid>
 
