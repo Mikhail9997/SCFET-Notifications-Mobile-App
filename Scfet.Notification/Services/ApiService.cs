@@ -36,7 +36,7 @@ namespace Scfet.Notification.Services
     {
         private readonly HttpClient _httpClient;
         private readonly LoginService _loginService;
-        private const string BaseUrl = "https://amorously-preeminent-godwit.cloudpub.ru/api";
+        private const string BaseUrl = "http://81.94.159.27:5050/api";
 
         public ApiService(LoginService loginService)
         {

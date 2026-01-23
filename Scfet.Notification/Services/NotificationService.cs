@@ -17,8 +17,9 @@ namespace Scfet.Notification.Services
         public event Action<Guid>? OnNotificationRead;
         public event Action<Models.Notification>? OnNotificationUpdate;
 
-        private readonly string BaseUrl = "https://amorously-preeminent-godwit.cloudpub.ru";
+        private readonly string BaseUrl = "http://81.94.159.27:5050";
         //http://localhost:5050/notificationHub
+        //https://amorously-preeminent-godwit.cloudpub.ru
 
         public NotificationService(IApiService apiService)
         {
