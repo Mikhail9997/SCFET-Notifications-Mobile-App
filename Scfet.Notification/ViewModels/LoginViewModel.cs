@@ -13,11 +13,12 @@ namespace Scfet.Notification.ViewModels
     {
         private readonly IApiService _apiService;
         private readonly NotificationService _notificationService;
+        private readonly LoginService _loginService;
 
-        public LoginViewModel(IApiService apiService, NotificationService notificationService)
+        public LoginViewModel(IApiService apiService, NotificationService notificationService, LoginService loginService)
         {
             _apiService = apiService;
-            Title = isAuth ? "Выйти" :"Войти";
+            _loginService = loginService;
             _notificationService = notificationService;
         }
 
@@ -27,7 +28,14 @@ namespace Scfet.Notification.ViewModels
         [ObservableProperty]
         private string password = "student123";
 
-        public bool isAuth => Preferences.ContainsKey("auth_token");
+        [ObservableProperty]
+        public bool isAuth;
+
+        public async Task InitializeAsync()
+        {
+            IsAuth = await _loginService.IsLoggedIn();
+            Title = IsAuth ? "Выйти" : "Войти";
+        }
 
         [RelayCommand]
         private async Task LoginAsync()
@@ -73,8 +81,8 @@ namespace Scfet.Notification.ViewModels
                 await _notificationService.DisconnectAsync();
                 await _apiService.Logout();
 
-                OnPropertyChanged(nameof(isAuth));
-                Title = "Войти";
+                IsAuth = await _loginService.IsLoggedIn();
+                Title = IsAuth? "Выйти" : "Войти";
 
                 await Shell.Current.GoToAsync("//LoginPage");
             }

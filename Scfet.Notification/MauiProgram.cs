@@ -25,6 +25,7 @@ namespace Scfet.Notification
 #endif
 
             // Services
+            builder.Services.AddSingleton<ITokenService, TokenService>();
             builder.Services.AddSingleton<IApiService, ApiService>();
             builder.Services.AddSingleton<NotificationService>();
             builder.Services.AddSingleton<LoginService>();

@@ -20,7 +20,7 @@
 
             <!-- Войти -->
             <Border BackgroundColor="#f5f5f5" Padding="15" 
-                    IsVisible="{Binding isAuth, Converter={StaticResource InverseBoolConverter}}">
+                    IsVisible="{Binding IsAuth, Converter={StaticResource InverseBoolConverter}}">
                 
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="10"/>
@@ -48,7 +48,7 @@
 
             <!-- Выйти -->
             <Border BackgroundColor="#f5f5f5" Padding="15" 
-                IsVisible="{Binding isAuth}">
+                IsVisible="{Binding IsAuth}">
 
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="10"/>

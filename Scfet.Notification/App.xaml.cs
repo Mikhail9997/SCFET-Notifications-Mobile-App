@@ -29,9 +29,8 @@ namespace Scfet.Notification
 
         private async void CheckAuthStatus()
         {
-            var token = Preferences.Get("auth_token", string.Empty);
-
-            if (!string.IsNullOrEmpty(token))
+            var isAutoLoggedIn = await _loginService.TryAutoLoginAsync();
+            if (isAutoLoggedIn)
             {
                 var result = await _apiService.GetCurrentUserAsync();
                 if (result.Code == 404)

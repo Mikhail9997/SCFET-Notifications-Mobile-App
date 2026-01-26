@@ -21,4 +21,11 @@ namespace Scfet.Notification.Models
         public bool Success { get; set; }
         public T? Data { get; set; }
     }
+
+    public class TokenData
+    {
+        public string AccessToken { get; set; } = string.Empty;
+        public string RefreshToken { get; set; } = string.Empty;
+        public int ExpiresIn { get; set; }
+    }
 }

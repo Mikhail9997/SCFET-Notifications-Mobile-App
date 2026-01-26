@@ -68,19 +68,22 @@
                            Command="{Binding SelectImageCommand}"
                            BackgroundColor="#F18F01"
                            TextColor="White"
-                           IsVisible="{Binding IsImageExist, Converter={StaticResource InverseBoolConverter}}"/>
+                           IsVisible="{Binding IsImageExist, Converter={StaticResource InverseBoolConverter}}"
+                           IsEnabled="{Binding IsUpdating, Converter={StaticResource InverseBoolConverter}}"/>
 
                 <Button Text="Изменить изображение" 
                            Command="{Binding SelectImageCommand}"
                            BackgroundColor="#F18F01"
                            TextColor="White"
-                           IsVisible="{Binding IsImageExist}"/>
+                           IsVisible="{Binding IsImageExist}"
+                           IsEnabled="{Binding IsUpdating, Converter={StaticResource InverseBoolConverter}}"/>
 
                 <Button Text="Удалить изображение" 
                            Command="{Binding ClearImageCommand}"
                            BackgroundColor="Red"
                            TextColor="White"
-                           IsVisible="{Binding ImagePreview, Converter={StaticResource NullToVisibilityConverter}}"/>
+                           IsVisible="{Binding ImagePreview, Converter={StaticResource NullToVisibilityConverter}}"
+                           IsEnabled="{Binding IsUpdating, Converter={StaticResource InverseBoolConverter}}"/>
 
                 <Picker Title="Тип уведомления"
                         ItemsSource="{Binding NotificationTypes}"
@@ -117,7 +120,7 @@
                                 TextColor="White"
                                 CornerRadius="5"
                                 HorizontalOptions="FillAndExpand"
-                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                                IsEnabled="{Binding IsUpdating, Converter={StaticResource InverseBoolConverter}}"/>
 
                             <Button Text="Сбросить"
                                 Command="{Binding ResetGroupFiltersCommand}"
@@ -125,7 +128,7 @@
                                 TextColor="White"
                                 CornerRadius="5"
                                 HorizontalOptions="FillAndExpand"
-                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                                IsEnabled="{Binding IsUpdating, Converter={StaticResource InverseBoolConverter}}"/>
                         </HorizontalStackLayout>
 
                         <Label Text="Выберите группу:" 
@@ -174,7 +177,7 @@
                                 TextColor="White"
                                 CornerRadius="5"
                                 HorizontalOptions="FillAndExpand"
-                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                                IsEnabled="{Binding IsUpdating, Converter={StaticResource InverseBoolConverter}}"/>
 
                             <Button Text="Сбросить"
                                 Command="{Binding ResetUserFiltersCommand}"
@@ -182,7 +185,7 @@
                                 TextColor="White"
                                 CornerRadius="5"
                                 HorizontalOptions="FillAndExpand"
-                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                                IsEnabled="{Binding IsUpdating, Converter={StaticResource InverseBoolConverter}}"/>
                         </HorizontalStackLayout>
 
                         <Label Text="Выберите пользователя:" 
@@ -191,7 +194,8 @@
                         <Picker Title="Пользователь"
                             ItemsSource="{Binding Users}"
                             ItemDisplayBinding="{Binding FullName}"
-                            SelectedItem="{Binding SelectedUser}" />
+                            SelectedItem="{Binding SelectedUser}"
+                            IsEnabled="{Binding IsUpdating, Converter={StaticResource InverseBoolConverter}}"/>
                     </VerticalStackLayout>
                 </Border>
 

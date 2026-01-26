@@ -32,19 +32,20 @@ namespace Scfet.Notification.Services
     }
     //http://localhost:5050/api
     //https://amorously-preeminent-godwit.cloudpub.ru/api
+    //http://81.94.159.27:5050/api
     public class ApiService:IApiService
     {
         private readonly HttpClient _httpClient;
         private readonly LoginService _loginService;
-        private const string BaseUrl = "http://81.94.159.27:5050/api";
+        private const string BaseUrl = "https://amorously-preeminent-godwit.cloudpub.ru/api";
 
-        public ApiService(LoginService loginService)
+        public ApiService(LoginService loginService, ITokenService tokenService)
         {
-            var handler = new AuthHandler
+            var handler = new AuthHandler(tokenService)
             {
                 InnerHandler = new HttpClientHandler()
                 {
-                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true,
                 }
             };
 
@@ -92,9 +93,13 @@ namespace Scfet.Notification.Services
                     if (authResponse != null && authResponse.Data != null)
                     {
                         var data = authResponse.Data;
+
+                        await SecureStorage.SetAsync("access_token", data.AccessToken);
+                        await SecureStorage.SetAsync("refresh_token", data.RefreshToken);
+
                         var auth = new Auth
                         {
-                            Token = data.Token,
+                            Token = data.AccessToken,
                             UserId = data.UserId.ToString(),
                             Email = data.Email,
                             FullName = data.FullName,
@@ -119,9 +124,25 @@ namespace Scfet.Notification.Services
 
         public async Task Logout()
         {
-            await _loginService.Logout();
+            try
+            {
+                // Отзываем refresh токен на сервере
+                var userId = Preferences.Get("user_id", string.Empty);
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    await _httpClient.PostAsync($"{BaseUrl}/auth/revoke-token", null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Logout error: {ex.Message}");
+            }
+            finally
+            {
+                await _loginService.Logout();
 
-            _httpClient.DefaultRequestHeaders.Authorization = null;
+                _httpClient.DefaultRequestHeaders.Authorization = null;
+            }
         }
 
         public async Task<Profile> GetCurrentUserAsync()
