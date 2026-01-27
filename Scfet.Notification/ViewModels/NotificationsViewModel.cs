@@ -94,8 +94,7 @@ namespace Scfet.Notification.ViewModels
 
         public async Task InitializeAsync()
         {
-            await StartAsync();
-            await _notificationService.ConnectAsync();
+            await StartAsync();          
         }
 
         [RelayCommand]
@@ -104,6 +103,7 @@ namespace Scfet.Notification.ViewModels
             if (IsBusy) return;
 
             IsBusy = true;
+            await _notificationService.ConnectAsync();
 
             OnPropertyChanged(nameof(IsShowScrollButtons));
             try

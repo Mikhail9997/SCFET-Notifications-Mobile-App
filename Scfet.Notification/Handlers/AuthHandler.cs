@@ -13,7 +13,6 @@ namespace Scfet.Notification.Handlers
     public class AuthHandler: DelegatingHandler
     {
         private readonly ITokenService _tokenService;
-        private const string BaseUrl = "https://amorously-preeminent-godwit.cloudpub.ru/api";
 
         private readonly HashSet<string> _excludedPaths = new()
         {

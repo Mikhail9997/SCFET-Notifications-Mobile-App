@@ -37,7 +37,7 @@ namespace Scfet.Notification.Services
     {
         private readonly HttpClient _httpClient;
         private readonly LoginService _loginService;
-        private const string BaseUrl = "https://amorously-preeminent-godwit.cloudpub.ru/api";
+        private const string BaseUrl = "http://81.94.159.27:5050/api";
 
         public ApiService(LoginService loginService, ITokenService tokenService)
         {
@@ -57,11 +57,11 @@ namespace Scfet.Notification.Services
             _loginService = loginService;
         }
 
-        private void AddAuthHeader()
+        private async Task AddAuthHeader()
         {
-            if (Preferences.ContainsKey("auth_token"))
+            if (await SecureStorage.GetAsync("access_token") != null)
             {
-                var token = Preferences.Get("auth_token", string.Empty);
+                var token = await SecureStorage.GetAsync("access_token");
                 _httpClient.DefaultRequestHeaders.Authorization =
                     new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             }
@@ -155,7 +155,7 @@ namespace Scfet.Notification.Services
             };
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
                 var response = await _httpClient.GetAsync($"{BaseUrl}/users/profile");
 
                 if (response.IsSuccessStatusCode)
@@ -202,7 +202,7 @@ namespace Scfet.Notification.Services
         {
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
                 var query = new Dictionary<string, string?>(){
                     { "page", filter.Page.ToString() },
                     { "PageSize", filter.PageSize.ToString() },
@@ -268,7 +268,7 @@ namespace Scfet.Notification.Services
         {
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
                 var response = await _httpClient
                     .PutAsync($"{BaseUrl}/notifications/{notificationId}/mark-as-read", null);
 
@@ -287,7 +287,7 @@ namespace Scfet.Notification.Services
         {
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
                 var query = new Dictionary<string, string?>
                 {
                     { "name", filter?.Name }
@@ -318,7 +318,7 @@ namespace Scfet.Notification.Services
         {
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
                 var query = new Dictionary<string, string?>
                 {
                     { "firstName", filter?.FirstName },
@@ -353,7 +353,7 @@ namespace Scfet.Notification.Services
         {
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
 
                 var query = new Dictionary<string, string?>
                 {
@@ -390,7 +390,7 @@ namespace Scfet.Notification.Services
         {
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
 
                 var query = new Dictionary<string, string?>
                 {
@@ -427,7 +427,7 @@ namespace Scfet.Notification.Services
         {
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
                 using var content = new MultipartFormDataContent();
 
                 content.Add(new StringContent(request.Title), "Title");
@@ -467,7 +467,7 @@ namespace Scfet.Notification.Services
         {
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
                 using var content = new MultipartFormDataContent();
 
                 content.Add(new StringContent(request.Title), "Title");
@@ -508,7 +508,7 @@ namespace Scfet.Notification.Services
         {
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
 
                 var query = new Dictionary<string, string?>(){
                     { "page", filter.Page.ToString() },
@@ -567,7 +567,7 @@ namespace Scfet.Notification.Services
         {
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
                 var updateData = new { firstName, lastName, email };
                 var json = JsonSerializer.Serialize(updateData);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -586,7 +586,7 @@ namespace Scfet.Notification.Services
         {
             try
             {
-                AddAuthHeader();
+                await AddAuthHeader();
                 var passwordData = new
                 {
                     CurrentPassword = currentPassword,

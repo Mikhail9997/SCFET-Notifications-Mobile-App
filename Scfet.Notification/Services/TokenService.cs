@@ -27,7 +27,7 @@ namespace Scfet.Notification.Services
         private bool _isRefreshing = false;
         private DateTime? _lastRefreshAttempt = null;
 
-        private const string BaseUrl = "https://amorously-preeminent-godwit.cloudpub.ru/api";
+        private const string BaseUrl = "http://81.94.159.27:5050/api";
 
         public event Action? OnTokensRefreshed;
         public event Action? OnTokensInvalid;
