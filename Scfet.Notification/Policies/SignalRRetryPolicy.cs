@@ -11,10 +11,8 @@ namespace Scfet.Notification.Policies
     {
         public TimeSpan? NextRetryDelay(RetryContext retryContext)
         {
-            // Экспоненциальная задержка с максимальным значением
             var delay = Math.Min(30, Math.Pow(2, retryContext.PreviousRetryCount));
 
-            // Добавляем случайность для предотвращения одновременных переподключений
             var jitter = new Random().NextDouble() * 0.2 + 0.9; // 0.9 - 1.1
             var finalDelay = delay * jitter;
 

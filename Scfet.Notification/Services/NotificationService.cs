@@ -37,8 +37,7 @@ namespace Scfet.Notification.Services
         public NotificationService(ITokenService tokenService, LoginService loginService)
         {
             _tokenService = tokenService;
-            _loginService = loginService;
-            _reconnectCts = new CancellationTokenSource();
+            _loginService = loginService;          
 
             // Подписываемся на события TokenService
             _tokenService.OnTokensInvalid += OnTokensInvalid;
@@ -70,6 +69,8 @@ namespace Scfet.Notification.Services
         {
             if (_hubConnection?.State == HubConnectionState.Connected)
                 return;
+
+            _reconnectCts = new CancellationTokenSource();
 
             // Используем TokenService для получения токена
             var token = await _tokenService.GetValidAccessTokenAsync();
