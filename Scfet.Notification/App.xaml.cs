@@ -11,12 +11,14 @@ namespace Scfet.Notification
         private readonly IApiService _apiService;
         private readonly LoginService _loginService;
         private readonly NotificationPermissionsService _permissionsService;
-        public App(IApiService apiService, LoginService loginService, NotificationPermissionsService permissionsService)
+        private readonly AppShellViewModel _appShellViewModel;
+        public App(IApiService apiService, LoginService loginService, NotificationPermissionsService permissionsService, AppShellViewModel appShellViewModel)
         {
             InitializeComponent();
             _apiService = apiService;
             _loginService = loginService;
             _permissionsService = permissionsService;
+            _appShellViewModel = appShellViewModel;
         }
 
         protected override async void OnStart()
@@ -54,7 +56,7 @@ namespace Scfet.Notification
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            return new Window(new AppShell(_appShellViewModel));
         }
     }
 }

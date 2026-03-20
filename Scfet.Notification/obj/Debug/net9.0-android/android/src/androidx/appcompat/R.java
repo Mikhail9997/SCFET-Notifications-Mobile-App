@@ -388,14 +388,14 @@ public final class R {
 		public static final int secondary_text_default_material_light = 0x7f05030e;
 		public static final int secondary_text_disabled_material_dark = 0x7f05030f;
 		public static final int secondary_text_disabled_material_light = 0x7f050310;
-		public static final int switch_thumb_disabled_material_dark = 0x7f050311;
-		public static final int switch_thumb_disabled_material_light = 0x7f050312;
-		public static final int switch_thumb_material_dark = 0x7f050313;
-		public static final int switch_thumb_material_light = 0x7f050314;
-		public static final int switch_thumb_normal_material_dark = 0x7f050315;
-		public static final int switch_thumb_normal_material_light = 0x7f050316;
-		public static final int tooltip_background_dark = 0x7f050317;
-		public static final int tooltip_background_light = 0x7f050318;
+		public static final int switch_thumb_disabled_material_dark = 0x7f050312;
+		public static final int switch_thumb_disabled_material_light = 0x7f050313;
+		public static final int switch_thumb_material_dark = 0x7f050314;
+		public static final int switch_thumb_material_light = 0x7f050315;
+		public static final int switch_thumb_normal_material_dark = 0x7f050316;
+		public static final int switch_thumb_normal_material_light = 0x7f050317;
+		public static final int tooltip_background_dark = 0x7f050318;
+		public static final int tooltip_background_light = 0x7f050319;
 	}
 	public static final class dimen {
 		public static final int abc_action_bar_content_inset_material = 0x7f060000;
@@ -584,9 +584,9 @@ public final class R {
 		public static final int btn_radio_off_to_on_mtrl_animation = 0x7f07007e;
 		public static final int btn_radio_on_mtrl = 0x7f07007f;
 		public static final int btn_radio_on_to_off_mtrl_animation = 0x7f070080;
-		public static final int test_level_drawable = 0x7f0700ff;
-		public static final int tooltip_frame_dark = 0x7f070100;
-		public static final int tooltip_frame_light = 0x7f070101;
+		public static final int test_level_drawable = 0x7f070104;
+		public static final int tooltip_frame_dark = 0x7f070105;
+		public static final int tooltip_frame_light = 0x7f070106;
 	}
 	public static final class id {
 		public static final int action_bar = 0x7f080034;

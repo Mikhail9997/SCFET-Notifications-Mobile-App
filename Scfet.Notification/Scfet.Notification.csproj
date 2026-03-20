@@ -47,7 +47,7 @@
 		</MauiIcon>
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash_logo.png" Color="#FFFFFF" BaseSize="384,384" />
+		<MauiSplashScreen Include="Resources\Splash\splash_logo.png" Color="#202020" BaseSize="384,384" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -106,16 +106,57 @@
 
 	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
 	    <AndroidKeyStore>True</AndroidKeyStore>
+	    <AndroidSigningStorePass>KlaVrik1234</AndroidSigningStorePass>
+	    <AndroidSigningKeyAlias>mykey</AndroidSigningKeyAlias>
+	    <AndroidSigningKeyPass>KlaVrik1234</AndroidSigningKeyPass>
+	    <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	    <ApplicationVersion>2</ApplicationVersion>
 	  </PropertyGroup>
 
 	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
 	    <AndroidKeyStore>True</AndroidKeyStore>
 	    <AndroidPackageFormat>apk</AndroidPackageFormat>
+	    <AndroidSigningStorePass>KlaVrik1234</AndroidSigningStorePass>
+	    <AndroidSigningKeyAlias>mykey</AndroidSigningKeyAlias>
+	    <AndroidSigningKeyPass>KlaVrik1234</AndroidSigningKeyPass>
+	    <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	    <ApplicationVersion>2</ApplicationVersion>
 	  </PropertyGroup>
 
 	  <PropertyGroup>
 	    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
 	    <SignAssembly>True</SignAssembly>
+	    <AndroidSigningKeyStore>scfetNotifications.keystore</AndroidSigningKeyStore>
+	  </PropertyGroup>
+
+	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-maccatalyst|AnyCPU'">
+	    <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	    <ApplicationVersion>2</ApplicationVersion>
+	  </PropertyGroup>
+
+	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
+	    <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	    <ApplicationVersion>2</ApplicationVersion>
+	  </PropertyGroup>
+
+	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
+	    <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	    <ApplicationVersion>2</ApplicationVersion>
+	  </PropertyGroup>
+
+	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-maccatalyst|AnyCPU'">
+	    <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	    <ApplicationVersion>2</ApplicationVersion>
+	  </PropertyGroup>
+
+	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
+	    <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	    <ApplicationVersion>2</ApplicationVersion>
+	  </PropertyGroup>
+
+	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
+	    <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+	    <ApplicationVersion>2</ApplicationVersion>
 	  </PropertyGroup>
 
 </Project>

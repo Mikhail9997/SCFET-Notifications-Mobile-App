@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "cnPNz3ARqZw=",
+  "dgSpecHash": "y95qEg7R938=",
   "success": true,
   "projectFilePath": "C:\\Users\\mkazm\\source\\repos\\Scfet.Notification\\Scfet.Notification\\Scfet.Notification.csproj",
   "expectedPackageFiles": [
@@ -161,5 +161,15 @@
     "C:\\Users\\mkazm\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\9.0.10\\microsoft.windowsdesktop.app.runtime.win-x64.9.0.10.nupkg.sha512",
     "C:\\Users\\mkazm\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\9.0.10\\microsoft.netcore.app.runtime.win-x64.9.0.10.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "message": "Произошла ошибка при получении данных уязвимости пакета: Не удалось загрузить индекс службы для источника https://api.nuget.org/v3/index.json.",
+      "projectPath": "C:\\Users\\mkazm\\source\\repos\\Scfet.Notification\\Scfet.Notification\\Scfet.Notification.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\mkazm\\source\\repos\\Scfet.Notification\\Scfet.Notification\\Scfet.Notification.csproj",
+      "targetGraphs": []
+    }
+  ]
 }

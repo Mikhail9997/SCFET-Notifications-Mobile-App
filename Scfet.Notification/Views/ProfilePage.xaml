@@ -6,7 +6,19 @@
              xmlns:models="clr-namespace:Scfet.Notification.Models"
              x:DataType="vm:ProfileViewModel"
              Title="Профиль">
-
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="frame" TargetType="Border">
+                <Setter Property="BackgroundColor">
+                    <Setter.Value>
+                        <AppThemeBinding Light="#F0F0F0"
+                           Dark="#2A2A2A" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ScrollView>
 
         <Grid>
@@ -18,9 +30,9 @@
                                HeightRequest="50"
                                WidthRequest="50"
                                Color="#2E86AB"/>
-            
+
             <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}">
-                
+
                 <StackLayout HorizontalOptions="Center" 
                          VerticalOptions="Center"
                          IsVisible="{Binding IsCurrentUserEnable, Converter={StaticResource InverseBoolConverter}}">
@@ -38,10 +50,11 @@
 
                 <VerticalStackLayout Spacing="20" Padding="20" 
                                      IsVisible="{Binding IsCurrentUserEnable}">
-                    
-                    <!-- Информация о пользователе -->
-                    <Border BackgroundColor="#f0f8ff" Padding="15">
 
+                    <!-- Информация о пользователе -->
+                    <Border  Padding="15"
+                             Style="{StaticResource frame}">
+                          
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
                         </Border.StrokeShape>
@@ -52,21 +65,21 @@
                                    FontAttributes="Bold" />
                             <Label Text="{Binding UserRoleDisplay}" 
                                    FontSize="14" 
-                                   TextColor="Gray" />
+                                   />
                             <Label Text="{Binding CurrentUser.Email}" 
                                    FontSize="14" 
-                                   TextColor="Gray" />
+                                   />
                             <Label Text="{Binding CurrentUser.Group, StringFormat='Группа: {0}'}" 
                                    FontSize="14" 
-                                   TextColor="Gray" 
                                    IsVisible="{Binding CurrentUser.Group, Converter={StaticResource StringNotEmptyConverter}}" />
                         </VerticalStackLayout>
                     </Border>
 
                     <!-- Редактирование профиля -->
-                    <Border BackgroundColor="#f5f5f5" 
+                    <Border 
                             Padding="15"
-                            IsVisible="{Binding CanSendNotifications}">
+                            IsVisible="{Binding CanSendNotifications}"
+                            Style="{StaticResource frame}">
 
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
@@ -125,7 +138,7 @@
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="10"/>
                             </Border.StrokeShape>
-    
+
                             <Grid ColumnDefinitions="Auto,Auto"                                 
                                   ColumnSpacing="5"
                                   HorizontalOptions="Center">
@@ -159,7 +172,5 @@
             </Grid>
 
         </Grid>
-
-
     </ScrollView>
 </ContentPage>

@@ -10,6 +10,7 @@ public class MonoPackageManager_Resources {
 		"Microsoft.AspNetCore.Connections.Abstractions.dll",
 		"Microsoft.AspNetCore.Http.Connections.Client.dll",
 		"Microsoft.AspNetCore.Http.Connections.Common.dll",
+		"Microsoft.AspNetCore.Http.Features.dll",
 		"Microsoft.AspNetCore.SignalR.Client.dll",
 		"Microsoft.AspNetCore.SignalR.Client.Core.dll",
 		"Microsoft.AspNetCore.SignalR.Common.dll",

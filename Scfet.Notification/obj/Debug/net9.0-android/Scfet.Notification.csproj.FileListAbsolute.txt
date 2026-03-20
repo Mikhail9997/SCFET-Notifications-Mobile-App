@@ -1017,3 +1017,14 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\assets\arm64-v8a\Microsoft.IdentityModel.Logging.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\assets\arm64-v8a\Microsoft.IdentityModel.Tokens.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\assets\arm64-v8a\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\assets\arm64-v8a\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\login_white.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\notif_white.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\profile_white.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\scfet_logo_dark.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\scfet_logo_light.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\sp\drawable-hdpi\splash_logo_light.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\sp\drawable-mdpi\splash_logo_light.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\sp\drawable-xhdpi\splash_logo_light.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\sp\drawable-xxhdpi\splash_logo_light.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\sp\drawable-xxxhdpi\splash_logo_light.png

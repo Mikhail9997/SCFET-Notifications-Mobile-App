@@ -7,6 +7,18 @@
              xmlns:views="clr-namespace:Scfet.Notification.Views"
              x:DataType="vm:NotificationsViewModel"
              Title="{Binding Title}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="frame" TargetType="Border">
+                <Setter Property="BackgroundColor">
+                    <Setter.Value>
+                        <AppThemeBinding Light="#F0F0F0"
+                           Dark="#2A2A2A" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid>
 
         <!-- Ошибка загрузки уведомлений -->
@@ -48,12 +60,12 @@
 
                 <Grid>
 
-                    <!-- Список уведомлений -->
                     <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
                              Spacing="20">
 
                         <!-- Фильтрация уведомлений-->
-                        <Border BackgroundColor="#f0f0f0"
+                        <Border 
+                            Style="{StaticResource frame}"
                            Padding="10">
 
                             <Border.StrokeShape>
@@ -117,6 +129,7 @@
                             </VerticalStackLayout>
                         </Border>
 
+                        <!-- Список уведомлений -->
                         <CollectionView ItemsSource="{Binding Notifications}"
                                         SelectionMode="None">
 
@@ -143,7 +156,8 @@
                                 <DataTemplate x:DataType="models:Notification">
                                     <Border Padding="15" 
                                             Margin="10,5"
-                                            BackgroundColor="{Binding Type, Converter={StaticResource NotificationTypeToColorConverter}}">
+                                            BackgroundColor="{Binding Type, Converter={StaticResource NotificationTypeToColorConverter}}"
+                                            >
                                         <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
                                               ColumnDefinitions="*,Auto"
                                               RowSpacing="5">
@@ -170,14 +184,14 @@
                                                    Grid.Column="1"
                                                    Text="{Binding FormattedDate}" 
                                                    FontSize="12" 
-                                                   TextColor="Gray" />
+                                                    />
 
                                             <!-- Отправитель -->
                                             <Label Grid.Row="3" 
                                                    Grid.Column="0"
                                                    Text="{Binding SenderName}" 
                                                    FontSize="12" 
-                                                   TextColor="Gray" />
+                                                    />
 
                                             <!-- Сообщение -->
                                             <Label Grid.Row="4" 
@@ -191,7 +205,7 @@
                                                    Grid.Column="0"
                                                    Text="{Binding IsRead, Converter={StaticResource ReadStatusConverter}}"
                                                    FontSize="12" 
-                                                   TextColor="Gray" />
+                                                   />
 
                                         </Grid>
 
@@ -230,6 +244,7 @@
 
                         <Button Grid.Column="0" 
                             Text="Загрузить еще" 
+                            TextColor="{AppThemeBinding Light=White, Dark=White}"
                             Command="{Binding LoadNotificationsPaginationCommand}"
                             BackgroundColor="#2E86AB"/>
                     </Grid>

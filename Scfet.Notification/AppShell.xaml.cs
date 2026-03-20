@@ -1,13 +1,14 @@
-﻿using Scfet.Notification.Views;
+﻿using Scfet.Notification.ViewModels;
+using Scfet.Notification.Views;
 
 namespace Scfet.Notification
 {
     public partial class AppShell : Shell
     {
-        public AppShell()
+        public AppShell(AppShellViewModel viewModel)
         {
             InitializeComponent();
-
+            BindingContext = viewModel;
             RegisterRoutes();
         }
 

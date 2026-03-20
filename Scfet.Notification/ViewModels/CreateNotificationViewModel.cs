@@ -189,7 +189,7 @@ namespace Scfet.Notification.ViewModels
                         notification.TargetUserIds = Teachers.Select(t => t.UserId).ToList();
                         break;
                     case "administrators":
-                        //Отправка всем администраторам
+                        // Отправка всем администраторам
                         notification.TargetUserIds = Administrators.Select(a => a.UserId).ToList();
                         break;
                     case "all":

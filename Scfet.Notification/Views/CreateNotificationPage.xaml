@@ -8,6 +8,19 @@
              x:DataType="vm:CreateNotificationViewModel"
              Title="Создать">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="frame" TargetType="Border">
+                <Setter Property="BackgroundColor">
+                    <Setter.Value>
+                        <AppThemeBinding Light="#F0F0F0"
+                           Dark="#2A2A2A" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="20">
 
@@ -50,7 +63,7 @@
 
             <!-- Фильтрация групп -->
             <Border IsVisible="{Binding ShowGroupSelector}"
-                   BackgroundColor="#f0f0f0"
+                   Style="{StaticResource frame}"
                    Padding="10">
 
                 <Border.StrokeShape>
@@ -95,7 +108,7 @@
 
             <!-- Фильтрация пользователей -->
             <Border IsVisible="{Binding ShowUserSelector}"
-                   BackgroundColor="#f0f0f0"
+                   Style="{StaticResource frame}"
                    Padding="10">
 
                 <Border.StrokeShape>

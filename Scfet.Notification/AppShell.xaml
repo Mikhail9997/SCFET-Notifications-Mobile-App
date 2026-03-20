@@ -5,36 +5,101 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Scfet.Notification"
     xmlns:views="clr-namespace:Scfet.Notification.Views"
+    xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
+    x:DataType="vm:AppShellViewModel"
     FlyoutBehavior="Flyout"
     Title="СКФЭТ Уведомления">
 
+    <Shell.Resources>
+        <ResourceDictionary>
+            <!-- Цвета для светлой темы -->
+            <Color x:Key="LightFlyoutBackground">#F5F5F5</Color>
+            <Color x:Key="LightFlyoutItemText">#000000</Color>
+            <Color x:Key="LightFlyoutItemIcon">#808080</Color>
+            <Color x:Key="LightFooterText">#666666</Color>
+
+            <!-- Цвета для темной темы -->
+            <Color x:Key="DarkFlyoutBackground">#202020</Color>
+            <Color x:Key="DarkFlyoutItemText">#FFFFFF</Color>
+            <Color x:Key="DarkFlyoutItemIcon">#E0E0E0</Color>
+            <Color x:Key="DarkFooterText">#999999</Color>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <Shell.FlyoutBackgroundColor>
+        <AppThemeBinding Light="{StaticResource LightFlyoutBackground}"
+                       Dark="{StaticResource DarkFlyoutBackground}" />
+    </Shell.FlyoutBackgroundColor>
+
+    <Shell.TitleColor>
+        <AppThemeBinding Light="Black" Dark="White" />
+    </Shell.TitleColor>
+
     <Shell.FlyoutHeader>
-        <Grid HeightRequest="180" Margin="0,0,0,20">
+        <Grid HeightRequest="180"
+              Margin="0,0,0,20"
+              BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#202020}">
             <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
-                <Image Source="scfet_logo.png" HeightRequest="140" WidthRequest="140" 
+                <Image Source="scfet_logo_light.png"
+                       HeightRequest="140" 
+                       WidthRequest="140" 
                        HorizontalOptions="Center" VerticalOptions="Center"/>
-                <Label Text="СКФЭТ Уведомления" TextColor="Black" 
+                <Label Text="СКФЭТ Уведомления"  
                        FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
             </StackLayout>
         </Grid>
     </Shell.FlyoutHeader>
 
-    <FlyoutItem Title="Уведомления" Icon="notif.png">
+    <FlyoutItem Title="Уведомления" Icon="{AppThemeBinding Light=notif.png, Dark=notif_white.png}">
         <ShellContent Title="Уведомления"
                   ContentTemplate="{DataTemplate views:NotificationsPage}"
                   Route="MainPage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Профиль" Icon="profile.png">
+    <FlyoutItem Title="Профиль" Icon="{AppThemeBinding Light=profile.png, Dark=profile_white.png}">
         <ShellContent Title="Профиль"
                     ContentTemplate="{DataTemplate views:ProfilePage}"
                     Route="ProfilePage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Войти" Icon="login.png">
+    <FlyoutItem Title="Войти" Icon="{AppThemeBinding Light=login.png, Dark=login_white.png}">
         <ShellContent Title="Войти"
                   ContentTemplate="{DataTemplate views:LoginPage}"
                   Route="LoginPage" />
     </FlyoutItem>
+
+    <Shell.FlyoutFooter>
+        <Grid Padding="15,10"
+              BackgroundColor="{AppThemeBinding Light=#E5E5E5, Dark=#2A2A2A}">
+            <StackLayout Spacing="5">
+                <Label Text="Разработал: Казьманов Михаил"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light={StaticResource LightFooterText}, 
+                                                  Dark={StaticResource DarkFooterText}}"
+                       HorizontalOptions="Center"/>
+                <Label Text="Курировал: Кудрявцев Никита Викторович"
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light={StaticResource LightFooterText}, 
+                                                  Dark={StaticResource DarkFooterText}}"
+                       HorizontalOptions="Center"/>
+                <BoxView HeightRequest="1"
+                         Color="{AppThemeBinding Light=#CCCCCC, Dark=#444444}"
+                         Margin="20,5"/>
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <Label Text="{Binding AppVersion}"
+                           FontSize="10"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#2E86AB, Dark=#6BCBFF}"/>
+                    <Label Text="•"
+                           FontSize="10"
+                           TextColor="{AppThemeBinding Light=#CCCCCC, Dark=#555555}"/>
+                    <Label Text="{Binding Year, StringFormat='© {0} СКФЭТ'}"
+                           FontSize="10"
+                           TextColor="{AppThemeBinding Light=#888888, Dark=#777777}"
+                           HorizontalOptions="Center"/>
+                </HorizontalStackLayout>
+            </StackLayout>
+        </Grid>
+    </Shell.FlyoutFooter>
 
 </Shell>

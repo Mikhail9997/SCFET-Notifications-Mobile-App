@@ -7,6 +7,19 @@
              x:DataType="vm:SentNotificationsViewModel"
              xmlns:views="clr-namespace:Scfet.Notification.Views"
              Title="Отправленные уведомления">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="frame" TargetType="Border">
+                <Setter Property="BackgroundColor">
+                    <Setter.Value>
+                        <AppThemeBinding Light="#F0F0F0"
+                           Dark="#2A2A2A" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <Grid>
 
         <!-- Ошибка загрузки уведомлений -->
@@ -50,7 +63,8 @@
                     <StackLayout Spacing="20">
                         
                         <!-- Фильтрация уведомлений-->
-                        <Border BackgroundColor="#f0f0f0"
+                        <Border 
+                            Style="{StaticResource frame}"
                            Padding="10">
 
                             <Border.StrokeShape>
@@ -194,14 +208,12 @@
                                                    Grid.Row="4"
                                                    Text="{Binding ReadReceivers, StringFormat='{0} прочитано'}" 
                                                    FontSize="12" 
-                                                   TextColor="Gray"
                                                    HorizontalOptions="Start" />
 
                                                 <Label Grid.Column="1" 
                                                    Grid.Row="5"
                                                    Text="{Binding ReadPercentage, StringFormat='{0:F1}%'}" 
                                                    FontSize="12" 
-                                                   TextColor="Gray"
                                                    HorizontalOptions="End" />
 
                                             </Grid>
