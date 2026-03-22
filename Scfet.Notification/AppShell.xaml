@@ -23,6 +23,7 @@
             <Color x:Key="DarkFlyoutItemText">#FFFFFF</Color>
             <Color x:Key="DarkFlyoutItemIcon">#E0E0E0</Color>
             <Color x:Key="DarkFooterText">#999999</Color>
+            
         </ResourceDictionary>
     </Shell.Resources>
 

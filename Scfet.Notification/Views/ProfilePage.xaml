@@ -103,7 +103,7 @@
                                    Text="{Binding Email}"
                                    Keyboard="Email" />
                             
-                            <Entry Placeholder="Phone" 
+                            <Entry Placeholder="Номер телефона" 
                                    Text="{Binding Phone}"
                                    Keyboard="Email" />
 
