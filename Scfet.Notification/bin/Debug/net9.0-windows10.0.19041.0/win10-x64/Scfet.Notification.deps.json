@@ -19,6 +19,7 @@
           "Microsoft.Maui.Controls": "9.0.111",
           "Plugin.LocalNotification": "12.0.2",
           "System.IdentityModel.Tokens.Jwt": "8.15.0",
+          "libphonenumber-csharp": "9.0.26",
           "Microsoft.Web.WebView2.Core.Projection": "1.0.3179.45",
           "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.19041.57"
         },
@@ -43,6 +44,14 @@
           "lib/net8.0-windows10.0.17763/CommunityToolkit.Mvvm.dll": {
             "assemblyVersion": "8.4.0.0",
             "fileVersion": "8.4.0.1"
+          }
+        }
+      },
+      "libphonenumber-csharp/9.0.26": {
+        "runtime": {
+          "lib/net9.0/PhoneNumbers.dll": {
+            "assemblyVersion": "9.0.26.0",
+            "fileVersion": "9.0.26.0"
           }
         }
       },
@@ -804,6 +813,13 @@
       "sha512": "sha512-tqVU8yc/ADO9oiTRyTnwhFN68hCwvkliMierptWOudIAvWY1mWCh5VFh+guwHJmpMwfg0J0rY+yyd5Oy7ty9Uw==",
       "path": "communitytoolkit.mvvm/8.4.0",
       "hashPath": "communitytoolkit.mvvm.8.4.0.nupkg.sha512"
+    },
+    "libphonenumber-csharp/9.0.26": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-knCYUlf8Sa/kQA4mZ2PSdWpEqdRd/0T0xxSr43QUkBIrDQe3cmxMGNfhJQtPiLqWnU4CGKt4cEuMrQybHc6jfw==",
+      "path": "libphonenumber-csharp/9.0.26",
+      "hashPath": "libphonenumber-csharp.9.0.26.nupkg.sha512"
     },
     "Microsoft.AspNet.SignalR.Client/2.4.3": {
       "type": "package",

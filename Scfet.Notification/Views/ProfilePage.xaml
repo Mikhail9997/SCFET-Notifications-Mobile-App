@@ -69,6 +69,9 @@
                             <Label Text="{Binding CurrentUser.Email}" 
                                    FontSize="14" 
                                    />
+                            <Label Text="{Binding CurrentUser.PhoneNumber}" 
+                                   FontSize="14" 
+                                   />
                             <Label Text="{Binding CurrentUser.Group, StringFormat='Группа: {0}'}" 
                                    FontSize="14" 
                                    IsVisible="{Binding CurrentUser.Group, Converter={StaticResource StringNotEmptyConverter}}" />
@@ -98,6 +101,10 @@
 
                             <Entry Placeholder="Email" 
                                    Text="{Binding Email}"
+                                   Keyboard="Email" />
+                            
+                            <Entry Placeholder="Phone" 
+                                   Text="{Binding Phone}"
                                    Keyboard="Email" />
 
                             <Button Text="Обновить профиль" 

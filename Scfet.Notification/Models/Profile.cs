@@ -13,4 +13,10 @@ namespace Scfet.Notification.Models
         public int Code { get; set; }
         public User? User { get; set; }
     }
+
+    public class ProfileUpdateResponse
+    {
+        public string Message { get; set; } = string.Empty;
+        public bool Success { get; set; }
+    }
 }

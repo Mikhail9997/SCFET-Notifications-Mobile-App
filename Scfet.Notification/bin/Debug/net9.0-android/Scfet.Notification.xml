@@ -97,6 +97,11 @@
             <param name="value">The new property value that was set.</param>
             <remarks>This method is invoked right after the value of <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedGroup"/> is changed.</remarks>
         </member>
+        <member name="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.OnSelectedUserChanged(Scfet.Notification.Models.User)">
+            <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedUser"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedUser"/> is changed.</remarks>
+        </member>
         <member name="M:Scfet.Notification.ViewModels.CreateNotificationViewModel.OnSelectedAudienceChanged(Scfet.Notification.ViewModels.PickerItem)">
             <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.SelectedAudience"/> just changed.</summary>
             <param name="value">The new property value that was set.</param>
@@ -237,6 +242,11 @@
             <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedGroup"/> just changed.</summary>
             <param name="value">The new property value that was set.</param>
             <remarks>This method is invoked right after the value of <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedGroup"/> is changed.</remarks>
+        </member>
+        <member name="M:Scfet.Notification.ViewModels.EditNotificationViewModel.OnSelectedUserChanged(Scfet.Notification.Models.User)">
+            <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedUser"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedUser"/> is changed.</remarks>
         </member>
         <member name="M:Scfet.Notification.ViewModels.EditNotificationViewModel.OnSelectedAudienceChanged(Scfet.Notification.ViewModels.PickerItem)">
             <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.EditNotificationViewModel.SelectedAudience"/> just changed.</summary>
@@ -449,6 +459,9 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.Email">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.ProfileViewModel.email"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.Phone">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ProfileViewModel.phone"/>
         </member>
         <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.IsCacheEnable">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.ProfileViewModel.isCacheEnable"/>
@@ -794,6 +807,9 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.LastName">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "LastName" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Phone">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Phone" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsCacheEnable">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsCacheEnable" generated properties.</summary>
         </member>
@@ -967,6 +983,9 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.LastName">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "LastName" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Phone">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Phone" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsCacheEnable">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsCacheEnable" generated properties.</summary>

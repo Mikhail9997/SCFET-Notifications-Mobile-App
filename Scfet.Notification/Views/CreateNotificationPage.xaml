@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
              xmlns:models="clr-namespace:Scfet.Notification.Models"
              xmlns:views="clr-namespace:Scfet.Notification.Views"
+             xmlns:converters="clr-namespace:Scfet.Notification.Converters"
              x:DataType="vm:CreateNotificationViewModel"
              Title="Создать">
 
@@ -18,6 +19,9 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <converters:RoleToRussianConverter x:Key="RoleToRussianConverter"/>
+            <converters:IsStudentRoleConverter x:Key="IsStudentRoleConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -73,7 +77,8 @@
                 <VerticalStackLayout Spacing="10">
                     <Label Text="Фильтрация групп:" 
                            FontSize="14" 
-                           FontAttributes="Bold" />
+                           FontAttributes="Bold" 
+                           TextColor="#2E86AB"/>
 
                     <Entry Placeholder="Название группы"
                            Text="{Binding GroupFilter.Name}" />
@@ -118,7 +123,8 @@
                 <VerticalStackLayout Spacing="10">
                     <Label Text="Фильтрация пользователей:" 
                            FontSize="14" 
-                           FontAttributes="Bold" />
+                           FontAttributes="Bold"
+                           TextColor="#2E86AB"/>
 
                     <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*" ColumnSpacing="10" RowSpacing="10">
                         <Entry Placeholder="Имя"
@@ -131,8 +137,11 @@
 
                         <Entry Placeholder="Email"
                                Text="{Binding UserFilter.Email}"
-                               Grid.Column="0" Grid.Row="1"
-                               Grid.ColumnSpan="2"/>
+                               Grid.Column="0" Grid.Row="1"/>
+                        
+                        <Entry Placeholder="Номер телефона"
+                               Text="{Binding UserFilter.PhoneNumber}"
+                               Grid.Column="1" Grid.Row="1"/>
                     </Grid>
 
                     <HorizontalStackLayout Spacing="10">
@@ -155,12 +164,102 @@
 
                     <Label Text="Выберите пользователя:" 
                            FontSize="14" 
-                           FontAttributes="Bold" />
+                           FontAttributes="Bold" 
+                           TextColor="#2E86AB"/>
                     <Picker Title="Пользователь"
                             ItemsSource="{Binding Users}"
                             ItemDisplayBinding="{Binding FullName}"
                             SelectedItem="{Binding SelectedUser}"
                             IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Детальная информация о пользователе -->
+            <Border IsVisible="{Binding IsUserSelected}"
+                     Style="{StaticResource frame}"
+                     Padding="15"
+                     Margin="0,5,0,0">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="5"/>
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Детальная информация"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#2E86AB"/>
+
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Имя: " 
+                                         FontAttributes="Bold"/>
+                                <Span Text="{Binding SelectedUser.FirstName}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Фамилия: " 
+                                     FontAttributes="Bold"/>
+                                <Span Text="{Binding SelectedUser.LastName}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Email: " 
+                                     FontAttributes="Bold"/>
+                                <Span Text="{Binding SelectedUser.Email}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Роль: " 
+                                    FontAttributes="Bold"/>
+                                <Span Text="{Binding SelectedUser.Role, Converter={StaticResource RoleToRussianConverter}}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label IsVisible="{Binding SelectedUser.Role, Converter={StaticResource IsStudentRoleConverter}}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Группа: " 
+                                     FontAttributes="Bold"/>
+                                <Span Text="{Binding SelectedUser.Group, TargetNullValue='Не указана'}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Телефон: " 
+                                      FontAttributes="Bold"/>
+                                <Span Text="{Binding SelectedUser.PhoneNumber, TargetNullValue='Не указан'}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <!-- Разделитель -->
+                    <BoxView HeightRequest="1" 
+                             Color="{AppThemeBinding Light='#E0E0E0', Dark='#404040'}"
+                             Margin="0,5,0,5"/>
+
+                    <!-- Информационная метка -->
+                    <Label Text="Уведомление будет отправлено только выбранному пользователю"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light='#6c757d', Dark='#9e9e9e'}"
+                           HorizontalOptions="Center"/>
                 </VerticalStackLayout>
             </Border>
 

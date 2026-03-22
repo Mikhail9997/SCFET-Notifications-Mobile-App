@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PhoneNumbers;
 using Scfet.Notification.Models;
 using Scfet.Notification.Services;
 
@@ -27,6 +28,9 @@ namespace Scfet.Notification.ViewModels
 
         [ObservableProperty]
         private string email;
+
+        [ObservableProperty]
+        private string phone;
 
         [ObservableProperty]
         private bool isCacheEnable;
@@ -62,7 +66,7 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                var profile = await _apiService.GetCurrentUserAsync();
+                Profile profile = await _apiService.GetCurrentUserAsync();
                 CurrentUser = profile.User;
 
                 if (profile.User == null)
@@ -74,6 +78,7 @@ namespace Scfet.Notification.ViewModels
                 FirstName = CurrentUser.FirstName;
                 LastName = CurrentUser.LastName;
                 Email = CurrentUser.Email;
+                Phone = CurrentUser.PhoneNumber;
 
                 OnPropertyChanged(nameof(UserRoleDisplay));
                 OnPropertyChanged(nameof(CanSendNotifications));
@@ -94,9 +99,17 @@ namespace Scfet.Notification.ViewModels
         {
             if (IsBusy) return;
 
-            if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName) || string.IsNullOrWhiteSpace(Email))
+            if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName) || string.IsNullOrWhiteSpace(Email) || string.IsNullOrEmpty(Phone))
             {
                 await Shell.Current.DisplayAlert("Ошибка", "Заполните все поля", "OK");
+                return;
+            }
+
+            if (!IsValidPhoneNumber())
+            {
+                await Shell.Current
+                    .DisplayAlert("Ошибка", "Неверный формат номера телефона. " +
+                    "Пожалуйста, введите корректный номер телефона", "OK");
                 return;
             }
 
@@ -104,8 +117,8 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                var success = await _apiService.UpdateProfileAsync(FirstName, LastName, Email);
-                if (success)
+                ProfileUpdateResponse result = await _apiService.UpdateProfileAsync(FirstName, LastName, Email, Phone);
+                if (result.Success)
                 {
                     await Shell.Current.DisplayAlert("Успех", "Профиль обновлен", "OK");
 
@@ -115,7 +128,7 @@ namespace Scfet.Notification.ViewModels
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("Ошибка", "Ошибка обновления профиля", "OK");
+                    await Shell.Current.DisplayAlert("Ошибка", result.Message, "OK");
                 }
             }
             catch(Exception ex)
@@ -232,6 +245,22 @@ namespace Scfet.Notification.ViewModels
         private async Task GoToAsync(string path)
         {
             await Shell.Current.GoToAsync(path);
+        }
+
+        private bool IsValidPhoneNumber()
+        {
+            try
+            {
+                var phoneUtil = PhoneNumberUtil.GetInstance();
+
+                var parsedNumber = phoneUtil.Parse(Phone, null);
+
+                return phoneUtil.IsValidNumber(parsedNumber);
+            }
+            catch (NumberParseException ex)
+            {
+                return false;
+            }
         }
     }
 }

@@ -109,10 +109,15 @@ namespace Scfet.Notification.ViewModels
 
         private bool IsAdministrator => CurrentUser?.Role == "Administrator";
 
+        public bool IsUserSelected => SelectedUser != null;
+
         partial void OnSelectedAudienceChanged(PickerItem value)
         {
             OnPropertyChanged(nameof(ShowGroupSelector));
             OnPropertyChanged(nameof(ShowUserSelector));
+
+            SelectedUser = null;
+            SelectedGroup = null;
 
             IsUserFiltersVisible = ShowUserSelector;
             IsGroupFiltersVisible = ShowGroupSelector;
@@ -125,6 +130,11 @@ namespace Scfet.Notification.ViewModels
                 Shell.Current.DisplayAlert("Ошибка", "Нет студентов для выбранной группы", "Ок");
                 SelectedGroup = null;
             }
+        }
+
+        partial void OnSelectedUserChanged(User value)
+        {
+            OnPropertyChanged(nameof(IsUserSelected));
         }
         public async Task InitializeAsync()
         {
@@ -233,7 +243,6 @@ namespace Scfet.Notification.ViewModels
             // Если Конкретный
             if (recipients.Count == 1)
             {
-                int index = IsAdministrator ? 5 : 4;
                 SelectedAudience = AudienceTypes[AudienceTypes.Count - 1];
 
                 SelectedUser = recipients[0];
@@ -245,7 +254,8 @@ namespace Scfet.Notification.ViewModels
                 .ToList();
             if(recipients.Count == usersWithGroups.Count)
             {
-                SelectedAudience = AudienceTypes[4];
+                int index = IsAdministrator ? 4 : 3;
+                SelectedAudience = AudienceTypes[index];
 
                 var groups = Groups;
                 foreach(var group in groups)

@@ -568,3 +568,4 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splash_logo_lightSplashScreen.scale-150.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splash_logo_lightSplashScreen.scale-200.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splash_logo_lightSplashScreen.scale-400.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\PhoneNumbers.dll

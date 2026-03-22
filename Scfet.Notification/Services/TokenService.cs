@@ -28,6 +28,8 @@ namespace Scfet.Notification.Services
         private DateTime? _lastRefreshAttempt = null;
 
         private const string BaseUrl = "http://81.94.159.27:5050/api";
+        // http://81.94.159.27:5050/api
+        // https://amorously-preeminent-godwit.cloudpub.ru/api
 
         public event Action? OnTokensRefreshed;
         public event Action? OnTokensInvalid;
@@ -54,7 +56,7 @@ namespace Scfet.Notification.Services
                 var handler = new JwtSecurityTokenHandler();
                 if (handler.CanReadToken(accessToken))
                 {
-                    var jwtToken = handler.ReadJwtToken(accessToken);
+                    JwtSecurityToken jwtToken = handler.ReadJwtToken(accessToken);
                     var expires = jwtToken.ValidTo;
 
                     // Если токен еще валиден более 5 минут, возвращаем его

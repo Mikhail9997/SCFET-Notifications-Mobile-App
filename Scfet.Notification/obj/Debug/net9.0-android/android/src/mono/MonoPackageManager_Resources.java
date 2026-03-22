@@ -5,6 +5,7 @@ public class MonoPackageManager_Resources {
 		"Scfet.Notification.dll",
 		"CommunityToolkit.Mvvm.dll",
 		"GoogleGson.dll",
+		"PhoneNumbers.dll",
 		"Microsoft.AspNet.SignalR.Client.dll",
 		"Microsoft.AspNetCore.Authorization.dll",
 		"Microsoft.AspNetCore.Connections.Abstractions.dll",

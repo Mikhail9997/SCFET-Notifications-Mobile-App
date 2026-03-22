@@ -27,7 +27,7 @@ namespace Scfet.Notification.Services
         Task<bool> SendNotificationAsync(CreateNotification request);
         Task<bool> UpdateNotificationAsync(UpdateNotification request);
         Task<bool> RemoveNotificationAsync(Guid id);
-        Task<bool> UpdateProfileAsync(string firstName, string lastName, string email);
+        Task<ProfileUpdateResponse> UpdateProfileAsync(string firstName, string lastName, string email, string phoneNumber);
         Task<bool> ChangePasswordAsync(string currentPassword, string newPassword);
     }
     //http://localhost:5050/api
@@ -324,6 +324,7 @@ namespace Scfet.Notification.Services
                     { "firstName", filter?.FirstName },
                     { "lastName", filter?.LastName },
                     { "email", filter?.Email },
+                    { "phoneNumber", filter.PhoneNumber },
                     { "groupId", filter?.GroupId?.ToString() },
                     { "isActive", true.ToString() }
                 };
@@ -360,6 +361,7 @@ namespace Scfet.Notification.Services
                     { "firstName", filter?.FirstName },
                     { "lastName", filter?.LastName },
                     { "email", filter?.Email },
+                    { "phoneNumber", filter.PhoneNumber },
                     { "groupId", filter?.GroupId?.ToString() },
                     { "isActive", true.ToString() }
                 };
@@ -397,6 +399,7 @@ namespace Scfet.Notification.Services
                     { "firstName", filter?.FirstName },
                     { "lastName", filter?.LastName },
                     { "email", filter?.Email },
+                    { "phoneNumber", filter.PhoneNumber },
                     { "groupId", filter?.GroupId?.ToString() },
                     { "isActive", true.ToString() }
                 };
@@ -563,22 +566,26 @@ namespace Scfet.Notification.Services
             return false;
         }
 
-        public async Task<bool> UpdateProfileAsync(string firstName, string lastName, string email)
+        public async Task<ProfileUpdateResponse> UpdateProfileAsync(string firstName, string lastName, string email, string phoneNumber)
         {
             try
             {
                 await AddAuthHeader();
-                var updateData = new { firstName, lastName, email };
+                var updateData = new { firstName, lastName, email, phoneNumber };
                 var json = JsonSerializer.Serialize(updateData);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PutAsync($"{BaseUrl}/users/profile", content);
-                return response.IsSuccessStatusCode;
+                var response = await _httpClient.PutAsync($"{BaseUrl}/users/profile", stringContent);
+                string content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<ProfileUpdateResponse>(content, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? new ProfileUpdateResponse { Success = false, Message = "Что то пошло не так"};
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Update profile error: {ex.Message}");
-                return false;
+                return new ProfileUpdateResponse { Success = false, Message = "Что то пошло не так" };
             }
         }
 
