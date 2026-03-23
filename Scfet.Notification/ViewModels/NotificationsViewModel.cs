@@ -362,7 +362,8 @@ namespace Scfet.Notification.ViewModels
         {
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                if (!Notifications.Any(n => n.Id == notification.Id)) Notifications.Insert(0, notification);
+                if (!Notifications.Any(n => n.Id == notification.Id))
+                    Notifications.Insert(0, notification);
                 OnPropertyChanged(nameof(Notifications));
 
                 // Показать локальное уведомление

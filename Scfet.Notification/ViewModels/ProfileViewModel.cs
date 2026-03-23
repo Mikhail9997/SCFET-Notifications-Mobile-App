@@ -43,6 +43,7 @@ namespace Scfet.Notification.ViewModels
             "Student" => "Студент",
             "Teacher" => "Преподаватель",
             "Administrator" => "Администратор",
+            "Parent" => "Родитель",
             _ => "Пользователь"
         };
 

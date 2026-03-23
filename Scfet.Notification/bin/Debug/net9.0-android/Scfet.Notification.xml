@@ -53,6 +53,9 @@
         <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.Students">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel._students"/>
         </member>
+        <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.Parents">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel._parents"/>
+        </member>
         <member name="P:Scfet.Notification.ViewModels.CreateNotificationViewModel.Teachers">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.CreateNotificationViewModel._teachers"/>
         </member>
@@ -198,6 +201,9 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.Students">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel._students"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.Parents">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel._parents"/>
         </member>
         <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.Teachers">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.EditNotificationViewModel._teachers"/>
@@ -681,6 +687,9 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Students">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Students" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Parents">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Parents" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Teachers">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Teachers" generated properties.</summary>
         </member>
@@ -857,6 +866,9 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Students">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Students" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Parents">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Parents" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Teachers">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Teachers" generated properties.</summary>

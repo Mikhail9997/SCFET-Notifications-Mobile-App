@@ -63,6 +63,8 @@ namespace Scfet.Notification.ViewModels
 
         [ObservableProperty]
         private List<User> _students = new();
+        [ObservableProperty]
+        private List<User> _parents = new();
 
         [ObservableProperty]
         private List<User> _teachers = new();
@@ -188,12 +190,14 @@ namespace Scfet.Notification.ViewModels
             {
                 var groupsTask = _apiService.GetGroupsAsync(GroupFilter);
                 var studentsTask = _apiService.GetStudentsAsync(UserFilter);
+                var parentsTask = _apiService.GetParentsAsync(UserFilter);
                 var teachersTask = _apiService.GetTeachersAsync(UserFilter);
 
-                await Task.WhenAll(groupsTask, studentsTask, teachersTask);
+                await Task.WhenAll(groupsTask, studentsTask, parentsTask, teachersTask);
 
                 Groups = await groupsTask;
                 Students = await studentsTask;
+                Parents = await parentsTask;
                 Teachers = await teachersTask;
 
                 if (IsAdministrator)
@@ -254,7 +258,7 @@ namespace Scfet.Notification.ViewModels
                 .ToList();
             if(recipients.Count == usersWithGroups.Count)
             {
-                int index = IsAdministrator ? 4 : 3;
+                int index = IsAdministrator ? 5 : 4;
                 SelectedAudience = AudienceTypes[index];
 
                 var groups = Groups;
@@ -272,15 +276,20 @@ namespace Scfet.Notification.ViewModels
             {
                 SelectedAudience = AudienceTypes[1];
             }
+            // Если Родители
+            else if (recipients.All(r => r.Role.ToLower() == "parent"))
+            {
+                SelectedAudience = AudienceTypes[2];
+            }
             // Если Учителя
             else if (recipients.All(r => r.Role.ToLower() == "teacher"))
             {
-                SelectedAudience = AudienceTypes[2];
+                SelectedAudience = AudienceTypes[3];
             }
             // Если Администраторы
             else if (recipients.All(r => r.Role.ToLower() == "administrator"))
             {
-                SelectedAudience = AudienceTypes[3];
+                SelectedAudience = AudienceTypes[4];
             }
         }
 
@@ -328,6 +337,10 @@ namespace Scfet.Notification.ViewModels
                     case "students":
                         // Отправка всем студентам
                         notification.TargetUserIds = Students.Select(t => t.UserId).ToList();
+                        break;
+                    case "parents":
+                        // Отправка всем родителям
+                        notification.TargetUserIds = Parents.Select(t => t.UserId).ToList();
                         break;
                     case "teachers":
                         // Отправка всем преподавателям
@@ -566,6 +579,7 @@ namespace Scfet.Notification.ViewModels
         private void UpdateUsersCollection()
         {
             Users = Students
+                .Concat(Parents)
                 .Concat(Teachers)
                 .Concat(Administrators)
                 .Where(u => u.Email != CurrentUser?.Email)
@@ -613,6 +627,7 @@ namespace Scfet.Notification.ViewModels
         {
             yield return new PickerItem { Key = "all", DisplayValue = "Все" };
             yield return new PickerItem { Key = "students", DisplayValue = "Студенты" };
+            yield return new PickerItem { Key = "parents", DisplayValue = "Родители" };
             yield return new PickerItem { Key = "teachers", DisplayValue = "Учителя" };
 
             if (IsAdministrator)

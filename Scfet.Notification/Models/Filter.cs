@@ -23,7 +23,7 @@ namespace Scfet.Notification.Models
     public class NotificationFilter
     {
         public int Page { get; set; } = 1;
-        public int PageSize { get; set; } = 5;
+        public int PageSize { get; set; } = 10;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public NotificationSortOrder SortOrder { get; set; } = NotificationSortOrder.Descending;

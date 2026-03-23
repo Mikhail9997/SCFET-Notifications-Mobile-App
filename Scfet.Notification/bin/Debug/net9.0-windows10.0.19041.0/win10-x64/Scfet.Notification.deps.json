@@ -7,7 +7,7 @@
   "targets": {
     ".NETCoreApp,Version=v9.0": {},
     ".NETCoreApp,Version=v9.0/win10-x64": {
-      "Scfet.Notification/1.0.1": {
+      "Scfet.Notification/1.1.0": {
         "dependencies": {
           "CommunityToolkit.Mvvm": "8.4.0",
           "Microsoft.AspNet.SignalR.Client": "2.4.3",
@@ -797,7 +797,7 @@
     }
   },
   "libraries": {
-    "Scfet.Notification/1.0.1": {
+    "Scfet.Notification/1.1.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

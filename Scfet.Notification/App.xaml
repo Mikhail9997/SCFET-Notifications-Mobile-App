@@ -17,6 +17,7 @@
             <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
             <converters:ReadStatusConverter x:Key="ReadStatusConverter"/>
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+            <converters:PercentageToColorConverter x:Key="PercentageToColorConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

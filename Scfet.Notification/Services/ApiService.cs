@@ -21,6 +21,7 @@ namespace Scfet.Notification.Services
         Task<bool> MarkAsReadAsync(Guid notificationId);
         Task<List<Group>> GetGroupsAsync(GroupFilter filter);
         Task<List<User>> GetStudentsAsync(UserFilter filter);
+        Task<List<User>> GetParentsAsync(UserFilter filter);
         Task<List<User>> GetTeachersAsync(UserFilter filter);
         Task<List<User>> GetAdministratorsAsync(UserFilter filter);
         Task<GetNotification<SentNotification>?> GetSentNotificationsAsync(NotificationFilter filter);
@@ -37,7 +38,7 @@ namespace Scfet.Notification.Services
     {
         private readonly HttpClient _httpClient;
         private readonly LoginService _loginService;
-        private const string BaseUrl = "http://81.94.159.27:5050/api";
+        private const string BaseUrl = "https://amorously-preeminent-godwit.cloudpub.ru/api";
 
         public ApiService(LoginService loginService, ITokenService tokenService)
         {
@@ -345,6 +346,42 @@ namespace Scfet.Notification.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"Get students error: {ex.Message}");
+            }
+
+            return new List<User>();
+        }
+
+        public async Task<List<User>> GetParentsAsync(UserFilter filter)
+        {
+            try
+            {
+                await AddAuthHeader();
+                var query = new Dictionary<string, string?>
+                {
+                    { "firstName", filter?.FirstName },
+                    { "lastName", filter?.LastName },
+                    { "email", filter?.Email },
+                    { "phoneNumber", filter.PhoneNumber },
+                    { "groupId", filter?.GroupId?.ToString() },
+                    { "isActive", true.ToString() }
+                };
+
+                var queryString = ResponseUtils.GenerateQuery(query);
+
+                var response = await _httpClient.GetAsync($"{BaseUrl}/users/parents?{queryString}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<List<User>>(content, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? new List<User>();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Get parents error: {ex.Message}");
             }
 
             return new List<User>();
