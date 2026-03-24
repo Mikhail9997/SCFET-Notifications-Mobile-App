@@ -18,6 +18,10 @@
             <converters:ReadStatusConverter x:Key="ReadStatusConverter"/>
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
             <converters:PercentageToColorConverter x:Key="PercentageToColorConverter"/>
+            <converters:PersonalMessageToColorConverter x:Key="PersonalMessageToColorConverter"/>
+            <converters:PersonalMessageToTextConverter x:Key="PersonalMessageToTextConverter"/>
+            <converters:RoleToRussianConverter x:Key="RoleToRussianConverter"/>
+            <converters:RoleToColorConverter x:Key="RoleToColorConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

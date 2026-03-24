@@ -7,20 +7,13 @@ using System.Threading.Tasks;
 
 namespace Scfet.Notification.Converters
 {
-    public class RoleToRussianConverter : IValueConverter
+    public class PersonalMessageToTextConverter : IValueConverter
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (value is string role)
+            if (value is bool isPersonal && isPersonal)
             {
-                return role switch
-                {
-                    "Student" => "Студент",
-                    "Parent" => "Родитель",
-                    "Teacher" => "Преподаватель",
-                    "Administrator" => "Администратор",
-                    _ => role
-                };
+                return "👤 Личное сообщение";
             }
             return string.Empty;
         }

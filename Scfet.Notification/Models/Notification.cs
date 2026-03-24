@@ -12,9 +12,10 @@ namespace Scfet.Notification.Models
     {
         public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
-        public string Message { get; set; } =string.Empty;
+        public string Message { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;
         public string SenderName { get; set; } = string.Empty;
+        public string SenderRole { get; set; } = string.Empty;
         public Guid SenderId { get; set; }
         public bool IsPersonal { get; set; }
         public DateTime CreatedAt { get; set; }

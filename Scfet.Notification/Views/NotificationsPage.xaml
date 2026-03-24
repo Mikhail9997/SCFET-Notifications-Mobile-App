@@ -158,22 +158,39 @@
                                             Margin="10,5"
                                             BackgroundColor="{Binding Type, Converter={StaticResource NotificationTypeToColorConverter}}"
                                             >
-                                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+                                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
                                               ColumnDefinitions="*,Auto"
                                               RowSpacing="5">
 
+                                            <!-- Personal Message Badge (if personal) -->
+                                            <Border Grid.Row="0"
+                                                   Grid.ColumnSpan="2"
+                                                   BackgroundColor="#FF6B6B"
+                                                   Padding="8,4"
+                                                   HorizontalOptions="Start"
+                                                   Margin="0,0,0,5"
+                                                   IsVisible="{Binding IsPersonal}">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="8"/>
+                                                </Border.StrokeShape>
+                                                <Label Text="Личное сообщение"
+                                                       TextColor="White"
+                                                       FontSize="11"
+                                                       FontAttributes="Bold"/>
+                                            </Border>
+
                                             <!-- Изображение -->
-                                            <Image Grid.Row="0"
-                                               Grid.ColumnSpan="2"
-                                               HeightRequest="350"
-                                               IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}">
+                                            <Image Grid.Row="1"
+                                                   Grid.ColumnSpan="2"
+                                                   HeightRequest="350"
+                                                   IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}">
                                                 <Image.Source>
                                                     <UriImageSource Uri="{Binding ImageUrl}"/>
                                                 </Image.Source>
                                             </Image>
 
                                             <!-- Заголовок -->
-                                            <Label Grid.Row="1" 
+                                            <Label Grid.Row="2" 
                                                    Grid.Column="0"
                                                    Text="{Binding Title}" 
                                                    FontSize="16" 
@@ -183,15 +200,76 @@
                                             <Label Grid.Row="2" 
                                                    Grid.Column="1"
                                                    Text="{Binding FormattedDate}" 
-                                                   FontSize="12" 
-                                                    />
+                                                   FontSize="12" />
 
                                             <!-- Отправитель -->
-                                            <Label Grid.Row="3" 
-                                                   Grid.Column="0"
-                                                   Text="{Binding SenderName}" 
-                                                   FontSize="12" 
-                                                    />
+                                            <HorizontalStackLayout 
+                                                    Grid.Row="3" 
+                                                    Grid.Column="0"
+                                                    Spacing="8"
+                                                    VerticalOptions="Center">
+
+                                                <!-- Аватар/иконка -->
+                                                <Border BackgroundColor="#E8F0FE"
+                                                    Padding="6,3"
+                                                    StrokeThickness="0"
+                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="Center">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="12"/>
+                                                    </Border.StrokeShape>
+                                                    <Label Text="👤" 
+                                                          FontSize="10"/>
+                                                </Border>
+
+                                                <!-- Имя отправителя -->
+                                                <Label Text="{Binding SenderName}" 
+                                                       FontSize="12" 
+                                                       FontAttributes="Bold"
+                                                       TextColor="{AppThemeBinding Light='#2C3E50', Dark='#ECF0F1'}"
+                                                       VerticalOptions="Center"/>
+
+                                                <!-- Разделитель -->
+                                                <Label Text="·" 
+                                                       FontSize="14"
+                                                       TextColor="{AppThemeBinding Light='#BDC3C7', Dark='#7F8C8D'}"
+                                                       VerticalOptions="Center"/>
+
+                                                <!-- Роль с цветным фоном -->
+                                                <Border BackgroundColor="{Binding SenderRole, Converter={StaticResource RoleToColorConverter}}"
+                                                        Padding="8,3"
+                                                        StrokeThickness="0"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="12"/>
+                                                    </Border.StrokeShape>
+                                                    <Label Text="{Binding SenderRole, Converter={StaticResource RoleToRussianConverter}}"
+                                                           FontSize="10"
+                                                           TextColor="White"
+                                                           FontAttributes="Bold"/>
+                                                </Border>
+
+                                                <!-- Метка личного сообщения -->
+                                                <Border IsVisible="{Binding IsPersonal}"
+                                                        BackgroundColor="#FFE5E5"
+                                                        Padding="8,3"
+                                                        StrokeThickness="0"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="12"/>
+                                                    </Border.StrokeShape>
+                                                    <HorizontalStackLayout Spacing="4">
+                                                        <Label Text="🔒" 
+                                                               FontSize="9"/>
+                                                        <Label Text="личное"
+                                                                FontSize="9"
+                                                                TextColor="{AppThemeBinding Light='#E74C3C', Dark='#FF8A7A'}"
+                                                                FontAttributes="Bold"/>
+                                                    </HorizontalStackLayout>
+                                                </Border>
+                                            </HorizontalStackLayout>
 
                                             <!-- Сообщение -->
                                             <Label Grid.Row="4" 
@@ -204,8 +282,7 @@
                                             <Label Grid.Row="5" 
                                                    Grid.Column="0"
                                                    Text="{Binding IsRead, Converter={StaticResource ReadStatusConverter}}"
-                                                   FontSize="12" 
-                                                   />
+                                                   FontSize="12" />
 
                                         </Grid>
 

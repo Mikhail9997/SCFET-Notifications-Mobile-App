@@ -7,22 +7,18 @@ using System.Threading.Tasks;
 
 namespace Scfet.Notification.Converters
 {
-    public class RoleToRussianConverter : IValueConverter
+    public class RoleToColorConverter : IValueConverter
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (value is string role)
+            return (value as string) switch
             {
-                return role switch
-                {
-                    "Student" => "Студент",
-                    "Parent" => "Родитель",
-                    "Teacher" => "Преподаватель",
-                    "Administrator" => "Администратор",
-                    _ => role
-                };
-            }
-            return string.Empty;
+                "Administrator" => "#E74C3C",  // Красный
+                "Teacher" => "#3498DB",     // Синий
+                "Student" => "#2ECC71",    // Зеленый
+                "Parent" => "#F39C12",     // Оранжевый                    
+                _ => "#95A5A6"             // Серый
+            };
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

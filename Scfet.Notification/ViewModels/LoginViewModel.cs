@@ -75,16 +75,29 @@ namespace Scfet.Notification.ViewModels
         [RelayCommand]
         private async Task LogoutAsync()
         {
-            var confirm = await Shell.Current.DisplayAlert("Выход", "Вы уверены, что хотите выйти?", "Да", "Нет");
-            if (confirm)
+            if (IsBusy) return;
+            try
             {
-                await _notificationService.DisconnectAsync();
-                await _apiService.Logout();
+                var confirm = await Shell.Current.DisplayAlert("Выход", "Вы уверены, что хотите выйти?", "Да", "Нет");
+                if (confirm)
+                {
+                    IsBusy = true;
+                    await _notificationService.DisconnectAsync();
+                    await _apiService.Logout();
 
-                IsAuth = await _loginService.IsLoggedIn();
-                Title = IsAuth? "Выйти" : "Войти";
+                    IsAuth = await _loginService.IsLoggedIn();
+                    Title = IsAuth ? "Выйти" : "Войти";
 
-                await Shell.Current.GoToAsync("//LoginPage");
+                    await Shell.Current.GoToAsync("//LoginPage");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", $"Ошибка подключения: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }
