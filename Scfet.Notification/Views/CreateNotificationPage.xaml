@@ -28,12 +28,61 @@
     <ScrollView>
         <VerticalStackLayout Spacing="15" Padding="20">
 
-            <Entry Placeholder="Заголовок уведомления" 
-                   Text="{Binding Title}" />
+            <StackLayout>
+                <Entry Placeholder="Заголовок уведомления" 
+                   Text="{Binding Title}"
+                       MaxLength="100"/>
+                <HorizontalStackLayout 
+                    IsVisible="{Binding Title.Length, Converter={StaticResource IsNotZeroConverter}}">
+                    <Label Text="{Binding Title.Length}"
+                          TextColor="{Binding Title.Length, 
+                                  Converter={StaticResource CounterColorConverter}, 
+                                  ConverterParameter=100}"/>
+                    <Label Text="/"
+                           TextColor="{Binding Title.Length, 
+                                  Converter={StaticResource CounterColorConverter}, 
+                                  ConverterParameter=100}"/>
+                    <Label Text="100"
+                           TextColor="{Binding Title.Length, 
+                                  Converter={StaticResource CounterColorConverter}, 
+                                  ConverterParameter=100}"/>
+                </HorizontalStackLayout>
 
-            <Editor Placeholder="Текст уведомления..." 
+            </StackLayout>
+
+
+            <StackLayout>
+                <Editor Placeholder="Текст уведомления..." 
                     Text="{Binding Message}"
-                    HeightRequest="120" />
+                    HeightRequest="120" 
+                        MaxLength="1000"/>
+                <HorizontalStackLayout 
+                    IsVisible="{Binding Message.Length, Converter={StaticResource IsNotZeroConverter}}">
+                    <Label Text="{Binding Message.Length}"
+                          TextColor="{Binding Message.Length, 
+                                  Converter={StaticResource CounterColorConverter}, 
+                                  ConverterParameter=1000}"/>
+                    <Label Text="/"
+                           TextColor="{Binding Message.Length, 
+                                  Converter={StaticResource CounterColorConverter}, 
+                                  ConverterParameter=1000}"/>
+                    <Label Text="1000"
+                           TextColor="{Binding Message.Length, 
+                                  Converter={StaticResource CounterColorConverter}, 
+                                  ConverterParameter=1000}"/>
+                </HorizontalStackLayout>
+
+            </StackLayout>
+
+            <HorizontalStackLayout Spacing="5" 
+                       HorizontalOptions="Start">
+                <Label Text="Разрешить обсуждения:"
+                       VerticalOptions="Center"/>
+                <Switch IsToggled="{Binding AllowReplies}"
+                        VerticalOptions="Center"
+                        Style="{StaticResource ThemeSwitchStyle}"/>
+
+            </HorizontalStackLayout>
 
             <Image Source="{Binding ImagePreview}"
 

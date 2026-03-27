@@ -4,8 +4,6 @@ namespace Scfet.Notification.Views;
 
 public partial class SentNotificationsPage : ContentPage
 {
-    private bool _isScrollToTopButtonVisible = false;
-    private bool _isScrollToBottomVisible = false;
     private const double ScrollThreshold = 500;
 
     public SentNotificationsPage(SentNotificationsViewModel viewModel)
@@ -13,12 +11,6 @@ public partial class SentNotificationsPage : ContentPage
 		InitializeComponent();
 
 		BindingContext = viewModel;
-
-        MainScrollView.Scrolled += OnScrollViewScrolled;
-        MainScrollView.Scrolled += OnScrollBottomViewScrolled;
-
-        scrollToTopButton.Clicked += OnScrollToTopClicked;
-        scrollToBottomButton.Clicked += OnScrollToBottomClicked;
     }
 
     private void OnScrollViewScrolled(object sender, ScrolledEventArgs e)
@@ -26,11 +18,8 @@ public partial class SentNotificationsPage : ContentPage
         bool shouldTopButtonShow = e.ScrollY > ScrollThreshold;
 
 
-        if (shouldTopButtonShow != _isScrollToTopButtonVisible)
+        if (shouldTopButtonShow != scrollToTopButton.IsVisible)
         {
-            _isScrollToTopButtonVisible = shouldTopButtonShow;
-
-            // Анимация появления/исчезновения
             if (shouldTopButtonShow)
             {
                 scrollToTopButton.IsVisible = true;
@@ -41,8 +30,7 @@ public partial class SentNotificationsPage : ContentPage
             {
                 scrollToTopButton.FadeTo(0, 300).ContinueWith(t =>
                 {
-                    if (!_isScrollToTopButtonVisible)
-                        MainThread.BeginInvokeOnMainThread(() => scrollToTopButton.IsVisible = false);
+                     MainThread.BeginInvokeOnMainThread(() => scrollToTopButton.IsVisible = false);
                 });
             }
         }
@@ -54,9 +42,6 @@ public partial class SentNotificationsPage : ContentPage
 
         if (shouldBottomButtonNotShow == scrollToBottomButton.IsVisible)
         {
-            _isScrollToBottomVisible = !shouldBottomButtonNotShow;
-
-            // Анимация появления/исчезновения
             if (!shouldBottomButtonNotShow)
             {
                 scrollToBottomButton.IsVisible = true;
@@ -79,7 +64,6 @@ public partial class SentNotificationsPage : ContentPage
         {
             await MainScrollView.ScrollToAsync(0, 0, true);
 
-            _isScrollToTopButtonVisible = false;
             await scrollToTopButton.FadeTo(0, 200);
             scrollToTopButton.IsVisible = false;
         }
@@ -94,7 +78,6 @@ public partial class SentNotificationsPage : ContentPage
             var contentHeight = contentLayout.Height;
             await MainScrollView.ScrollToAsync(0, contentHeight, true);
 
-            _isScrollToBottomVisible = false;
             await scrollToBottomButton.FadeTo(0, 200);
             scrollToBottomButton.IsVisible = false;
         } 
@@ -106,13 +89,23 @@ public partial class SentNotificationsPage : ContentPage
         base.OnDisappearing();
 
         MainScrollView.Scrolled -= OnScrollViewScrolled;
+        MainScrollView.Scrolled += OnScrollBottomViewScrolled;
+
         scrollToTopButton.Clicked -= OnScrollToTopClicked;
         scrollToBottomButton.Clicked -= OnScrollToBottomClicked;
     }
 
     protected override async void OnAppearing()
     {
-        if(BindingContext is SentNotificationsViewModel viewModel)
+        base.OnAppearing();
+
+        MainScrollView.Scrolled += OnScrollViewScrolled;
+        MainScrollView.Scrolled += OnScrollBottomViewScrolled;
+
+        scrollToTopButton.Clicked += OnScrollToTopClicked;
+        scrollToBottomButton.Clicked += OnScrollToBottomClicked;
+
+        if (BindingContext is SentNotificationsViewModel viewModel)
 		{
 			await viewModel.InitializeAsync();
 		}

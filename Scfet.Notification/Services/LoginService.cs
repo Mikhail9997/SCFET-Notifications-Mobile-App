@@ -9,7 +9,7 @@ namespace Scfet.Notification.Services
 {
     public class LoginService
     {
-        private Auth _currentAuth;
+        private Auth? _currentAuth;
 
         public void Login(Auth auth)
         {
@@ -41,7 +41,23 @@ namespace Scfet.Notification.Services
             Preferences.Remove("user_role");
         }
 
-        public Auth GetCurrentAuth()
+        public async Task LogoutWithRedirect()
+        {
+            _currentAuth = null;
+
+            SecureStorage.Remove("access_token");
+            SecureStorage.Remove("refresh_token");
+
+            // Очищаем Preferences
+            Preferences.Remove("user_id");
+            Preferences.Remove("user_email");
+            Preferences.Remove("user_name");
+            Preferences.Remove("user_role");
+
+            await Shell.Current.GoToAsync("//LoginPage");
+        }
+
+        public Auth? GetCurrentAuth()
         {
             return _currentAuth;
         }

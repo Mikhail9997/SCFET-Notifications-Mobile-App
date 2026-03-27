@@ -14,12 +14,14 @@ namespace Scfet.Notification.ViewModels
     public partial class EditNotificationViewModel:BaseViewModel
     {
         private readonly IApiService _apiService;
+        private readonly LoginService _loginService;
 
-        public EditNotificationViewModel(IApiService apiService)
+        public EditNotificationViewModel(IApiService apiService, LoginService loginService)
         {
             _apiService = apiService;
 
             _ = InitializeFieldsAsync();
+            _loginService = loginService;
         }
 
         public Guid NotificationId { get; set; }
@@ -44,6 +46,9 @@ namespace Scfet.Notification.ViewModels
 
         [ObservableProperty]
         private string message = string.Empty;
+
+        [ObservableProperty]
+        private bool allowReplies;
 
         [ObservableProperty]
         private string? imageUrl = string.Empty;
@@ -219,6 +224,7 @@ namespace Scfet.Notification.ViewModels
 
             Title = NotificationToEdit.Title;
             Message = NotificationToEdit.Message;
+            AllowReplies = NotificationToEdit.AllowReplies;
             ImageUrl = NotificationToEdit.ImageUrl;
             switch (NotificationToEdit.Type)
             {
@@ -299,16 +305,32 @@ namespace Scfet.Notification.ViewModels
             await InitializeAsync();
         }
 
+        private async Task<bool> IsNotificationValid()
+        {
+            if (string.IsNullOrWhiteSpace(Title) || string.IsNullOrWhiteSpace(Message))
+            {
+                await Shell.Current.DisplayAlert("Ошибка", "Заполните заголовок и сообщение", "OK");
+                return false;
+            }
+            else if (Title.Length > 100)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", "Заголовок не может быть больше 100 символов", "OK");
+                return false;
+            }
+            else if (Message.Length > 1000)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", "Текст уведомления не может быть больше 1000 символов", "OK");
+                return false;
+            }
+            return true;
+        }
+
         [RelayCommand]
         private async Task UpdateAsync()
         {
             if (IsBusy) return;
 
-            if (string.IsNullOrWhiteSpace(Title) || string.IsNullOrWhiteSpace(Message))
-            {
-                await Shell.Current.DisplayAlert("Ошибка", "Заполните заголовок и сообщение", "OK");
-                return;
-            }
+            if (!await IsNotificationValid()) return;
 
             IsUpdating = true;
 
@@ -318,6 +340,7 @@ namespace Scfet.Notification.ViewModels
                 {
                     Title = Title,
                     Message = Message,
+                    AllowReplies = AllowReplies,
                     Type = Enum.TryParse<NotificationType>(SelectedType.Key, out var type)
                         ? type
                         : NotificationType.Info,

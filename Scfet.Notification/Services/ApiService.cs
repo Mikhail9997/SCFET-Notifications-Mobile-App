@@ -16,7 +16,7 @@ namespace Scfet.Notification.Services
         Task<AuthResponse<User>> LoginAsync(string email, string password);
         Task Logout();
         Task<Profile> GetCurrentUserAsync();
-        Task<GetNotification<Models.Notification>?> GetNotificationsAsync(NotificationFilter filter);
+        Task<GetItems<Models.Notification>?> GetNotificationsAsync(NotificationFilter filter);
         Task<NotificationDetail?> GetNotificationById(Guid id);
         Task<bool> MarkAsReadAsync(Guid notificationId);
         Task<List<Group>> GetGroupsAsync(GroupFilter filter);
@@ -24,12 +24,17 @@ namespace Scfet.Notification.Services
         Task<List<User>> GetParentsAsync(UserFilter filter);
         Task<List<User>> GetTeachersAsync(UserFilter filter);
         Task<List<User>> GetAdministratorsAsync(UserFilter filter);
-        Task<GetNotification<SentNotification>?> GetSentNotificationsAsync(NotificationFilter filter);
+        Task<NotificationDetail?> GetNotificationDetail(Guid id);
+        Task<GetItems<SentNotification>?> GetSentNotificationsAsync(NotificationFilter filter);
         Task<bool> SendNotificationAsync(CreateNotification request);
         Task<bool> UpdateNotificationAsync(UpdateNotification request);
         Task<bool> RemoveNotificationAsync(Guid id);
         Task<ProfileUpdateResponse> UpdateProfileAsync(string firstName, string lastName, string email, string phoneNumber);
         Task<bool> ChangePasswordAsync(string currentPassword, string newPassword);
+        Task<Response<GetItems<Reply>>?> GetNotificationRepliesAsync(Guid notificationId, NotificationFilter filter);
+        Task<Response?> CreateReplyAsync(CreateReply request);
+        Task<Response?> UpdateReplyAsync(Guid id, UpdateReply request);
+        Task<Response?> RemoveReplyAsync(Guid id);
     }
     //http://localhost:5050/api
     //https://amorously-preeminent-godwit.cloudpub.ru/api
@@ -38,7 +43,7 @@ namespace Scfet.Notification.Services
     {
         private readonly HttpClient _httpClient;
         private readonly LoginService _loginService;
-        private const string BaseUrl = "https://amorously-preeminent-godwit.cloudpub.ru/api";
+        private const string BaseUrl = "http://81.94.159.27:5050/api";
 
         public ApiService(LoginService loginService, ITokenService tokenService)
         {
@@ -199,7 +204,7 @@ namespace Scfet.Notification.Services
             return profileError;
         }
 
-        public async Task<GetNotification<Models.Notification>?> GetNotificationsAsync(NotificationFilter filter)
+        public async Task<GetItems<Models.Notification>?> GetNotificationsAsync(NotificationFilter filter)
         {
             try
             {
@@ -228,7 +233,7 @@ namespace Scfet.Notification.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<GetNotification<Models.Notification>?>(content, new JsonSerializerOptions
+                    return JsonSerializer.Deserialize<GetItems<Models.Notification>?>(content, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
                     }) ?? null;
@@ -463,6 +468,30 @@ namespace Scfet.Notification.Services
             return new List<User>();
         }
 
+        public async Task<NotificationDetail?> GetNotificationDetail(Guid id)
+        {
+            try
+            {
+                await AddAuthHeader();
+
+                var response = await _httpClient.GetAsync($"{BaseUrl}/notifications/{id}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<NotificationDetail>(content, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Get notification detail error: {ex.Message}");
+            }
+            return null;
+        }
+
         public async Task<bool> SendNotificationAsync(CreateNotification request)
         {
             try
@@ -472,6 +501,7 @@ namespace Scfet.Notification.Services
 
                 content.Add(new StringContent(request.Title), "Title");
                 content.Add(new StringContent(request.Message), "Message");
+                content.Add(new StringContent(request.AllowReplies.ToString()), "AllowReplies");
                 content.Add(new StringContent(request.Type.ToString()), "Type");
                 
                 if(request.TargetUserIds != null && request.TargetUserIds.Any())
@@ -512,6 +542,7 @@ namespace Scfet.Notification.Services
 
                 content.Add(new StringContent(request.Title), "Title");
                 content.Add(new StringContent(request.Message), "Message");
+                content.Add(new StringContent(request.AllowReplies.ToString()), "AllowReplies");
                 content.Add(new StringContent(request.Type.ToString()), "Type");
 
                 if(request.TargetUserIds != null && request.TargetUserIds.Any())
@@ -544,7 +575,7 @@ namespace Scfet.Notification.Services
             }
         }
 
-        public async Task<GetNotification<SentNotification>?> GetSentNotificationsAsync(NotificationFilter filter)
+        public async Task<GetItems<SentNotification>?> GetSentNotificationsAsync(NotificationFilter filter)
         {
             try
             {
@@ -575,7 +606,7 @@ namespace Scfet.Notification.Services
                 {
                     var content = await response.Content.ReadAsStringAsync();
 
-                    return JsonSerializer.Deserialize<GetNotification<SentNotification>>(content, new JsonSerializerOptions
+                    return JsonSerializer.Deserialize<GetItems<SentNotification>>(content, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
                     }) ?? null;
@@ -652,6 +683,129 @@ namespace Scfet.Notification.Services
                 Console.WriteLine($"Change password error: {ex.Message}");
                 return false;
             }
+        }
+
+        public async Task<Response<GetItems<Reply>>?> GetNotificationRepliesAsync(Guid notificationId, NotificationFilter filter)
+        {
+            try
+            {
+                await AddAuthHeader();
+
+                var query = new Dictionary<string, string?>(){
+                    { "page", filter.Page.ToString() },
+                    { "PageSize", filter.PageSize.ToString() },
+                    { "SortOrder", filter.SortOrder.ToString() },
+                    { "SortBy", filter.SortBy.ToString() }
+                };
+
+                if (filter.StartDate.HasValue)
+                {
+                    query.Add("startDate", filter.StartDate.Value.ToString("yyyy-MM-dd"));
+                }
+
+                if (filter.EndDate.HasValue)
+                {
+                    query.Add("endDate", filter.EndDate.Value.ToString("yyyy-MM-dd"));
+                }
+
+                var queryString = ResponseUtils.GenerateQuery(query);
+
+                var response = await _httpClient.GetAsync($"{BaseUrl}/notificationreplies/notification/{notificationId}/replies?{queryString}");
+                var content = await response.Content.ReadAsStringAsync();
+
+                if (!string.IsNullOrEmpty(content))
+                {
+                    return JsonSerializer.Deserialize<Response<GetItems<Reply>>>(content, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"get notification replies error: {ex.Message}");
+            }
+            return null;
+        }
+
+        public async Task<Response?> CreateReplyAsync(CreateReply request)
+        {
+            try
+            {
+                await AddAuthHeader();
+
+                var json = JsonSerializer.Serialize(request);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync($"{BaseUrl}/notificationreplies", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (!string.IsNullOrEmpty(responseContent))
+                {
+                    return JsonSerializer.Deserialize<Response>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"create reply error: {ex.Message}");
+            }
+            return null;
+        }
+
+        public async Task<Response?> UpdateReplyAsync(Guid id, UpdateReply request)
+        {
+            try
+            {
+                await AddAuthHeader();
+
+                var json = JsonSerializer.Serialize(request);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync($"{BaseUrl}/notificationreplies/{id}/update", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (!string.IsNullOrEmpty(responseContent))
+                {
+                    return JsonSerializer.Deserialize<Response>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"update reply error: {ex.Message}");
+            }
+            return null;
+        }
+
+        public async Task<Response?> RemoveReplyAsync(Guid id)
+        {
+            try
+            {
+                await AddAuthHeader();
+
+                var response = await _httpClient.DeleteAsync($"{BaseUrl}/notificationreplies/{id}/remove");
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (!string.IsNullOrEmpty(responseContent))
+                {
+                    return JsonSerializer.Deserialize<Response>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"remove reply error: {ex.Message}");
+            }
+            return null;
         }
     }
 }

@@ -87,6 +87,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.P
 build_metadata.AdditionalFiles.TargetPath = Views\ProfilePage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\ProfilePage.xaml
 
+[C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/RepliesPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.RepliesPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\RepliesPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\RepliesPage.xaml
+
 [C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/SentNotificationsPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.SentNotificationsPage.xaml

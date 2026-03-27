@@ -15,6 +15,7 @@ namespace Scfet.Notification.ViewModels
     {
         private readonly IApiService _apiService;
         
+        
         public CreateNotificationViewModel(IApiService apiService)
         {
             _apiService = apiService;
@@ -30,6 +31,9 @@ namespace Scfet.Notification.ViewModels
 
         [ObservableProperty]
         private string message = string.Empty;
+
+        [ObservableProperty]
+        private bool allowReplies; 
 
         [ObservableProperty]
         private Group selectedGroup;
@@ -160,16 +164,32 @@ namespace Scfet.Notification.ViewModels
             }
         }
 
+        private async Task<bool> IsNotificationValid()
+        {
+            if (string.IsNullOrWhiteSpace(Title) || string.IsNullOrWhiteSpace(Message))
+            {
+                await Shell.Current.DisplayAlert("Ошибка", "Заполните заголовок и сообщение", "OK");
+                return false;
+            }
+            else if(Title.Length > 100)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", "Заголовок не может быть больше 100 символов", "OK");
+                return false;
+            }
+            else if(Message.Length > 1000)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", "Текст уведомления не может быть больше 1000 символов", "OK");
+                return false;
+            }
+            return true;
+        }
+
         [RelayCommand]
         private async Task SendNotificationAsync()
         {
             if (IsBusy) return;
 
-            if (string.IsNullOrWhiteSpace(Title) || string.IsNullOrWhiteSpace(Message))
-            {
-                await Shell.Current.DisplayAlert("Ошибка", "Заполните заголовок и сообщение", "OK");
-                return;
-            }
+            if (!await IsNotificationValid()) return;
 
             IsBusy = true;
 
@@ -179,6 +199,7 @@ namespace Scfet.Notification.ViewModels
                 {
                     Title = Title,
                     Message = Message,
+                    AllowReplies = AllowReplies,
                     Type = Enum.TryParse<NotificationType>(SelectedType.Key, out var type)
                         ? type
                         : NotificationType.Info,
@@ -222,7 +243,6 @@ namespace Scfet.Notification.ViewModels
                 if (success)
                 {
                     await Shell.Current.DisplayAlert("Успех", "Уведомление отправлено", "OK");
-                    await Shell.Current.GoToAsync("..");
                 }
                 else
                 {

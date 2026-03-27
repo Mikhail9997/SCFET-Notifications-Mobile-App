@@ -39,7 +39,7 @@ namespace Scfet.Notification.ViewModels
         public ObservableCollection<Models.Notification> notifications = [];
 
         [ObservableProperty]
-        public GetNotification<Models.Notification> pageResult = new();
+        public GetItems<Models.Notification> pageResult = new();
 
         [ObservableProperty]
         public NotificationFilter filter = new();
@@ -103,9 +103,12 @@ namespace Scfet.Notification.ViewModels
             if (IsBusy) return;
 
             IsBusy = true;
+
             await _notificationService.ConnectAsync();
 
             OnPropertyChanged(nameof(IsShowScrollButtons));
+
+            ResetPagination();
             try
             {
                 await LoadNotificationsAsync();
@@ -213,7 +216,7 @@ namespace Scfet.Notification.ViewModels
             }
         }
 
-        public bool ValidatePagination()
+        private bool ValidatePagination()
         {
             int page = PageResult.Page;
             int totalPages = PageResult.TotalPages;
@@ -225,6 +228,14 @@ namespace Scfet.Notification.ViewModels
             }
             IsPaginationEnable = true;
             return true;
+        }
+
+        private void ResetPagination()
+        {
+            if(Filter != null)
+            {
+                Filter.Page = 1;
+            }
         }
 
         [RelayCommand]
@@ -254,61 +265,10 @@ namespace Scfet.Notification.ViewModels
 
         private void ApplyDateRange(string rangeType)
         {
-            var today = DateTime.Today;
+            DateFilterResult result = DateUtils.ApplyDateRange(rangeType);
 
-            switch (rangeType)
-            {
-                case "today":
-                    SelectedStartDate = today;
-                    SelectedEndDate = today;
-                    break;
-                case "yesterday":
-                    var yesterday = today.AddDays(-1);
-                    SelectedStartDate = yesterday;
-                    SelectedEndDate = yesterday;
-                    break;
-                case "this_week":
-                    var dayOffset = today.DayOfWeek == DayOfWeek.Sunday ? 6 : (int)today.DayOfWeek - 1;
-                    SelectedStartDate = today.AddDays(-dayOffset);
-                    SelectedEndDate = today;
-                    break;
-                case "last_week":
-                    var dayOffset2 = today.DayOfWeek == DayOfWeek.Sunday ? 7 : (int)today.DayOfWeek;
-                    var lastWeekStart = today.AddDays(-dayOffset2 - 6);
-                    var lastWeekEnd = lastWeekStart.AddDays(6);
-                    SelectedStartDate = lastWeekStart;
-                    SelectedEndDate = lastWeekEnd;
-                    break;
-                case "this_month":
-                    var monthStart = new DateTime(today.Year, today.Month, 1);
-                    var monthEnd = monthStart.AddMonths(1).AddDays(-1);
-                    SelectedStartDate = monthStart;
-                    SelectedEndDate = monthEnd;
-                    break;
-                case "last_month":
-                    var lastMonthStart = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
-                    var lastMonthEndStart = lastMonthStart.AddMonths(1).AddDays(-1);
-                    SelectedStartDate = lastMonthStart;
-                    SelectedEndDate = lastMonthEndStart;
-                    break;
-                case "this_year":
-                    var yearStart = new DateTime(today.Year, 1, 1);
-                    var yearEnd = today;
-                    SelectedStartDate = yearStart;
-                    SelectedEndDate = yearEnd;
-                    break;
-                case "last_year":
-                    var lastYearStart = new DateTime(today.Year, 1, 1).AddYears(-1);
-                    var lastYearEnd = new DateTime(today.Year, 12, 31).AddYears(-1);
-                    SelectedStartDate = lastYearStart;
-                    SelectedEndDate = lastYearEnd;
-                    break;
-                case "all":
-                default:
-                    SelectedStartDate = null;
-                    SelectedEndDate = null;
-                    break;
-            }
+            SelectedStartDate = result.SelectedStartDate;
+            SelectedEndDate = result.SelectedEndDate;
         }
 
         private void ApplyCustomDateRange()
@@ -358,6 +318,12 @@ namespace Scfet.Notification.ViewModels
             }
         }
 
+        [RelayCommand]
+        private async Task GoToRepliesPageAsync(Guid notificationId)
+        {
+            await Shell.Current.GoToAsync($"RepliesPage?id={notificationId}");
+        }
+
         private void OnNotificationReceived(Models.Notification notification)
         {
             MainThread.BeginInvokeOnMainThread(async () =>
@@ -367,7 +333,8 @@ namespace Scfet.Notification.ViewModels
                 OnPropertyChanged(nameof(Notifications));
 
                 // Показать локальное уведомление
-                if (DeviceInfo.Platform == DevicePlatform.Android || DeviceInfo.Platform == DevicePlatform.iOS)
+                if (DeviceInfo.Platform == DevicePlatform.Android ||
+                DeviceInfo.Platform == DevicePlatform.iOS)
                 {
                     string localImagePath = null;
 

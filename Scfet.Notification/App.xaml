@@ -22,6 +22,37 @@
             <converters:PersonalMessageToTextConverter x:Key="PersonalMessageToTextConverter"/>
             <converters:RoleToRussianConverter x:Key="RoleToRussianConverter"/>
             <converters:RoleToColorConverter x:Key="RoleToColorConverter"/>
+            <converters:IsEqualConverter x:Key="IsEqualConverter"/>
+            <converters:IsNotEqualConverter x:Key="IsNotEqualConverter"/>
+            <converters:IsNotZeroConverter x:Key="IsNotZeroConverter"/>
+            <converters:CounterColorConverter x:Key="CounterColorConverter"/>
+
+            <!-- Цвета для карточек -->
+            <Color x:Key="LightCardColor">#F0F0F0</Color>
+            <Color x:Key="DarkCardColor">#2A2A2A</Color>
+
+            <Style x:Key="CardThemeStyle" TargetType="Border">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightCardColor}, Dark={StaticResource DarkCardColor}}"/>
+            </Style>
+
+            <!-- Цвета для светлой темы переключателя -->
+            <Color x:Key="LightSwitchOnColor">#2E86AB</Color>
+            <Color x:Key="LightSwitchOffColor">#E0E0E0</Color>
+            <Color x:Key="LightSwitchThumbColor">#FFFFFF</Color>
+
+            <!-- Цвета для темной темы переключателя-->
+            <Color x:Key="DarkSwitchOnColor">#2E86AB</Color>
+            <Color x:Key="DarkSwitchOffColor">#424242</Color>
+            <Color x:Key="DarkSwitchThumbColor">#F5F5F5</Color>
+
+            <Style x:Key="ThemeSwitchStyle" TargetType="Switch">
+                <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource LightSwitchOnColor}, Dark={StaticResource DarkSwitchOnColor}}"/>
+                <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource LightSwitchThumbColor}, Dark={StaticResource DarkSwitchThumbColor}}"/>
+            </Style>
+            
+            <!-- Цвета для счетчика символов -->
+            <Color x:Key="CounterColor">#808080</Color>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

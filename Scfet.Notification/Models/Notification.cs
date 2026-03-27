@@ -17,6 +17,7 @@ namespace Scfet.Notification.Models
         public string SenderName { get; set; } = string.Empty;
         public string SenderRole { get; set; } = string.Empty;
         public Guid SenderId { get; set; }
+        public bool AllowReplies { get; set; }
         public bool IsPersonal { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsRead { get; set; }
@@ -26,10 +27,25 @@ namespace Scfet.Notification.Models
         public string ShortDate => CreatedAt.AddHours(3).ToString("dd.MM.yyyy");
     }
 
+    public class NotificationDetailDto
+    {
+        public Guid Id { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
+        public NotificationType Type { get; set; }
+        public string SenderName { get; set; } = string.Empty;
+        public string SenderRole { get; set; } = string.Empty;
+        public Guid SenderId { get; set; }
+        public bool IsPersonal { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string? ImageUrl { get; set; } = string.Empty;
+    }
+
     public class CreateNotification
     {
         public string Title { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
+        public bool AllowReplies { get; set; }
         public NotificationType Type { get; set; } = NotificationType.Info;
         public List<Guid>? TargetUserIds { get; set; }
         public Guid? TargetGroupId { get; set; }
@@ -40,6 +56,7 @@ namespace Scfet.Notification.Models
     {
         public string Title { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
+        public bool AllowReplies { get; set; }
         public NotificationType Type { get; set; } = NotificationType.Info;
         public List<Guid>? TargetUserIds { get; set; }
         public Guid? TargetGroupId { get; set; }
@@ -54,6 +71,7 @@ namespace Scfet.Notification.Models
         public string Message { get; set; } = string.Empty;
         public NotificationType Type { get; set; }
         public DateTime CreatedAt { get; set; }
+        public bool IsPersonal { get; set; }
         public int TotalReceivers { get; set; }
         public int ReadReceivers { get; set; }
         public string? ImageUrl { get; set; } = string.Empty;
@@ -62,7 +80,7 @@ namespace Scfet.Notification.Models
         public double ReadPercentage => TotalReceivers > 0 ? (double)ReadReceivers / TotalReceivers * 100 : 0;
     }
 
-    public class GetNotification<T>
+    public class GetItems<T>
     {
         public IReadOnlyList<T> Items { get; set; }
         public int TotalCount { get; set; }
@@ -78,10 +96,15 @@ namespace Scfet.Notification.Models
         public string Message { get; set; } = string.Empty;
         public NotificationType Type { get; set; }
         public string SenderName { get; set; } = string.Empty;
+        public string SenderRole { get; set; } = string.Empty;
+        public bool IsPersonal { get; set; }
+        public bool AllowReplies { get; set; }
         public Guid SenderId { get; set; }
         public DateTime CreatedAt { get; set; }
         public List<NotificationReceiver> Receivers { get; set; } = new();
         public string? ImageUrl { get; set; } = string.Empty;
+
+        public string FormattedDate => CreatedAt.AddHours(3).ToString("dd.MM.yyyy HH:mm");
     }
 
     public class NotificationReceiver

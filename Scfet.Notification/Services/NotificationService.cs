@@ -21,15 +21,21 @@ namespace Scfet.Notification.Services
         private System.Timers.Timer _tokenCheckTimer;
         private DateTime _lastTokenRefreshTime;
 
-        private readonly string BaseUrl = "https://amorously-preeminent-godwit.cloudpub.ru";
+        private readonly string BaseUrl = "http://81.94.159.27:5050";
         //http://localhost:5050/notificationHub
         //https://amorously-preeminent-godwit.cloudpub.ru
         //http://81.94.159.27:5050
 
         public event Action<Models.Notification>? OnNotificationReceived;
+
         public event Action<Guid>? OnNotificationRemove;
         public event Action<Guid>? OnNotificationRead;
         public event Action<Models.Notification>? OnNotificationUpdate;
+
+        public event Action<Reply> OnReplyRead;
+        public event Action<Reply> OnReplyUpdate;
+        public event Action<Guid> OnReplyRemove;
+
         public event Action? OnConnectionLost;
         public event Action? OnConnectionRestored;
 
@@ -155,6 +161,31 @@ namespace Scfet.Notification.Services
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     OnNotificationUpdate?.Invoke(notification);
+                });
+            });
+
+            // Ответы
+            _hubConnection.On<Reply>("ReceiveNotificationReply", (reply) =>
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    OnReplyRead?.Invoke(reply);
+                });
+            });
+
+            _hubConnection.On<Guid>("RemoveNotificationReply", (id) =>
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    OnReplyRemove?.Invoke(id);
+                });
+            });
+
+            _hubConnection.On<Reply>("UpdateNotificationReply", (reply) =>
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    OnReplyUpdate?.Invoke(reply);
                 });
             });
         }
