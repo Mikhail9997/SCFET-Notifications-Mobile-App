@@ -47,7 +47,7 @@ namespace Scfet.Notification.Services
 
         public ApiService(LoginService loginService, ITokenService tokenService)
         {
-            var handler = new AuthHandler(tokenService)
+            var handler = new AuthHandler(tokenService, loginService)
             {
                 InnerHandler = new HttpClientHandler()
                 {
@@ -100,18 +100,16 @@ namespace Scfet.Notification.Services
                     {
                         var data = authResponse.Data;
 
-                        await SecureStorage.SetAsync("access_token", data.AccessToken);
-                        await SecureStorage.SetAsync("refresh_token", data.RefreshToken);
-
                         var auth = new Auth
                         {
-                            Token = data.AccessToken,
+                            AccessToken = data.AccessToken,
+                            RefreshToken = data.RefreshToken,
                             UserId = data.UserId.ToString(),
                             Email = data.Email,
                             FullName = data.FullName,
                             Role = data.Role
                         };
-                        _loginService.Login(auth);
+                        await _loginService.Login(auth);
 
                         return authResponse;
                     }

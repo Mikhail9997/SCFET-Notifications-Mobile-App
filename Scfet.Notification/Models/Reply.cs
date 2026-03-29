@@ -15,8 +15,6 @@ namespace Scfet.Notification.Models
         public string UserRole { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
-
-        public string FormattedDate => CreatedAt.AddHours(3).ToString("dd.MM.yyyy HH:mm");
     }
 
     public class CreateReply

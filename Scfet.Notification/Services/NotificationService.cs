@@ -286,7 +286,7 @@ namespace Scfet.Notification.Services
                         var auth = _loginService.GetCurrentAuth();
                         if (auth != null)
                         {
-                            auth.Token = tokenData.AccessToken;
+                            auth.AccessToken = tokenData.AccessToken;
                             _loginService.UpdateAuth(auth);
                         }
 

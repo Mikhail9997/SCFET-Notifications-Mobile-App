@@ -58,7 +58,7 @@ namespace Scfet.Notification.ViewModels
         private string? senderRole = string.Empty;
 
         [ObservableProperty]
-        private string? formattedDate = string.Empty;
+        private DateTime? createdAt;
 
         [ObservableProperty]
         private bool isPersonal;
@@ -214,7 +214,7 @@ namespace Scfet.Notification.ViewModels
                 Title = notification.Title;
                 Message = notification.Message;
                 ImageUrl = notification.ImageUrl;
-                FormattedDate = notification.FormattedDate;
+                CreatedAt = notification.CreatedAt;
                 SenderName = notification.SenderName;
                 SenderRole = notification.SenderRole;
                 IsPersonal = notification.IsPersonal;
@@ -589,10 +589,9 @@ namespace Scfet.Notification.ViewModels
             SelectedDateRange = DateRangeOptions[0];
 
             var auth = _loginService.GetCurrentAuth();
-            if (auth == null || auth.UserId == null || string.IsNullOrEmpty(auth.UserId)) 
-                await _loginService.LogoutWithRedirect();
+            var result = Guid.TryParse(auth?.UserId, out Guid currentUserId);
 
-            CurrentUserId = Guid.Parse(auth.UserId);
+            CurrentUserId = result ? currentUserId : Guid.Empty;
         }
 
     }

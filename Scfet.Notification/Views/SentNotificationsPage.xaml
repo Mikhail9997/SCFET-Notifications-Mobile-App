@@ -44,7 +44,7 @@
                            VerticalOptions="Center"
                            Spacing="20">
             <ActivityIndicator IsRunning="True" 
-                             Color="#2E86AB"
+                             Color="{StaticResource PrimaryColor}"
                              HeightRequest="50"
                              WidthRequest="50" />
             <Label Text="Загрузка уведомлений..." 
@@ -111,7 +111,7 @@
                                 <HorizontalStackLayout Spacing="10">
                                     <Button Text="Применить фильтр"
                                         Command="{Binding ApplyFiltersCommand}"
-                                        BackgroundColor="#2E86AB"
+                                        BackgroundColor="{StaticResource PrimaryColor}"
                                         TextColor="White"
                                         CornerRadius="5"
                                         HorizontalOptions="FillAndExpand"
@@ -170,7 +170,7 @@
 
                                                 <Border Grid.Row="0"
                                                        Grid.ColumnSpan="2"
-                                                       BackgroundColor="#FF6B6B"
+                                                       BackgroundColor="#FFE5E5"
                                                        Padding="8,4"
                                                        HorizontalOptions="Start"
                                                        Margin="0,0,0,5"
@@ -178,11 +178,21 @@
                                                     <Border.StrokeShape>
                                                         <RoundRectangle CornerRadius="8"/>
                                                     </Border.StrokeShape>
-                                                    <Label Text="👤 Личное"
-                                                           TextColor="White"
-                                                           FontSize="11"
-                                                           FontAttributes="Bold"/>
+                                                    <HorizontalStackLayout Spacing="4">
+                                                        <Label Text="🔒" 
+                                                            FontSize="9"/>
+                                                        <Label Text="личное"
+                                                            FontSize="9"
+                                                            TextColor="{AppThemeBinding Light='#E74C3C', Dark='#FF8A7A'}"
+                                                            FontAttributes="Bold"/>
+                                                    </HorizontalStackLayout>
                                                 </Border>
+
+                                                <Label Grid.Column="1" 
+                                                   Grid.Row="0"
+                                                   Text="{Binding CreatedAt, Converter={StaticResource RelativeTimeConverter}}" 
+                                                   FontSize="12" 
+                                                    FontAttributes="Bold" />
 
                                                 <Image Grid.Row="1"
                                                    Grid.ColumnSpan="2"
@@ -198,12 +208,6 @@
                                                    Text="{Binding Title}" 
                                                    FontSize="16" 
                                                    FontAttributes="Bold" />
-
-                                                <Label Grid.Column="1" 
-                                                   Grid.Row="2"
-                                                   Text="{Binding FormattedDate}" 
-                                                   FontSize="12" 
-                                                    FontAttributes="Bold" />
 
                                                 <Label Grid.Column="0" 
                                                        Grid.ColumnSpan="2"
@@ -243,7 +247,7 @@
                                                         Text="Обсудить" 
                                                         TextColor="{AppThemeBinding Light=White, Dark=White}"
                                                         FontSize="12"
-                                                        BackgroundColor="#2E86AB"/>
+                                                        BackgroundColor="{StaticResource PrimaryColor}"/>
 
                                             </Grid>
 
@@ -270,7 +274,7 @@
                            VerticalOptions="Center"
                            Spacing="20">
                         <ActivityIndicator IsRunning="True" 
-                             Color="#2E86AB"
+                             Color="{StaticResource PrimaryColor}"
                              HeightRequest="50"
                              WidthRequest="50" />
                         <Label Text="Загрузка уведомлений..." 
@@ -286,7 +290,7 @@
                             Text="Загрузить еще" 
                             TextColor="{AppThemeBinding Light=White, Dark=White}"
                             Command="{Binding LoadNotificationsPaginationCommand}"
-                            BackgroundColor="#2E86AB"/>
+                            BackgroundColor="{StaticResource PrimaryColor}"/>
                     </Grid>
                 </Grid>
             </StackLayout>
@@ -307,7 +311,7 @@
                 WidthRequest="60"
                 HeightRequest="60"
                 CornerRadius="30"
-                BackgroundColor="#2E86AB"
+                BackgroundColor="{StaticResource PrimaryColor}"
                 TextColor="White"
                 FontSize="20"
                 IsVisible="false"/>
@@ -319,7 +323,7 @@
                 WidthRequest="60"
                 HeightRequest="60"
                 CornerRadius="30"
-                BackgroundColor="#2E86AB"
+                BackgroundColor="{StaticResource PrimaryColor}"
                 FontSize="20"
                 TextColor="White"
                 IsVisible="False"/>

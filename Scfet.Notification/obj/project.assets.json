@@ -43645,7 +43645,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "2.0.0",
+    "version": "2.0.2",
     "restore": {
       "projectUniqueName": "C:\\Users\\mkazm\\source\\repos\\Scfet.Notification\\Scfet.Notification\\Scfet.Notification.csproj",
       "projectName": "Scfet.Notification",

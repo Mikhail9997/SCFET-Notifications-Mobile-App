@@ -156,40 +156,53 @@
                                         Margin="10,5"
                                         BackgroundColor="{Binding Type, Converter={StaticResource NotificationTypeToColorConverter}}"
                                         >
+                                    <Border.Stroke>
+                                        <MultiBinding Converter="{StaticResource BorderStrokeToColorConverter}">
+                                            <Binding Source="{RelativeSource AncestorType={x:Type vm:NotificationsViewModel}}" 
+                                                     Path="CurrentUserId"/>
+                                            <Binding Path="SenderId"/>
+                                        </MultiBinding>
+                                    </Border.Stroke>
+                                    
                                     <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
                                             ColumnDefinitions="*,Auto"
-                                            RowSpacing="5"
+                                            RowSpacing="7"
                                             ColumnSpacing="5">
 
                                         <!-- Дата -->
                                         <Label Grid.Row="0" 
                                                 Grid.Column="1"
-                                                Text="{Binding FormattedDate}" 
+                                                Text="{Binding CreatedAt, Converter={StaticResource RelativeTimeConverter}}" 
                                                 FontSize="12" />
-                                        
-                                        <!-- Изображение -->
-                                        <Image Grid.Row="1"
-                                                Grid.ColumnSpan="2"
-                                                HeightRequest="350"
-                                                IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}">
-                                            <Image.Source>
-                                                <UriImageSource Uri="{Binding ImageUrl}"/>
-                                            </Image.Source>
-                                        </Image>
 
-                                        <!-- Заголовок -->
-                                        <Label Grid.Row="2" 
-                                                Grid.Column="0"
-                                                Text="{Binding Title}" 
-                                                FontSize="16" 
-                                                FontAttributes="Bold" />
+                                        <!-- Метка личного сообщения -->
+                                        <Border IsVisible="{Binding IsPersonal}"
+                                                BackgroundColor="#FFE5E5"
+                                                Padding="8,3"
+                                                StrokeThickness="0"
+                                                HorizontalOptions="Start"
+                                                VerticalOptions="Center"
+                                                Grid.Row="0"
+                                                Grid.Column="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="12"/>
+                                            </Border.StrokeShape>
+                                            <HorizontalStackLayout Spacing="4">
+                                                <Label Text="🔒" 
+                                                            FontSize="9"/>
+                                                <Label Text="личное"
+                                                            FontSize="9"
+                                                            TextColor="{AppThemeBinding Light='#E74C3C', Dark='#FF8A7A'}"
+                                                            FontAttributes="Bold"/>
+                                            </HorizontalStackLayout>
+                                        </Border>
 
                                         <!-- Отправитель -->
                                         <Grid
-                                                Grid.Row="3" 
+                                                Grid.Row="1" 
                                                 Grid.Column="0"
                                                 ColumnSpacing="3"
-                                                ColumnDefinitions="auto,auto,auto,auto,auto"
+                                                ColumnDefinitions="auto,auto,auto,auto"
                                                 VerticalOptions="Center">
 
                                             <!-- Аватар/иконка -->
@@ -238,28 +251,24 @@
                                                         TextColor="White"
                                                         FontAttributes="Bold"/>
                                             </Border>
-
-                                            <!-- Метка личного сообщения -->
-                                            <Border IsVisible="{Binding IsPersonal}"
-                                                    BackgroundColor="#FFE5E5"
-                                                    Padding="8,3"
-                                                    StrokeThickness="0"
-                                                    HorizontalOptions="Center"
-                                                    VerticalOptions="Center"
-                                                    Grid.Column="4">
-                                                <Border.StrokeShape>
-                                                    <RoundRectangle CornerRadius="12"/>
-                                                </Border.StrokeShape>
-                                                <HorizontalStackLayout Spacing="4">
-                                                    <Label Text="🔒" 
-                                                            FontSize="9"/>
-                                                    <Label Text="личное"
-                                                            FontSize="9"
-                                                            TextColor="{AppThemeBinding Light='#E74C3C', Dark='#FF8A7A'}"
-                                                            FontAttributes="Bold"/>
-                                                </HorizontalStackLayout>
-                                            </Border>
                                         </Grid>
+
+                                        <!-- Изображение -->
+                                        <Image Grid.Row="2"
+                                                Grid.ColumnSpan="2"
+                                                HeightRequest="350"
+                                                IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}">
+                                            <Image.Source>
+                                                <UriImageSource Uri="{Binding ImageUrl}"/>
+                                            </Image.Source>
+                                        </Image>
+
+                                        <!-- Заголовок -->
+                                        <Label Grid.Row="3" 
+                                                Grid.Column="0"
+                                                Text="{Binding Title}" 
+                                                FontSize="16" 
+                                                FontAttributes="Bold" />
 
                                         <!-- Сообщение -->
                                         <Label Grid.Row="4" 
@@ -309,7 +318,7 @@
                                                VerticalOptions="Center"
                                                Spacing="20">
                         <ActivityIndicator IsRunning="True" 
-                                                    Color="#2E86AB"
+                                                    Color="{StaticResource PrimaryColor}"
                                                     HeightRequest="50"
                                                     WidthRequest="50" />
                         <Label Text="Загрузка уведомлений..." 
@@ -325,7 +334,7 @@
                                         Text="Загрузить еще" 
                                         TextColor="{AppThemeBinding Light=White, Dark=White}"
                                         Command="{Binding LoadNotificationsPaginationCommand}"
-                                        BackgroundColor="#2E86AB"/>
+                                        BackgroundColor="{StaticResource PrimaryColor}"/>
                     </Grid>
                 </Grid>
 
@@ -347,7 +356,7 @@
                 WidthRequest="60"
                 HeightRequest="60"
                 CornerRadius="30"
-                BackgroundColor="#2E86AB"
+                BackgroundColor="{StaticResource PrimaryColor}"
                 TextColor="White"
                 FontSize="20"
                 IsVisible="false"/>
@@ -359,7 +368,7 @@
                 WidthRequest="60"
                 HeightRequest="60"
                 CornerRadius="30"
-                BackgroundColor="#2E86AB"
+                BackgroundColor="{StaticResource PrimaryColor}"
                 FontSize="20"
                 TextColor="White"
                 IsVisible="False"/>

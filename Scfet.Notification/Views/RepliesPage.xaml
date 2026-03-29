@@ -34,7 +34,7 @@
             <Label Text="Проверьте подключение к интернету" FontSize="16"/>
             <Button Text="Перезагрузить"
                     Command="{Binding RefreshCommand}"
-                    BackgroundColor="#2E86AB"
+                    BackgroundColor="{StaticResource PrimaryColor}"
                     TextColor="White"
                     CornerRadius="5"
                     Margin="0,10,0,0"/>
@@ -48,7 +48,7 @@
 
             <StackLayout IsVisible="{Binding IsBusy}">
                 <ActivityIndicator IsRunning="True" 
-                             Color="#2E86AB"
+                             Color="{StaticResource PrimaryColor}"
                              HeightRequest="50"
                              WidthRequest="50" />
                 <Label Text="Загрузка ответов..." 
@@ -75,10 +75,34 @@
                         </Border.StrokeShape>
 
                         <StackLayout Spacing="5">
-                            <!-- Дата -->
-                            <Label 
-                                Text="{Binding FormattedDate}" 
-                                FontSize="12" />
+                            <Grid ColumnDefinitions="*,auto">
+                                <!-- Дата -->
+                                <Label 
+                                    Text="{Binding CreatedAt, Converter={StaticResource RelativeTimeConverter}}" 
+                                    FontSize="12"
+                                    Grid.Column="1"/>
+
+                                <!-- Метка личного сообщения -->
+                                <Border IsVisible="{Binding IsPersonal}"
+                                        BackgroundColor="#FFE5E5"
+                                        Padding="8,3"
+                                        StrokeThickness="0"
+                                        HorizontalOptions="Start"
+                                        VerticalOptions="Center"
+                                        Grid.Column="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12"/>
+                                    </Border.StrokeShape>
+                                    <HorizontalStackLayout Spacing="4">
+                                        <Label Text="🔒" 
+                                               FontSize="9"/>
+                                        <Label Text="личное"
+                                                FontSize="9"
+                                                TextColor="{AppThemeBinding Light='#E74C3C', Dark='#FF8A7A'}"
+                                                FontAttributes="Bold"/>
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </Grid>
 
                             <!-- Отправитель -->
                             <Grid 
@@ -131,27 +155,6 @@
                                             FontSize="10"
                                             TextColor="White"
                                             FontAttributes="Bold"/>
-                                </Border>
-
-                                <!-- Метка личного сообщения -->
-                                <Border IsVisible="{Binding IsPersonal}"
-                                        BackgroundColor="#FFE5E5"
-                                        Padding="8,3"
-                                        StrokeThickness="0"
-                                        HorizontalOptions="Center"
-                                        VerticalOptions="Center"
-                                        Grid.Column="4">
-                                    <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="12"/>
-                                    </Border.StrokeShape>
-                                    <HorizontalStackLayout Spacing="4">
-                                        <Label Text="🔒" 
-                                               FontSize="9"/>
-                                        <Label Text="личное"
-                                                FontSize="9"
-                                                TextColor="{AppThemeBinding Light='#E74C3C', Dark='#FF8A7A'}"
-                                                FontAttributes="Bold"/>
-                                    </HorizontalStackLayout>
                                 </Border>
                             </Grid>
 
@@ -250,22 +253,22 @@
                                 <Editor Text="{Binding ReplyMessage}"
                                         Placeholder="Введите сообщение..."
                                         HeightRequest="120"
-                                        MaxLength="500"
+                                        MaxLength="1000"
                                         AutoSize="TextChanges"/>
                                 <HorizontalStackLayout 
                                         IsVisible="{Binding ReplyMessage.Length, Converter={StaticResource IsNotZeroConverter}}">
                                     <Label Text="{Binding ReplyMessage.Length}"
                                            TextColor="{Binding ReplyMessage.Length, 
                                        Converter={StaticResource CounterColorConverter}, 
-                                       ConverterParameter=500}"/>
+                                       ConverterParameter=1000}"/>
                                     <Label Text="/"
                                             TextColor="{Binding ReplyMessage.Length, 
                                       Converter={StaticResource CounterColorConverter}, 
-                                      ConverterParameter=500}"/>
-                                    <Label Text="500"
+                                      ConverterParameter=1000}"/>
+                                    <Label Text="1000"
                                            TextColor="{Binding ReplyMessage.Length, 
                                          Converter={StaticResource CounterColorConverter}, 
-                                         ConverterParameter=500}"/>
+                                         ConverterParameter=1000}"/>
                                 </HorizontalStackLayout>
 
                             </StackLayout>
@@ -274,7 +277,7 @@
                             <ActivityIndicator IsVisible="{Binding IsReplyCreation}"
                               IsRunning="{Binding IsReplyCreation}"
                               HorizontalOptions="Center"
-                              Color="#2E86AB"/>
+                              Color="{StaticResource PrimaryColor}"/>
 
                             <!-- Кнопка отправки -->
                             <Button Command="{Binding CreateReplyCommand}"
@@ -284,7 +287,7 @@
                                     HorizontalOptions="Start"
                                     Margin="0,20,0,0"
                                     IsEnabled="{Binding IsReplyCreation, Converter={StaticResource InverseBoolConverter}}"
-                                    BackgroundColor="#2E86AB"/>
+                                    BackgroundColor="{StaticResource PrimaryColor}"/>
                         </StackLayout>
                     </Border>
 
@@ -349,6 +352,14 @@
                                     <Border Padding="15" 
                                             Margin="10,5"
                                             Style="{StaticResource CardThemeStyle}">
+
+                                        <Border.Stroke>
+                                            <MultiBinding Converter="{StaticResource BorderStrokeToColorConverter}">
+                                                <Binding Source="{RelativeSource AncestorType={x:Type vm:RepliesViewModel}}" 
+                                                     Path="CurrentUserId"/>
+                                                <Binding Path="UserId"/>
+                                            </MultiBinding>
+                                        </Border.Stroke>
 
                                         <Grid RowDefinitions="Auto, Auto, Auto"
                                               ColumnDefinitions="*, auto"
@@ -418,7 +429,7 @@
                                                     <Label.IsVisible>
                                                         <MultiBinding Converter="{StaticResource IsEqualConverter}">
                                                             <Binding Source="{RelativeSource AncestorType={x:Type vm:RepliesViewModel}}" 
-                                                            Path="NotificationSenderId"/>
+                                                                Path="NotificationSenderId"/>
                                                             <Binding Path="UserId"/>
                                                         </MultiBinding>
                                                     </Label.IsVisible>
@@ -428,7 +439,7 @@
                                             <!-- Дата -->
                                             <Label Grid.Row="1" 
                                                     Grid.Column="0"
-                                                    Text="{Binding FormattedDate}" 
+                                                    Text="{Binding CreatedAt, Converter={StaticResource RelativeTimeConverter}}" 
                                                     FontSize="12" />
 
                                             <!-- Сообщение -->
@@ -459,13 +470,36 @@
                                                 
                                                 <StackLayout Spacing="5"
                                                              Padding="20">
-                                                    <!-- Сообщение -->
-                                                    <Editor Text="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, 
-                                                        Path=EditingMessage}"
-                                                        Placeholder="Введите сообщение..."
-                                                        AutoSize="TextChanges"
-                                                        HeightRequest="120"
-                                                        MaxLength="500"/>
+                                                    <StackLayout>
+                                                        <!-- Сообщение -->
+                                                        <Editor Text="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, 
+                                                            Path=EditingMessage}"
+                                                            Placeholder="Введите сообщение..."
+                                                            AutoSize="TextChanges"
+                                                            HeightRequest="120"
+                                                            MaxLength="1000"/>
+                                                        <HorizontalStackLayout 
+                                                                 IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, 
+                                                                 Path=EditingMessage.Length, Converter={StaticResource IsNotZeroConverter}}">
+                                                            <Label Text="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, 
+                                                                  Path=EditingMessage.Length}"
+                                                                  TextColor="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, 
+                                                                            Path=EditingMessage.Length, 
+                                                                            Converter={StaticResource CounterColorConverter}, 
+                                                                            ConverterParameter=1000}"/>
+                                                            <Label Text="/"
+                                                                   TextColor="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, 
+                                                                            Path=EditingMessage.Length, 
+                                                                            Converter={StaticResource CounterColorConverter}, 
+                                                                            ConverterParameter=1000}"/>
+                                                            <Label Text="1000"
+                                                                    TextColor="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, 
+                                                                               Path=EditingMessage.Length, 
+                                                                               Converter={StaticResource CounterColorConverter}, 
+                                                                               ConverterParameter=1000}"/>
+                                                        </HorizontalStackLayout>
+
+                                                    </StackLayout>
 
                                                     <!-- Индикатор загрузки -->
                                                     <ActivityIndicator IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, 
@@ -473,7 +507,7 @@
                                                                       IsRunning="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, 
                                                                                   Path=IsReplyUpdating}"
                                                                       HorizontalOptions="Center"
-                                                                      Color="#2E86AB"/>
+                                                                      Color="{StaticResource PrimaryColor}"/>
 
                                                     <!-- Кнопка -->
                                                     <Button Command="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, 
@@ -483,7 +517,7 @@
                                                         CornerRadius="10"
                                                         Margin="0,20,0,0"
                                                         IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, Path=IsReplyUpdating, Converter={StaticResource InverseBoolConverter}}"
-                                                        BackgroundColor="#2E86AB"/>
+                                                        BackgroundColor="{StaticResource PrimaryColor}"/>
                                                 </StackLayout>
                                             </Border>
                                         </Grid>
@@ -503,7 +537,7 @@
                                                VerticalOptions="Center"
                                                Spacing="20">
                         <ActivityIndicator IsRunning="True" 
-                                                    Color="#2E86AB"
+                                                    Color="{StaticResource PrimaryColor}"
                                                     HeightRequest="50"
                                                     WidthRequest="50" />
                         <Label Text="Загрузка уведомлений..." 
@@ -540,7 +574,7 @@
                 WidthRequest="60"
                 HeightRequest="60"
                 CornerRadius="30"
-                BackgroundColor="#2E86AB"
+                BackgroundColor="{StaticResource PrimaryColor}"
                 TextColor="White"
                 FontSize="20"
                 IsVisible="false"/>
@@ -552,7 +586,7 @@
                 WidthRequest="60"
                 HeightRequest="60"
                 CornerRadius="30"
-                BackgroundColor="#2E86AB"
+                BackgroundColor="{StaticResource PrimaryColor}"
                 FontSize="20"
                 TextColor="White"
                 IsVisible="False"/>

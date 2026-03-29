@@ -19,12 +19,16 @@ namespace Scfet.Notification.ViewModels
         private readonly IApiService _apiService;
         private readonly NotificationService _notificationService;
         private readonly FileService _fileService;
+        private readonly LoginService _loginService;
 
-        public NotificationsViewModel(IApiService apiService, NotificationService notificationService, FileService fileService)
+        public NotificationsViewModel(IApiService apiService,
+            NotificationService notificationService, FileService fileService,
+            LoginService loginService)
         {
             _apiService = apiService;
             _notificationService = notificationService;
             _fileService = fileService;
+            _loginService = loginService;
 
             _notificationService.OnNotificationReceived += OnNotificationReceived;
             _notificationService.OnNotificationRemove += OnNotificationRemove;
@@ -33,7 +37,11 @@ namespace Scfet.Notification.ViewModels
 
             Title = "Уведомления";
             _ = InitializeFields();
+
         }
+
+        [ObservableProperty]
+        public Guid currentUserId; 
 
         [ObservableProperty]
         public ObservableCollection<Models.Notification> notifications = [];
@@ -464,6 +472,11 @@ namespace Scfet.Notification.ViewModels
             SelectedSortBy = SortByItems[0];
             SelectedSortOrder = SortOrderItems[1];
             SelectedDateRange = DateRangeOptions[0];
+
+            var auth = _loginService.GetCurrentAuth();
+            var result = Guid.TryParse(auth?.UserId, out Guid currentUserId);
+
+            CurrentUserId = result ? currentUserId : Guid.Empty;
         }
     }
 

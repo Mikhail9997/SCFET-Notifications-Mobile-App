@@ -55,21 +55,21 @@
                 <Editor Placeholder="Текст уведомления..." 
                     Text="{Binding Message}"
                     HeightRequest="120" 
-                        MaxLength="1000"/>
+                        MaxLength="2000"/>
                 <HorizontalStackLayout 
                     IsVisible="{Binding Message.Length, Converter={StaticResource IsNotZeroConverter}}">
                     <Label Text="{Binding Message.Length}"
                           TextColor="{Binding Message.Length, 
                                   Converter={StaticResource CounterColorConverter}, 
-                                  ConverterParameter=1000}"/>
+                                  ConverterParameter=2000}"/>
                     <Label Text="/"
                            TextColor="{Binding Message.Length, 
                                   Converter={StaticResource CounterColorConverter}, 
-                                  ConverterParameter=1000}"/>
-                    <Label Text="1000"
+                                  ConverterParameter=2000}"/>
+                    <Label Text="2000"
                            TextColor="{Binding Message.Length, 
                                   Converter={StaticResource CounterColorConverter}, 
-                                  ConverterParameter=1000}"/>
+                                  ConverterParameter=2000}"/>
                 </HorizontalStackLayout>
 
             </StackLayout>
@@ -127,7 +127,7 @@
                     <Label Text="Фильтрация групп:" 
                            FontSize="14" 
                            FontAttributes="Bold" 
-                           TextColor="#2E86AB"/>
+                           TextColor="{StaticResource PrimaryColor}"/>
 
                     <Entry Placeholder="Название группы"
                            Text="{Binding GroupFilter.Name}" />
@@ -135,7 +135,7 @@
                     <HorizontalStackLayout Spacing="10">
                         <Button Text="Применить фильтр"
                                 Command="{Binding ApplyGroupFiltersCommand}"
-                                BackgroundColor="#2E86AB"
+                                BackgroundColor="{StaticResource PrimaryColor}"
                                 TextColor="White"
                                 CornerRadius="5"
                                 HorizontalOptions="FillAndExpand"
@@ -173,7 +173,7 @@
                     <Label Text="Фильтрация пользователей:" 
                            FontSize="14" 
                            FontAttributes="Bold"
-                           TextColor="#2E86AB"/>
+                           TextColor="{StaticResource PrimaryColor}"/>
 
                     <Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*" ColumnSpacing="10" RowSpacing="10">
                         <Entry Placeholder="Имя"
@@ -196,7 +196,7 @@
                     <HorizontalStackLayout Spacing="10">
                         <Button Text="Применить фильтр"
                                 Command="{Binding ApplyUserFiltersCommand}"
-                                BackgroundColor="#2E86AB"
+                                BackgroundColor="{StaticResource PrimaryColor}"
                                 TextColor="White"
                                 CornerRadius="5"
                                 HorizontalOptions="FillAndExpand"
@@ -214,7 +214,7 @@
                     <Label Text="Выберите пользователя:" 
                            FontSize="14" 
                            FontAttributes="Bold" 
-                           TextColor="#2E86AB"/>
+                           TextColor="{StaticResource PrimaryColor}"/>
                     <Picker Title="Пользователь"
                             ItemsSource="{Binding Users}"
                             ItemDisplayBinding="{Binding FullName}"
@@ -237,7 +237,7 @@
                     <Label Text="Детальная информация"
                            FontSize="16"
                            FontAttributes="Bold"
-                           TextColor="#2E86AB"/>
+                           TextColor="{StaticResource PrimaryColor}"/>
 
                     <Label>
                         <Label.FormattedText>
@@ -316,11 +316,11 @@
             <ActivityIndicator IsVisible="{Binding IsBusy}"
                               IsRunning="{Binding IsBusy}"
                               HorizontalOptions="Center"
-                              Color="#2E86AB"/>
+                              Color="{StaticResource PrimaryColor}"/>
 
             <Button Text="Отправить уведомление" 
                     Command="{Binding SendNotificationCommand}"
-                    BackgroundColor="#2E86AB"
+                    BackgroundColor="{StaticResource PrimaryColor}"
                     TextColor="White"
                     CornerRadius="10"
                     Margin="0,20,0,0"

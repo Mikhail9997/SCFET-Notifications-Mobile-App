@@ -22,9 +22,6 @@ namespace Scfet.Notification.Models
         public DateTime CreatedAt { get; set; }
         public bool IsRead { get; set; }
         public string? ImageUrl { get; set; } = string.Empty;
-
-        public string FormattedDate => CreatedAt.AddHours(3).ToString("dd.MM.yyyy HH:mm");
-        public string ShortDate => CreatedAt.AddHours(3).ToString("dd.MM.yyyy");
     }
 
     public class NotificationDetailDto

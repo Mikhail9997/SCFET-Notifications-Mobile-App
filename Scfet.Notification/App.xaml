@@ -26,6 +26,10 @@
             <converters:IsNotEqualConverter x:Key="IsNotEqualConverter"/>
             <converters:IsNotZeroConverter x:Key="IsNotZeroConverter"/>
             <converters:CounterColorConverter x:Key="CounterColorConverter"/>
+            <converters:RelativeTimeConverter x:Key="RelativeTimeConverter"/>
+            <converters:BorderStrokeToColorConverter x:Key="BorderStrokeToColorConverter"/>
+
+            <Color x:Key="PrimaryColor">#2E86AB</Color>
 
             <!-- Цвета для карточек -->
             <Color x:Key="LightCardColor">#F0F0F0</Color>

@@ -13,6 +13,7 @@ namespace Scfet.Notification.Handlers
     public class AuthHandler: DelegatingHandler
     {
         private readonly ITokenService _tokenService;
+        private readonly LoginService _loginService;
 
         private readonly HashSet<string> _excludedPaths = new()
         {
@@ -23,10 +24,11 @@ namespace Scfet.Notification.Handlers
             "/api/auth/check-email-exist"
         };
 
-        public AuthHandler(ITokenService tokenService)
+        public AuthHandler(ITokenService tokenService, LoginService loginService)
         {
             _tokenService = tokenService;
             InnerHandler = new HttpClientHandler();
+            _loginService = loginService;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(
