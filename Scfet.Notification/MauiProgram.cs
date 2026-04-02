@@ -3,6 +3,7 @@ using Plugin.LocalNotification;
 using Scfet.Notification.Services;
 using Scfet.Notification.ViewModels;
 using Scfet.Notification.Views;
+using FFImageLoading.Maui;
 
 namespace Scfet.Notification
 {
@@ -13,6 +14,7 @@ namespace Scfet.Notification
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseFFImageLoading()
                 .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
@@ -31,6 +33,7 @@ namespace Scfet.Notification
             builder.Services.AddSingleton<LoginService>();
             builder.Services.AddSingleton<FileService>();
             builder.Services.AddSingleton<NotificationPermissionsService>();
+            builder.Services.AddSingleton<IPickImageService, PickImageService>();
 
             // ViewModels
             builder.Services.AddTransient<LoginViewModel>();
@@ -41,6 +44,7 @@ namespace Scfet.Notification
             builder.Services.AddTransient<EditNotificationViewModel>();
             builder.Services.AddTransient<RepliesViewModel>();
             builder.Services.AddTransient<AppShellViewModel>();
+            builder.Services.AddTransient<AvatarsViewModel>();
 
             // Pages
             builder.Services.AddTransient<LoginPage>();
@@ -50,6 +54,7 @@ namespace Scfet.Notification
             builder.Services.AddTransient<SentNotificationsPage>();
             builder.Services.AddTransient<EditNotificationPage>();
             builder.Services.AddTransient<RepliesPage>();
+            builder.Services.AddTransient<AvatarsPage>();
 
             return builder.Build();
         }

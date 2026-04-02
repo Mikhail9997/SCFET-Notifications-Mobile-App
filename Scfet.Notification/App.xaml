@@ -56,6 +56,26 @@
             
             <!-- Цвета для счетчика символов -->
             <Color x:Key="CounterColor">#808080</Color>
+            
+            <!-- Аватарка для карточек -->
+            <Style x:Key="card_avatar" TargetType="Border">
+                <Setter Property="StrokeShape" Value="RoundRectangle 50,50,50,50"/>
+                <Setter Property="WidthRequest" Value="50"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="StrokeThickness" Value="0"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+
+            <!-- Аватарка-->
+            <Style x:Key="avatar" TargetType="Border">
+                <Setter Property="StrokeShape" Value="RoundRectangle 200,200,200,200"/>
+                <Setter Property="WidthRequest" Value="200"/>
+                <Setter Property="HeightRequest" Value="200"/>
+                <Setter Property="StrokeThickness" Value="0"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
 
         </ResourceDictionary>
     </Application.Resources>

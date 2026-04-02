@@ -4,6 +4,7 @@
              x:Class="Scfet.Notification.Views.SentNotificationsPage"
              xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
              xmlns:models="clr-namespace:Scfet.Notification.Models"
+             xmlns:ff="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
              x:DataType="vm:SentNotificationsViewModel"
              xmlns:views="clr-namespace:Scfet.Notification.Views"
              Title="Отправленные уведомления">
@@ -194,14 +195,18 @@
                                                    FontSize="12" 
                                                     FontAttributes="Bold" />
 
-                                                <Image Grid.Row="1"
-                                                   Grid.ColumnSpan="2"
-                                                   HeightRequest="350"
-                                                   IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}">
-                                                    <Image.Source>
-                                                        <UriImageSource Uri="{Binding ImageUrl}"/>
-                                                    </Image.Source>
-                                                </Image>
+                                                <ff:CachedImage 
+                                                    IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}"
+                                                    Source="{Binding ImageUrl}"
+                                                    Grid.Row="1"
+                                                    Grid.ColumnSpan="2"
+                                                    HeightRequest="350"
+                                                    DownsampleToViewSize="True"
+                                                    FadeAnimationEnabled="False"
+                                                    LoadingPlaceholder="placeholder.png"
+                                                    ErrorPlaceholder="placeholder.png"
+                                                    RetryCount="2">
+                                                </ff:CachedImage>
 
                                                 <Label Grid.Column="0" 
                                                    Grid.Row="2"

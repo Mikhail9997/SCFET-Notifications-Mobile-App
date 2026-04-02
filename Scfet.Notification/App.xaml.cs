@@ -37,7 +37,7 @@ namespace Scfet.Notification
                 var result = await _apiService.GetCurrentUserAsync();
                 if (result.Code == 404)
                 {
-                    await _loginService.Logout();
+                    await _loginService.LogoutWithRedirect();
                     return;
                 }
                 await Shell.Current.GoToAsync("//MainPage");

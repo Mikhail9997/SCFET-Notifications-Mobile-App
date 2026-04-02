@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
              xmlns:models="clr-namespace:Scfet.Notification.Models"
              xmlns:converters="clr-namespace:Scfet.Notification.Converters"
+             xmlns:ff="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
              x:DataType="vm:RepliesViewModel"
              Title="Обсуждение">
 
@@ -108,20 +109,24 @@
                             <Grid 
                                 ColumnSpacing="3"
                                 VerticalOptions="Center"
-                                ColumnDefinitions="auto,auto,auto,auto,auto">
+                                ColumnDefinitions="auto,auto,auto,auto,auto"
+                                RowDefinitions="*,*">
 
                                 <!-- Аватар/иконка -->
                                 <Border BackgroundColor="#E8F0FE"
-                                        Padding="6,3"
-                                        StrokeThickness="0"
-                                        HorizontalOptions="Center"
-                                        VerticalOptions="Center"
-                                        Grid.Column="0">
-                                    <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="12"/>
-                                    </Border.StrokeShape>
-                                    <Label Text="👤" 
-                                           FontSize="10"/>
+                                        Style="{StaticResource card_avatar}"
+                                        HorizontalOptions="Start"
+                                        Grid.Column="0"
+                                        Grid.Row="0">
+                                    <ff:CachedImage 
+                                            Source="{Binding SenderAvatarUrl}"
+                                            Aspect="AspectFill"
+                                            DownsampleToViewSize="True"
+                                            FadeAnimationEnabled="False"
+                                            LoadingPlaceholder="placeholder.png"
+                                            ErrorPlaceholder="placeholder.png"
+                                            RetryCount="2">
+                                    </ff:CachedImage>
                                 </Border>
 
                                 <!-- Имя отправителя -->
@@ -132,14 +137,16 @@
                                         VerticalOptions="Center"
                                         MaximumWidthRequest="170"
                                         LineBreakMode="TailTruncation"
-                                       Grid.Column="1"/>
+                                       Grid.Column="0"
+                                       Grid.Row="1"/>
 
                                 <!-- Разделитель -->
                                 <Label Text="·" 
                                         FontSize="14"
                                         TextColor="{AppThemeBinding Light='#BDC3C7', Dark='#7F8C8D'}"
                                         VerticalOptions="Center"
-                                       Grid.Column="2"/>
+                                       Grid.Column="2"
+                                       Grid.Row="1"/>
 
                                 <!-- Роль с цветным фоном -->
                                 <Border BackgroundColor="{Binding SenderRole, Converter={StaticResource RoleToColorConverter}}"
@@ -147,7 +154,8 @@
                                         StrokeThickness="0"
                                         HorizontalOptions="Center"
                                         VerticalOptions="Center"
-                                        Grid.Column="3">
+                                        Grid.Column="3"
+                                        Grid.Row="1">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="12"/>
                                     </Border.StrokeShape>
@@ -159,13 +167,16 @@
                             </Grid>
 
                             <!-- Изображение -->
-                            <Image 
+                            <ff:CachedImage 
+                                Source="{Binding ImageUrl}"
                                 HeightRequest="350"
-                                IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}">
-                                <Image.Source>
-                                    <UriImageSource Uri="{Binding ImageUrl}"/>
-                                </Image.Source>
-                            </Image>
+                                IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}"
+                                DownsampleToViewSize="True"
+                                FadeAnimationEnabled="False"
+                                LoadingPlaceholder="placeholder.png"
+                                ErrorPlaceholder="placeholder.png"
+                                RetryCount="2">
+                            </ff:CachedImage>
 
                             <!-- Заголовок -->
                             <Label 
@@ -361,7 +372,7 @@
                                             </MultiBinding>
                                         </Border.Stroke>
 
-                                        <Grid RowDefinitions="Auto, Auto, Auto"
+                                        <Grid RowDefinitions="Auto, Auto"
                                               ColumnDefinitions="*, auto"
                                               RowSpacing="5">
 
@@ -371,38 +382,41 @@
                                                 Grid.ColumnSpan="2"
                                                 ColumnSpacing="3"
                                                 VerticalOptions="Center"
-                                                ColumnDefinitions="auto,auto,auto,auto,auto">
+                                                ColumnDefinitions="auto,auto,auto,auto,auto"
+                                                RowDefinitions="*,*">
 
                                                 <!-- Аватар/иконка -->
                                                 <Border BackgroundColor="#E8F0FE"
-                                                        Padding="6,3"
-                                                        StrokeThickness="0"
-                                                        HorizontalOptions="Center"
-                                                        VerticalOptions="Center"
-                                                        Grid.Column="0">
-                                                    <Border.StrokeShape>
-                                                        <RoundRectangle CornerRadius="12"/>
-                                                    </Border.StrokeShape>
-                                                    <Label Text="👤" 
-                                                            FontSize="10"/>
+                                                        HorizontalOptions="Start"
+                                                        Style="{StaticResource card_avatar}"
+                                                        Grid.Column="0"
+                                                        Grid.Row="0">
+                                                    <Image 
+                                                         Aspect="AspectFill" >
+                                                        <Image.Source>
+                                                            <UriImageSource Uri="{Binding UserAvatarUrl}"/>
+                                                        </Image.Source>
+                                                    </Image>
                                                 </Border>
 
                                                 <!-- Имя отправителя -->
                                                 <Label Text="{Binding UserName}" 
-                                                        FontSize="12" 
+                                                        FontSize="11" 
                                                         FontAttributes="Bold"
                                                         TextColor="{AppThemeBinding Light='#2C3E50', Dark='#ECF0F1'}"
                                                         VerticalOptions="Center"
                                                          MaximumWidthRequest="170"
                                                          LineBreakMode="TailTruncation"
-                                                       Grid.Column="1"/>
+                                                       Grid.Column="0"
+                                                       Grid.Row="1"/>
 
                                                 <!-- Разделитель -->
                                                 <Label Text="·" 
                                                         FontSize="14"
                                                         TextColor="{AppThemeBinding Light='#BDC3C7', Dark='#7F8C8D'}"
                                                         VerticalOptions="Center"
-                                                       Grid.Column="2"/>
+                                                       Grid.Column="2"
+                                                       Grid.Row="1"/>
 
                                                 <!-- Роль с цветным фоном -->
                                                 <Border BackgroundColor="{Binding UserRole, Converter={StaticResource RoleToColorConverter}}"
@@ -410,7 +424,8 @@
                                                         StrokeThickness="0"
                                                         HorizontalOptions="Center"
                                                         VerticalOptions="Center"
-                                                        Grid.Column="3">
+                                                        Grid.Column="3"
+                                                        Grid.Row="1">
                                                     <Border.StrokeShape>
                                                         <RoundRectangle CornerRadius="12"/>
                                                     </Border.StrokeShape>
@@ -424,7 +439,8 @@
                                                 <Label Text="👑"
                                                        FontSize="12"
                                                        VerticalOptions="Center"
-                                                       Grid.Column="4">
+                                                       Grid.Column="4"
+                                                       Grid.Row="1">
 
                                                     <Label.IsVisible>
                                                         <MultiBinding Converter="{StaticResource IsEqualConverter}">
@@ -437,13 +453,13 @@
                                             </Grid>
 
                                             <!-- Дата -->
-                                            <Label Grid.Row="1" 
-                                                    Grid.Column="0"
+                                            <Label Grid.Row="0" 
+                                                    Grid.Column="1"
                                                     Text="{Binding CreatedAt, Converter={StaticResource RelativeTimeConverter}}" 
                                                     FontSize="12" />
 
                                             <!-- Сообщение -->
-                                            <Label Grid.Row="2" 
+                                            <Label Grid.Row="1" 
                                                     Grid.ColumnSpan="2"
                                                     Text="{Binding Message}" 
                                                     FontSize="14" 

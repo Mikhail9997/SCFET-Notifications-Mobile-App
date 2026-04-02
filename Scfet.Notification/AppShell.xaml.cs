@@ -18,6 +18,7 @@ namespace Scfet.Notification
             Routing.RegisterRoute("SentNotificationsPage", typeof(SentNotificationsPage));
             Routing.RegisterRoute("EditNotificationPage", typeof(EditNotificationPage));
             Routing.RegisterRoute("RepliesPage", typeof(RepliesPage));
+            Routing.RegisterRoute("AvatarsPage", typeof(AvatarsPage));
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Scfet.Notification.Models
         public string LastName { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
         public string? Group { get; set; } = string.Empty;
+        public string AvatarUrl { get; set; } = string.Empty;
         public string AccessToken { get; set; } = string.Empty;
         public string RefreshToken { get; set; } = string.Empty;
         public string FullName => $"{FirstName} {LastName}";

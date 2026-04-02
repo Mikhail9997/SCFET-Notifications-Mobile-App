@@ -58,6 +58,9 @@ namespace Scfet.Notification.ViewModels
         private string? senderRole = string.Empty;
 
         [ObservableProperty]
+        private string? senderAvatarUrl = string.Empty;
+
+        [ObservableProperty]
         private DateTime? createdAt;
 
         [ObservableProperty]
@@ -217,6 +220,7 @@ namespace Scfet.Notification.ViewModels
                 CreatedAt = notification.CreatedAt;
                 SenderName = notification.SenderName;
                 SenderRole = notification.SenderRole;
+                SenderAvatarUrl = notification.SenderAvatarUrl;
                 IsPersonal = notification.IsPersonal;
                 NotificationSenderId = notification.SenderId;
             }

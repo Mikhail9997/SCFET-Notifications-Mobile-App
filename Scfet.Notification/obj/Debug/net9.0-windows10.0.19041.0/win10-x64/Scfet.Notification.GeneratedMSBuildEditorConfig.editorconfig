@@ -57,6 +57,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Resourc
 build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml
 build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Styles.xaml
 
+[C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/AvatarsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.AvatarsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\AvatarsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\AvatarsPage.xaml
+
 [C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/CreateNotificationPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.CreateNotificationPage.xaml

@@ -569,3 +569,16 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splash_logo_lightSplashScreen.scale-200.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splash_logo_lightSplashScreen.scale-400.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\PhoneNumbers.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\ExCSS.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\FFImageLoading.Maui.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\HarfBuzzSharp.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\ShimSkiaSharp.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\SkiaSharp.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\SkiaSharp.HarfBuzz.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Svg.Custom.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Svg.Model.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Svg.Skia.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\libHarfBuzzSharp.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\libSkiaSharp.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\placeholder.scale-100.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\r\placeholder.scale-100.png

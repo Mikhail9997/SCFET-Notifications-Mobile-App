@@ -243,6 +243,12 @@ namespace Scfet.Notification.ViewModels
         }
 
         [RelayCommand]
+        private async Task GoToAvatarsPageAsync(string avatarUrl)
+        {
+            await Shell.Current.GoToAsync($"AvatarsPage?avatarUrl={avatarUrl}");
+        }
+
+        [RelayCommand]
         private async Task GoToAsync(string path)
         {
             await Shell.Current.GoToAsync(path);

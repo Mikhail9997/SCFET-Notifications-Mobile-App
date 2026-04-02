@@ -16,6 +16,7 @@ namespace Scfet.Notification.Models
         public string Type { get; set; } = string.Empty;
         public string SenderName { get; set; } = string.Empty;
         public string SenderRole { get; set; } = string.Empty;
+        public string SenderAvatarUrl { get; set; } = string.Empty;
         public Guid SenderId { get; set; }
         public bool AllowReplies { get; set; }
         public bool IsPersonal { get; set; }
@@ -94,6 +95,7 @@ namespace Scfet.Notification.Models
         public NotificationType Type { get; set; }
         public string SenderName { get; set; } = string.Empty;
         public string SenderRole { get; set; } = string.Empty;
+        public string SenderAvatarUrl { get; set; } = string.Empty;
         public bool IsPersonal { get; set; }
         public bool AllowReplies { get; set; }
         public Guid SenderId { get; set; }

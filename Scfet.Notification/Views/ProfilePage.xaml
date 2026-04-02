@@ -4,6 +4,7 @@
              x:Class="Scfet.Notification.Views.ProfilePage"
              xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
              xmlns:models="clr-namespace:Scfet.Notification.Models"
+             xmlns:ff="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
              x:DataType="vm:ProfileViewModel"
              Title="Профиль">
     <ContentPage.Resources>
@@ -60,19 +61,50 @@
                         </Border.StrokeShape>
 
                         <VerticalStackLayout Spacing="10">
+                            <!-- Аватарка -->
+                            <Border Style="{StaticResource avatar}">
+                                <ff:CachedImage 
+                                    Source="{Binding CurrentUser.AvatarUrl}"
+                                    Aspect="AspectFill"
+                                    DownsampleToViewSize="True"
+                                    FadeAnimationEnabled="False"
+                                    LoadingPlaceholder="placeholder.png"
+                                    ErrorPlaceholder="placeholder.png"
+                                    RetryCount="2">
+                                </ff:CachedImage>
+                            </Border>
+                            <Button Text="Изменить"
+                                    FontSize="14" 
+                                    WidthRequest="150"
+                                    TextColor="White"
+                                    BackgroundColor="{StaticResource PrimaryColor}"
+                                    Command="{Binding GoToAvatarsPageCommand}"
+                                    CommandParameter="{Binding CurrentUser.AvatarUrl}"/>
+                            
+                            <!-- Имя и Фамилия -->
                             <Label Text="{Binding CurrentUser.FullName}" 
                                    FontSize="20" 
-                                   FontAttributes="Bold" />
-                            <Label Text="{Binding UserRoleDisplay}" 
-                                   FontSize="14" 
-                                   />
-                            <Label Text="{Binding CurrentUser.Email}" 
-                                   FontSize="14" 
-                                   />
-                            <Label Text="{Binding CurrentUser.PhoneNumber}" 
-                                   FontSize="14" 
-                                   />
+                                   FontAttributes="Bold" 
+                                   HorizontalOptions="Center"/>
+                            
+                            <!-- Роль с цветным фоном -->
+                            <Border BackgroundColor="{Binding CurrentUser.Role, Converter={StaticResource RoleToColorConverter}}"
+                                    Padding="8,3"
+                                    StrokeThickness="0"
+                                    WidthRequest="150"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12"/>
+                                </Border.StrokeShape>
+                                <Label Text="{Binding CurrentUser.Role, Converter={StaticResource RoleToRussianConverter}}"
+                                       FontSize="13"
+                                       TextColor="White"
+                                       HorizontalOptions="Center"
+                                       FontAttributes="Bold"/>
+                            </Border>
                             <Label Text="{Binding CurrentUser.Group, StringFormat='Группа: {0}'}" 
+                                   HorizontalOptions="Center"
                                    FontSize="14" 
                                    IsVisible="{Binding CurrentUser.Group, Converter={StaticResource StringNotEmptyConverter}}" />
                         </VerticalStackLayout>

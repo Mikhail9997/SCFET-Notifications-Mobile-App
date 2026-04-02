@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
              xmlns:models="clr-namespace:Scfet.Notification.Models"
              xmlns:views="clr-namespace:Scfet.Notification.Views"
+             xmlns:ff="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
              x:DataType="vm:NotificationsViewModel"
              Title="{Binding Title}">
     <ContentPage.Resources>
@@ -199,24 +200,29 @@
 
                                         <!-- Отправитель -->
                                         <Grid
-                                                Grid.Row="1" 
-                                                Grid.Column="0"
-                                                ColumnSpacing="3"
-                                                ColumnDefinitions="auto,auto,auto,auto"
-                                                VerticalOptions="Center">
+                                            Grid.Row="1" 
+                                            Grid.Column="0"
+                                            ColumnSpacing="3"
+                                                RowSpacing="6"
+                                            ColumnDefinitions="auto,auto,auto,auto"
+                                            RowDefinitions="*,*"
+                                            VerticalOptions="Center">
 
                                             <!-- Аватар/иконка -->
                                             <Border BackgroundColor="#E8F0FE"
-                                                Padding="6,3"
-                                                StrokeThickness="0"
-                                                HorizontalOptions="Center"
-                                                VerticalOptions="Center"
-                                                Grid.Column="0">
-                                                <Border.StrokeShape>
-                                                    <RoundRectangle CornerRadius="12"/>
-                                                </Border.StrokeShape>
-                                                <Label Text="👤" 
-                                                        FontSize="10"/>
+                                                    Style="{StaticResource card_avatar}"
+                                                    Grid.Column="0"
+                                                    HorizontalOptions="Start"
+                                                    Grid.Row="0">
+                                                <ff:CachedImage 
+                                                    Source="{Binding SenderAvatarUrl}"
+                                                    Aspect="AspectFill"
+                                                    DownsampleToViewSize="True"
+                                                    FadeAnimationEnabled="False"
+                                                    LoadingPlaceholder="placeholder.png"
+                                                    ErrorPlaceholder="placeholder.png"
+                                                    RetryCount="2">
+                                                </ff:CachedImage>
                                             </Border>
 
                                             <!-- Имя отправителя -->
@@ -225,24 +231,28 @@
                                                     FontAttributes="Bold"
                                                     TextColor="{AppThemeBinding Light='#2C3E50', Dark='#ECF0F1'}"
                                                     VerticalOptions="Center"
+                                                   HorizontalOptions="Start"
                                                    MaximumWidthRequest="170"
                                                    LineBreakMode="TailTruncation"
-                                                   Grid.Column="1"/>
+                                                   Grid.Column="0"
+                                                   Grid.Row="1"/>
 
                                             <!-- Разделитель -->
                                             <Label Text="·" 
                                                     FontSize="14"
                                                     TextColor="{AppThemeBinding Light='#BDC3C7', Dark='#7F8C8D'}"
                                                     VerticalOptions="Center"
-                                                    Grid.Column="2"/>
+                                                    Grid.Column="2"
+                                                   Grid.Row="1"/>
 
                                             <!-- Роль с цветным фоном -->
                                             <Border BackgroundColor="{Binding SenderRole, Converter={StaticResource RoleToColorConverter}}"
                                                     Padding="8,3"
                                                     StrokeThickness="0"
-                                                    HorizontalOptions="Center"
+                                                    HorizontalOptions="Start"
                                                     VerticalOptions="Center"
-                                                    Grid.Column="3">
+                                                    Grid.Column="3"
+                                                    Grid.Row="1">
                                                 <Border.StrokeShape>
                                                     <RoundRectangle CornerRadius="12"/>
                                                 </Border.StrokeShape>
@@ -254,14 +264,18 @@
                                         </Grid>
 
                                         <!-- Изображение -->
-                                        <Image Grid.Row="2"
+                                        <ff:CachedImage 
+                                                Source="{Binding ImageUrl}"
+                                                Grid.Row="2"
                                                 Grid.ColumnSpan="2"
                                                 HeightRequest="350"
-                                                IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}">
-                                            <Image.Source>
-                                                <UriImageSource Uri="{Binding ImageUrl}"/>
-                                            </Image.Source>
-                                        </Image>
+                                                IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}"
+                                                DownsampleToViewSize="True"
+                                                FadeAnimationEnabled="False"
+                                                LoadingPlaceholder="placeholder.png"
+                                                ErrorPlaceholder="placeholder.png"
+                                                RetryCount="2">
+                                        </ff:CachedImage>
 
                                         <!-- Заголовок -->
                                         <Label Grid.Row="3" 

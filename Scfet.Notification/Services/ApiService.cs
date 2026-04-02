@@ -35,11 +35,14 @@ namespace Scfet.Notification.Services
         Task<Response?> CreateReplyAsync(CreateReply request);
         Task<Response?> UpdateReplyAsync(Guid id, UpdateReply request);
         Task<Response?> RemoveReplyAsync(Guid id);
+        Task<Response<List<AvatarPreset>>?> GetAllAvatarsAsync();
+        Task<Response?> UploadAvatarAsync(string presetKey);
+        Task<Response?> UploadCustomAvatarAsync(FileResult Image);
     }
     //http://localhost:5050/api
     //https://amorously-preeminent-godwit.cloudpub.ru/api
     //http://81.94.159.27:5050/api
-    public class ApiService:IApiService
+    public class ApiService : IApiService
     {
         private readonly HttpClient _httpClient;
         private readonly LoginService _loginService;
@@ -802,6 +805,87 @@ namespace Scfet.Notification.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"remove reply error: {ex.Message}");
+            }
+            return null;
+        }
+
+        public async Task<Response<List<AvatarPreset>>?> GetAllAvatarsAsync()
+        {
+            try
+            {
+                await AddAuthHeader();
+
+                var response = await _httpClient.GetAsync($"{BaseUrl}/profile/avatars");
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (!string.IsNullOrEmpty(responseContent))
+                {
+                    return JsonSerializer.Deserialize<Response<List<AvatarPreset>>>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"get all avatars error: {ex.Message}");
+            }
+            return null;
+        }
+
+        public async Task<Response?> UploadAvatarAsync(string presetKey)
+        {
+            try
+            {
+                await AddAuthHeader();
+
+                var request = new { avatarPresetKey = presetKey };
+                var json = JsonSerializer.Serialize(request);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync($"{BaseUrl}/profile/uploadAvatar", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (!string.IsNullOrEmpty(responseContent))
+                {
+                    return JsonSerializer.Deserialize<Response>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"upload avatar error: {ex.Message}");
+            }
+            return null;
+        }
+
+        public async Task<Response?> UploadCustomAvatarAsync(FileResult Image)
+        {
+            try
+            {
+                await AddAuthHeader();
+                using var content = new MultipartFormDataContent();
+
+                var imageContent = new StreamContent(await Image.OpenReadAsync());
+                imageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(Image.ContentType);
+                content.Add(imageContent, "Image", Image.FileName);
+
+                var response = await _httpClient.PutAsync($"{BaseUrl}/profile/uploadCustomAvatar", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (!string.IsNullOrEmpty(responseContent))
+                {
+                    return JsonSerializer.Deserialize<Response>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"upload custom avatar error: {ex.Message}");
             }
             return null;
         }

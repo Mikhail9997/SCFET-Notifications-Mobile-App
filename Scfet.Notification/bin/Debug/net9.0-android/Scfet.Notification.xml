@@ -13,6 +13,64 @@
         <member name="P:Scfet.Notification.ViewModels.AppShellViewModel.Year">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.AppShellViewModel.year"/>
         </member>
+        <member name="T:Scfet.Notification.ViewModels.AvatarsViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.AvatarUrl">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.AvatarsViewModel.avatarUrl"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.Presets">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.AvatarsViewModel.presets"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.SelectedPreset">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.AvatarsViewModel.selectedPreset"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.SelectedImage">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.AvatarsViewModel._selectedImage"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.ImagePreview">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.AvatarsViewModel._imagePreview"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.IsBusy">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.AvatarsViewModel.isBusy"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.IsLoadAvatarsFailed">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.AvatarsViewModel.isLoadAvatarsFailed"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.IsAvatarUploading">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.AvatarsViewModel.isAvatarUploading"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.IsAllowCustomAvatar">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.AvatarsViewModel.isAllowCustomAvatar"/>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.AvatarsViewModel.selectImageCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.AvatarsViewModel.SelectImageCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.SelectImageCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.AvatarsViewModel.SelectImageAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.AvatarsViewModel.clearImageCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.AvatarsViewModel.ClearImageCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.ClearImageCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.AvatarsViewModel.ClearImage"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.AvatarsViewModel.uploadAvatarCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.AvatarsViewModel.UploadAvatarCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.UploadAvatarCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.AvatarsViewModel.UploadAvatar"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.AvatarsViewModel.refreshCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.AvatarsViewModel.RefreshCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.AvatarsViewModel.RefreshCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.AvatarsViewModel.RefreshAsync"/>.</summary>
+        </member>
         <member name="T:Scfet.Notification.ViewModels.BaseViewModel">
             <inheritdoc/>
         </member>
@@ -469,6 +527,7 @@
             <inheritdoc/>
             <inheritdoc/>
             <inheritdoc/>
+            <inheritdoc/>
         </member>
         <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.CurrentUser">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.ProfileViewModel.currentUser"/>
@@ -527,6 +586,12 @@
         <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.RefreshCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ProfileViewModel.RefreshAsync"/>.</summary>
         </member>
+        <member name="F:Scfet.Notification.ViewModels.ProfileViewModel.goToAvatarsPageCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ProfileViewModel.GoToAvatarsPageCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ProfileViewModel.GoToAvatarsPageCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ProfileViewModel.GoToAvatarsPageAsync(System.String)"/>.</summary>
+        </member>
         <member name="F:Scfet.Notification.ViewModels.ProfileViewModel.goToCommand">
             <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ProfileViewModel.GoToCommand"/>.</summary>
         </member>
@@ -565,6 +630,9 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.RepliesViewModel.SenderRole">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.RepliesViewModel.senderRole"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.RepliesViewModel.SenderAvatarUrl">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.RepliesViewModel.senderAvatarUrl"/>
         </member>
         <member name="P:Scfet.Notification.ViewModels.RepliesViewModel.CreatedAt">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.RepliesViewModel.createdAt"/>
@@ -853,8 +921,32 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Year">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Year" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.AvatarUrl">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "AvatarUrl" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Presets">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Presets" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedPreset">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedPreset" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedImage">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedImage" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ImagePreview">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ImagePreview" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsBusy">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsBusy" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsLoadAvatarsFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsLoadAvatarsFailed" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsAvatarUploading">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsAvatarUploading" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsAllowCustomAvatar">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsAllowCustomAvatar" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Title">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Title" generated properties.</summary>
@@ -891,12 +983,6 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Users">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Users" generated properties.</summary>
-        </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedImage">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedImage" generated properties.</summary>
-        </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ImagePreview">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ImagePreview" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.NotificationTypes">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "NotificationTypes" generated properties.</summary>
@@ -1030,6 +1116,9 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SenderRole">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SenderRole" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SenderAvatarUrl">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SenderAvatarUrl" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CreatedAt">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CreatedAt" generated properties.</summary>
         </member>
@@ -1084,8 +1173,32 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Year">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Year" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.AvatarUrl">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "AvatarUrl" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Presets">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Presets" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedPreset">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedPreset" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedImage">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedImage" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ImagePreview">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ImagePreview" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsBusy">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsBusy" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsLoadAvatarsFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsLoadAvatarsFailed" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsAvatarUploading">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsAvatarUploading" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsAllowCustomAvatar">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsAllowCustomAvatar" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Title">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Title" generated properties.</summary>
@@ -1122,12 +1235,6 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Users">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Users" generated properties.</summary>
-        </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedImage">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedImage" generated properties.</summary>
-        </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ImagePreview">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ImagePreview" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.NotificationTypes">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "NotificationTypes" generated properties.</summary>
@@ -1260,6 +1367,9 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SenderRole">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SenderRole" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SenderAvatarUrl">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SenderAvatarUrl" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CreatedAt">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CreatedAt" generated properties.</summary>
