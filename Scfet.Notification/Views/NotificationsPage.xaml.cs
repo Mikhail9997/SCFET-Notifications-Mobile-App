@@ -18,7 +18,7 @@ public partial class NotificationsPage : ContentPage
         bool shouldTopButtonShow = e.ScrollY > ScrollThreshold;
 
 
-        if (shouldTopButtonShow != scrollToBottomButton.IsVisible)
+        if (shouldTopButtonShow != scrollToTopButton.IsVisible)
         {
             // Анимация появления/исчезновения
             if (shouldTopButtonShow)
@@ -84,7 +84,7 @@ public partial class NotificationsPage : ContentPage
         base.OnDisappearing();
 
         MainScrollView.Scrolled -= OnScrollViewScrolled;
-        MainScrollView.Scrolled += OnScrollBottomViewScrolled;
+        MainScrollView.Scrolled -= OnScrollBottomViewScrolled;
 
         scrollToTopButton.Clicked -= OnScrollToTopClicked;
         scrollToBottomButton.Clicked -= OnScrollToBottomClicked;

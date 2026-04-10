@@ -76,35 +76,47 @@
                         </Border.StrokeShape>
 
                         <StackLayout Spacing="5">
-                            <Grid ColumnDefinitions="*,auto">
-                                <!-- Дата -->
-                                <Label 
-                                    Text="{Binding CreatedAt, Converter={StaticResource RelativeTimeConverter}}" 
-                                    FontSize="12"
-                                    Grid.Column="1"/>
-
-                                <!-- Метка личного сообщения -->
+                            <Grid ColumnDefinitions="*,auto,auto">
+                                <!-- Метка личного сообщения-->
                                 <Border IsVisible="{Binding IsPersonal}"
-                                        BackgroundColor="#FFE5E5"
-                                        Padding="8,3"
-                                        StrokeThickness="0"
-                                        HorizontalOptions="Start"
-                                        VerticalOptions="Center"
-                                        Grid.Column="0">
+                                         BackgroundColor="#FFE5E5"
+                                         Padding="8,3"
+                                         StrokeThickness="0"
+                                         HorizontalOptions="Start"
+                                         VerticalOptions="Center"
+                                         Grid.Column="0">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="12"/>
                                     </Border.StrokeShape>
                                     <HorizontalStackLayout Spacing="4">
-                                        <Label Text="🔒" 
-                                               FontSize="9"/>
+                                        <Label Text="🔒" FontSize="9"/>
                                         <Label Text="личное"
                                                 FontSize="9"
                                                 TextColor="{AppThemeBinding Light='#E74C3C', Dark='#FF8A7A'}"
                                                 FontAttributes="Bold"/>
                                     </HorizontalStackLayout>
                                 </Border>
-                            </Grid>
 
+                                <!-- Дата -->
+                                <Label Grid.Column="1" 
+                                        Text="{Binding CreatedAt, Converter={StaticResource RelativeTimeConverter}}" 
+                                        FontSize="12"
+                                        VerticalOptions="Center"/>
+
+                                <!-- Закладка -->
+                                <ImageButton Grid.Column="2"
+                                          Source="{Binding IsFavorite, Converter={StaticResource BoolToFavoriteIconConverter}}"
+                                          WidthRequest="15"
+                                          HeightRequest="15"
+                                          BackgroundColor="Transparent"
+                                          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:RepliesViewModel}}, 
+                                                            Path=ToggleFavoriteCommand}"
+                                          CommandParameter="{Binding .}"
+                                          HorizontalOptions="End"
+                                          VerticalOptions="Center"
+                                          Padding="8"/>
+                            </Grid>
+                            
                             <!-- Отправитель -->
                             <Grid 
                                 ColumnSpacing="3"
@@ -391,12 +403,15 @@
                                                         Style="{StaticResource card_avatar}"
                                                         Grid.Column="0"
                                                         Grid.Row="0">
-                                                    <Image 
-                                                         Aspect="AspectFill" >
-                                                        <Image.Source>
-                                                            <UriImageSource Uri="{Binding UserAvatarUrl}"/>
-                                                        </Image.Source>
-                                                    </Image>
+                                                    <ff:CachedImage 
+                                                           Source="{Binding UserAvatarUrl}"
+                                                           Aspect="AspectFill"
+                                                           DownsampleToViewSize="True"
+                                                           FadeAnimationEnabled="False"
+                                                           LoadingPlaceholder="placeholder.png"
+                                                           ErrorPlaceholder="placeholder.png"
+                                                           RetryCount="2">
+                                                    </ff:CachedImage>
                                                 </Border>
 
                                                 <!-- Имя отправителя -->

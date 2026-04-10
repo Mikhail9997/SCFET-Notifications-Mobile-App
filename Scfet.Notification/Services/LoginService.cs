@@ -182,16 +182,14 @@ namespace Scfet.Notification.Services
         public async Task Logout()
         {
             _currentAuth = null;
-
             Clear();
         }
 
         public async Task LogoutWithRedirect()
         {
-            _currentAuth = null;
-            Clear();
+            await Logout();
 
-            await Shell.Current.GoToAsync("LoginPage");
+            await Shell.Current.GoToAsync("//LoginPage");
         }
     }
 }

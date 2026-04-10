@@ -251,7 +251,7 @@ namespace Scfet.Notification.Services
 
                 using var tempHttpClient = new HttpClient
                 {
-                    Timeout = TimeSpan.FromSeconds(10)
+                    Timeout = TimeSpan.FromSeconds(15)
                 };
 
                 var refreshRequest = new

@@ -5,7 +5,7 @@
   },
   "projects": {
     "C:\\Users\\mkazm\\source\\repos\\Scfet.Notification\\Scfet.Notification\\Scfet.Notification.csproj": {
-      "version": "2.1.0",
+      "version": "2.2.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\mkazm\\source\\repos\\Scfet.Notification\\Scfet.Notification\\Scfet.Notification.csproj",
         "projectName": "Scfet.Notification",
@@ -367,8 +367,24 @@
           "warn": true,
           "downloadDependencies": [
             {
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[9.0.10, 9.0.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Crossgen2.win-x64",
+              "version": "[9.0.10, 9.0.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[9.0.10, 9.0.10]"
+            },
+            {
               "name": "Microsoft.Windows.SDK.NET.Ref",
               "version": "[10.0.19041.57, 10.0.19041.57]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+              "version": "[9.0.10, 9.0.10]"
             }
           ],
           "frameworkReferences": {
@@ -390,6 +406,9 @@
           "#import": []
         },
         "iossimulator-x64": {
+          "#import": []
+        },
+        "maccatalyst-arm64": {
           "#import": []
         },
         "maccatalyst-x64": {

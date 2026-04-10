@@ -57,6 +57,12 @@
                   Route="MainPage" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Закладки" Icon="{AppThemeBinding Light=bookmark.png, Dark=bookmark_white.png}">
+        <ShellContent Title="Закладки"
+                  ContentTemplate="{DataTemplate views:FavoritesPage}"
+                  Route="FavoritesPage" />
+    </FlyoutItem>
+
     <FlyoutItem Title="Профиль" Icon="{AppThemeBinding Light=profile.png, Dark=profile_white.png}">
         <ShellContent Title="Профиль"
                     ContentTemplate="{DataTemplate views:ProfilePage}"

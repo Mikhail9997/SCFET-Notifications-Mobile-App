@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Scfet.Notification.Models
 {
-    public class Notification
+    public class Notification:INotifyPropertyChanged
     {
         public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
@@ -21,8 +23,43 @@ namespace Scfet.Notification.Models
         public bool AllowReplies { get; set; }
         public bool IsPersonal { get; set; }
         public DateTime CreatedAt { get; set; }
-        public bool IsRead { get; set; }
         public string? ImageUrl { get; set; } = string.Empty;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private bool _isFavorite;
+        private bool _isRead;
+
+        public bool IsFavorite
+        {
+            get => _isFavorite;
+            set
+            {
+                if (_isFavorite != value)
+                {
+                    _isFavorite = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsRead
+        {
+            get => _isRead;
+            set
+            {
+                if (_isRead != value)
+                {
+                    _isRead = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     public class NotificationDetailDto
@@ -78,7 +115,7 @@ namespace Scfet.Notification.Models
         public double ReadPercentage => TotalReceivers > 0 ? (double)ReadReceivers / TotalReceivers * 100 : 0;
     }
 
-    public class GetItems<T>
+    public class PagedResult<T>
     {
         public IReadOnlyList<T> Items { get; set; }
         public int TotalCount { get; set; }
@@ -97,6 +134,7 @@ namespace Scfet.Notification.Models
         public string SenderRole { get; set; } = string.Empty;
         public string SenderAvatarUrl { get; set; } = string.Empty;
         public bool IsPersonal { get; set; }
+        public bool IsFavorite { get; set; }
         public bool AllowReplies { get; set; }
         public Guid SenderId { get; set; }
         public DateTime CreatedAt { get; set; }

@@ -20,22 +20,22 @@ namespace Scfet.Notification.Models
         public string? Name { get; set; } = string.Empty;
     }
 
-    public class NotificationFilter
+    public class Filter
     {
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public NotificationSortOrder SortOrder { get; set; } = NotificationSortOrder.Descending;
-        public NotificationSortBy SortBy { get; set; } = NotificationSortBy.CreatedAt;
+        public SortOrder SortOrder { get; set; } = SortOrder.Descending;
+        public SortBy SortBy { get; set; } = SortBy.CreatedAt;
     }
 
-    public enum NotificationSortOrder
+    public enum SortOrder
     {
         Ascending,
         Descending
     }
-    public enum NotificationSortBy
+    public enum SortBy
     {
         CreatedAt,
         Title

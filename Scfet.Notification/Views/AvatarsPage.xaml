@@ -16,7 +16,7 @@
 
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
     <Grid>
         <!-- Ошибка загрузки пресетов -->
         <StackLayout HorizontalOptions="Center" 
@@ -50,227 +50,231 @@
                                HorizontalOptions="Center" />
             </StackLayout>
         </VerticalStackLayout>
-        
-        <!-- Основной контент -->
-        <ScrollView IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}">
-            <StackLayout Spacing="20" Padding="20"
-                         IsVisible="{Binding IsLoadAvatarsFailed, Converter={StaticResource InverseBoolConverter}}">
-                <!-- Аватарка -->
-                <Border Style="{StaticResource avatar}">
-                    <ff:CachedImage 
-                        Source="{Binding AvatarUrl}"
-                        Aspect="AspectFill"
-                        DownsampleToViewSize="True"
-                        FadeAnimationEnabled="False"
-                        LoadingPlaceholder="placeholder.png"
-                        ErrorPlaceholder="placeholder.png"
-                        RetryCount="2">
-                    </ff:CachedImage>
-                </Border>
 
-                <!-- Выбор аватарки (для учителей и админов) -->
-                <StackLayout IsVisible="{Binding IsAllowCustomAvatar}">
-                    <Label Text="Загрузить свою аватарку"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center"
-                           Margin="0,10,0,10"
-                           IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}"/>
+        <!-- Основной контент - Grid с 3 строками -->
+        <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+              RowDefinitions="Auto,*,Auto">
 
-                    <!-- Предпросмотр выбранного изображения -->
-                    <Border IsVisible="{Binding ImagePreview, Converter={StaticResource NullToVisibilityConverter}}"
-                            StrokeShape="RoundRectangle 100"
-                            StrokeThickness="2"
-                            Stroke="{StaticResource PrimaryColor}"
-                            BackgroundColor="#F0F0F0"
-                            HeightRequest="120"
-                            WidthRequest="120"
-                            HorizontalOptions="Center"
-                            Margin="0,0,0,10">
-                        <Image Source="{Binding ImagePreview}"
-                               Aspect="AspectFill"/>
+            <!-- Контент в ScrollView (занимает среднюю строку) -->
+            <ScrollView Grid.Row="1"
+                        IsVisible="{Binding IsLoadAvatarsFailed, Converter={StaticResource InverseBoolConverter}}">
+                <StackLayout Spacing="20" Padding="20">
+                    <!-- Аватарка -->
+                    <Border Style="{StaticResource avatar}">
+                        <ff:CachedImage 
+                            Source="{Binding AvatarUrl}"
+                            Aspect="AspectFill"
+                            DownsampleToViewSize="True"
+                            FadeAnimationEnabled="False"
+                            LoadingPlaceholder="placeholder.png"
+                            ErrorPlaceholder="placeholder.png"
+                            RetryCount="2">
+                        </ff:CachedImage>
                     </Border>
 
-                    <!-- Кнопки для работы с кастомной аватаркой -->
-                    <Grid IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}">
-                        <Button Text="Выбрать фото"
-                                Command="{Binding SelectImageCommand}"
-                                BackgroundColor="{StaticResource PrimaryColor}"
-                                TextColor="White"
-                                CornerRadius="8"
-                                HeightRequest="44"/>
+                    <!-- Выбор аватарки (для учителей и админов) -->
+                    <StackLayout IsVisible="{Binding IsAllowCustomAvatar}">
+                        <Label Text="Загрузить свою аватарку"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               Margin="0,10,0,10"
+                               IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}"/>
 
-                        <Button Text="Очистить"
-                                Command="{Binding ClearImageCommand}"
-                                IsVisible="{Binding SelectedImage, Converter={StaticResource NullToVisibilityConverter}}"
-                                IsEnabled="{Binding ImagePreview, Converter={StaticResource NullToVisibilityConverter}}"
-                                BackgroundColor="Gray"
-                                TextColor="White"
-                                CornerRadius="8"
-                                HeightRequest="44"
-                                Grid.Column="1"/>
-                    </Grid>
+                        <!-- Предпросмотр выбранного изображения -->
+                        <Border IsVisible="{Binding ImagePreview, Converter={StaticResource NullToVisibilityConverter}}"
+                                StrokeShape="RoundRectangle 100"
+                                StrokeThickness="2"
+                                Stroke="{StaticResource PrimaryColor}"
+                                BackgroundColor="#F0F0F0"
+                                HeightRequest="120"
+                                WidthRequest="120"
+                                HorizontalOptions="Center"
+                                Margin="0,0,0,10">
+                            <Image Source="{Binding ImagePreview}"
+                                   Aspect="AspectFill"/>
+                        </Border>
 
-                    <Label Text="или выберите из готовых"
-                           FontSize="14"
-                           TextColor="Gray"
-                           HorizontalOptions="Center"
-                           Margin="0,20,0,10"
-                           IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}"/>
-                </StackLayout>
+                        <!-- Кнопки для работы с кастомной аватаркой -->
+                        <Grid IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}"
+                              ColumnSpacing="10">
+                            <Button Text="Выбрать фото"
+                                    Command="{Binding SelectImageCommand}"
+                                    BackgroundColor="{StaticResource PrimaryColor}"
+                                    TextColor="White"
+                                    CornerRadius="8"
+                                    HeightRequest="44"/>
 
-                <Label 
-                    Text="Выберите аватар"
-                    FontSize="20"
-                    FontAttributes="Bold"
-                    VerticalOptions="Center" 
-                    HorizontalOptions="Center" 
-                    IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}"/>
+                            <Button Text="Очистить"
+                                    Command="{Binding ClearImageCommand}"
+                                    IsVisible="{Binding SelectedImage, Converter={StaticResource NullToVisibilityConverter}}"
+                                    IsEnabled="{Binding ImagePreview, Converter={StaticResource NullToVisibilityConverter}}"
+                                    BackgroundColor="Gray"
+                                    TextColor="White"
+                                    CornerRadius="8"
+                                    HeightRequest="44"/>
+                        </Grid>
 
-                <!-- Индикатор загрузки -->
-                <ActivityIndicator IsRunning="{Binding IsAvatarUploading}" 
-                                   IsVisible="{Binding IsAvatarUploading}"
-                                   Color="{StaticResource PrimaryColor}"/>
+                        <Label Text="или выберите из готовых"
+                               FontSize="14"
+                               TextColor="Gray"
+                               HorizontalOptions="Center"
+                               Margin="0,20,0,10"
+                               IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}"/>
+                    </StackLayout>
 
-                <!-- Список пресетов -->
-                <CollectionView 
-                    ItemsSource="{Binding Presets}"
-                    SelectionMode="Single"
-                    SelectedItem="{Binding SelectedPreset}"
-                    IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}">
+                    <Label 
+                        Text="Выберите аватар"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        VerticalOptions="Center" 
+                        HorizontalOptions="Center" 
+                        IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}"/>
 
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical"
-                                        Span="3"
-                                        VerticalItemSpacing="12"
-                                        HorizontalItemSpacing="12"/>
-                    </CollectionView.ItemsLayout>
+                    <!-- Индикатор загрузки -->
+                    <ActivityIndicator IsRunning="{Binding IsAvatarUploading}" 
+                                       IsVisible="{Binding IsAvatarUploading}"
+                                       Color="{StaticResource PrimaryColor}"/>
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:AvatarPreset">
-                            <Grid HeightRequest="80" WidthRequest="80">
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup x:Name="CommonStates">
-                                        <!-- Отключаем Pressed состояние -->
-                                        <VisualState x:Name="Pressed">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="Transparent" />
-                                                <Setter Property="Opacity" Value="1" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                        <!-- Отключаем Selected состояние -->
-                                        <VisualState x:Name="Selected">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="Transparent" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                        <!-- Normal состояние -->
-                                        <VisualState x:Name="Normal">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="Transparent" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
-                                <Border 
-                                    StrokeThickness="0"
-                                    BackgroundColor="#F0F0F0"
-                                    StrokeShape="RoundRectangle 100"
-                                    HeightRequest="80"
-                                    WidthRequest="80"
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Center">
+                    <!-- Список пресетов -->
+                    <CollectionView 
+                        ItemsSource="{Binding Presets}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedPreset}"
+                        IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}">
 
-                                    <Grid>
-                                        <!-- Аватарка -->
-                                        <ff:CachedImage 
-                                            Source="{Binding ImageUrl}"
-                                            Aspect="AspectFill"
-                                            DownsampleToViewSize="True"
-                                            FadeAnimationEnabled="False"
-                                            LoadingPlaceholder="placeholder.png"
-                                            ErrorPlaceholder="placeholder.png"
-                                            RetryCount="2">
-                                        </ff:CachedImage>
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                            Span="3"
+                                            VerticalItemSpacing="12"
+                                            HorizontalItemSpacing="12"/>
+                        </CollectionView.ItemsLayout>
 
-                                        <!-- Затемнение при выборе -->
-                                        <Grid 
-                                             BackgroundColor="#33000000">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:AvatarPreset">
+                                <Grid HeightRequest="80" WidthRequest="80">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <!-- Отключаем Pressed состояние -->
+                                            <VisualState x:Name="Pressed">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                                    <Setter Property="Opacity" Value="1" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                            <!-- Отключаем Selected состояние -->
+                                            <VisualState x:Name="Selected">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                            <!-- Normal состояние -->
+                                            <VisualState x:Name="Normal">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <Border 
+                                        StrokeThickness="0"
+                                        BackgroundColor="#F0F0F0"
+                                        StrokeShape="RoundRectangle 100"
+                                        HeightRequest="80"
+                                        WidthRequest="80"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
 
-                                            <Grid.IsVisible>
-                                                <MultiBinding Converter="{StaticResource IsSelectedPresetConverter}">
-                                                    <Binding Source="{RelativeSource AncestorType={x:Type vm:AvatarsViewModel}}"
-                                                            Path="SelectedPreset"/>
-                                                    <Binding Path="."/>
-                                                </MultiBinding>
-                                            </Grid.IsVisible>
+                                        <Grid>
+                                            <!-- Аватарка -->
+                                            <ff:CachedImage 
+                                                Source="{Binding ImageUrl}"
+                                                Aspect="AspectFill"
+                                                DownsampleToViewSize="True"
+                                                FadeAnimationEnabled="False"
+                                                LoadingPlaceholder="placeholder.png"
+                                                ErrorPlaceholder="placeholder.png"
+                                                RetryCount="2">
+                                            </ff:CachedImage>
 
-                                            <VerticalStackLayout 
-                                                HorizontalOptions="Center"
-                                                VerticalOptions="Center"
-                                                Spacing="0">
+                                            <!-- Затемнение при выборе -->
+                                            <Grid 
+                                                 BackgroundColor="#33000000">
 
-                                                <!-- Галочка -->
-                                                <Border 
-                                                    BackgroundColor="{StaticResource PrimaryColor}"
-                                                    StrokeThickness="0"
-                                                    StrokeShape="RoundRectangle 25"
-                                                    HeightRequest="40"
-                                                    WidthRequest="40"
+                                                <Grid.IsVisible>
+                                                    <MultiBinding Converter="{StaticResource IsSelectedPresetConverter}">
+                                                        <Binding Source="{RelativeSource AncestorType={x:Type vm:AvatarsViewModel}}"
+                                                                Path="SelectedPreset"/>
+                                                        <Binding Path="."/>
+                                                    </MultiBinding>
+                                                </Grid.IsVisible>
+
+                                                <VerticalStackLayout 
                                                     HorizontalOptions="Center"
-                                                    Padding="0">
-                                                    <Label Text="✓" 
-                                                           TextColor="White"
-                                                           HorizontalOptions="Center"
-                                                           VerticalOptions="Center"
-                                                           FontSize="24"
-                                                           FontAttributes="Bold"/>
-                                                </Border>
-                                            </VerticalStackLayout>
+                                                    VerticalOptions="Center"
+                                                    Spacing="0">
+
+                                                    <!-- Галочка -->
+                                                    <Border 
+                                                        BackgroundColor="{StaticResource PrimaryColor}"
+                                                        StrokeThickness="0"
+                                                        StrokeShape="RoundRectangle 25"
+                                                        HeightRequest="40"
+                                                        WidthRequest="40"
+                                                        HorizontalOptions="Center"
+                                                        Padding="0">
+                                                        <Label Text="✓" 
+                                                               TextColor="White"
+                                                               HorizontalOptions="Center"
+                                                               VerticalOptions="Center"
+                                                               FontSize="24"
+                                                               FontAttributes="Bold"/>
+                                                    </Border>
+                                                </VerticalStackLayout>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
 
-                    <CollectionView.EmptyView>
-                        <VerticalStackLayout Spacing="10" Padding="20">
-                            <Label Text="😕"
-                                   FontSize="48"
-                                   HorizontalOptions="Center"/>
-                            <Label Text="Нет доступных аватарок"
-                                   FontSize="16"
-                                   HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
-                    </CollectionView.EmptyView>
-                </CollectionView>
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout Spacing="10" Padding="20">
+                                <Label Text="😕"
+                                       FontSize="48"
+                                       HorizontalOptions="Center"/>
+                                <Label Text="Нет доступных аватарок"
+                                       FontSize="16"
+                                       HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                </StackLayout>
+            </ScrollView>
 
-                <!-- Кнопка выбора/сохранения -->
-                <Button Command="{Binding UploadAvatarCommand}"
-                        BackgroundColor="{StaticResource PrimaryColor}"
-                        TextColor="White"
-                        CornerRadius="8"
-                        HeightRequest="50"
-                        Margin="0,20,0,0">
-                    <Button.Triggers>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding IsAllowCustomAvatar}"
-                                     Value="True">
-                            <Setter Property="Text" 
-                                    Value="{Binding ImagePreview, Converter={StaticResource ImagePreviewToButtonTextConverter}}"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding IsAllowCustomAvatar}"
-                                     Value="False">
-                            <Setter Property="Text" Value="Выбрать аватарку"/>
-                        </DataTrigger>
-                    </Button.Triggers>
-                </Button>
-
-            </StackLayout>
-
-        </ScrollView>
+            <!-- Кнопка выбора/сохранения - всегда прижата к низу -->
+            <Button Grid.Row="2"
+                    Command="{Binding UploadAvatarCommand}"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    TextColor="White"
+                    CornerRadius="8"
+                    HeightRequest="50"
+                    Margin="20,0,20,20">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding IsAllowCustomAvatar}"
+                                 Value="True">
+                        <Setter Property="Text" 
+                                Value="{Binding ImagePreview, Converter={StaticResource ImagePreviewToButtonTextConverter}}"/>
+                    </DataTrigger>
+                    <DataTrigger TargetType="Button"
+                                 Binding="{Binding IsAllowCustomAvatar}"
+                                 Value="False">
+                        <Setter Property="Text" Value="Выбрать аватарку"/>
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </Grid>
     </Grid>
 
 </ContentPage>

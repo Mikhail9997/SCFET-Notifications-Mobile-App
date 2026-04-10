@@ -28,6 +28,8 @@
             <converters:CounterColorConverter x:Key="CounterColorConverter"/>
             <converters:RelativeTimeConverter x:Key="RelativeTimeConverter"/>
             <converters:BorderStrokeToColorConverter x:Key="BorderStrokeToColorConverter"/>
+            <converters:BoolToFavoriteIconConverter x:Key="BoolToFavoriteIconConverter"/>
+            <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
 
             <Color x:Key="PrimaryColor">#2E86AB</Color>
 

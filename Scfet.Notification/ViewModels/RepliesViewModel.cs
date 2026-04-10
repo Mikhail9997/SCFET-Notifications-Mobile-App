@@ -61,6 +61,9 @@ namespace Scfet.Notification.ViewModels
         private string? senderAvatarUrl = string.Empty;
 
         [ObservableProperty]
+        private bool isFavorite;
+
+        [ObservableProperty]
         private DateTime? createdAt;
 
         [ObservableProperty]
@@ -71,7 +74,7 @@ namespace Scfet.Notification.ViewModels
         private ObservableCollection<Reply> replies = new();
 
         [ObservableProperty]
-        private GetItems<Reply>? pageResult;
+        private PagedResult<Reply>? pageResult;
 
         [ObservableProperty]
         private string replyMessage = string.Empty;
@@ -84,13 +87,13 @@ namespace Scfet.Notification.ViewModels
 
         // Фильтры
         [ObservableProperty]
-        public NotificationFilter filter = new();
+        public Filter filter = new();
 
         [ObservableProperty]
         public List<int> pageSizes = new List<int> { 5, 10, 20 };
 
         [ObservableProperty]
-        public List<PickerItem<NotificationSortOrder>> sortOrderItems = new();
+        public List<PickerItem<SortOrder>> sortOrderItems = new();
 
         [ObservableProperty]
         public List<PickerItem<string>> dateRangeOptions = new();
@@ -99,7 +102,7 @@ namespace Scfet.Notification.ViewModels
         private PickerItem<string> selectedDateRange;
 
         [ObservableProperty]
-        public PickerItem<NotificationSortOrder>? selectedSortOrder;
+        public PickerItem<SortOrder>? selectedSortOrder;
 
         [ObservableProperty]
         public DateTime? selectedStartDate;
@@ -222,6 +225,7 @@ namespace Scfet.Notification.ViewModels
                 SenderRole = notification.SenderRole;
                 SenderAvatarUrl = notification.SenderAvatarUrl;
                 IsPersonal = notification.IsPersonal;
+                IsFavorite = notification.IsFavorite;
                 NotificationSenderId = notification.SenderId;
             }
             catch (Exception ex)
@@ -235,7 +239,7 @@ namespace Scfet.Notification.ViewModels
         {
             try
             {
-                var response = await _apiService.GetNotificationRepliesAsync(NotificationId, Filter);
+                var response = await _apiService.GetNotificationRepliesAsync(NotificationId, (Filter)Filter);
 
                 if (response == null || response?.Data == null || !response.Success)
                 {
@@ -321,7 +325,7 @@ namespace Scfet.Notification.ViewModels
         public async Task ApplyFiltersAsync()
         {
             Filter.Page = 1;
-            Filter.SortOrder = SelectedSortOrder?.Value ?? NotificationSortOrder.Descending;
+            Filter.SortOrder = SelectedSortOrder?.Value ?? SortOrder.Descending;
             Filter.StartDate = SelectedStartDate;
             Filter.EndDate = SelectedEndDate;
             IsPaginationEnable = false;
@@ -521,6 +525,42 @@ namespace Scfet.Notification.ViewModels
             }
         }
 
+        [RelayCommand]
+        private async Task ToggleFavoriteAsync()
+        {
+            try
+            {
+                var originalState = IsFavorite;
+                Response? response;
+                if (!originalState)
+                {
+                    AddFavorite request = new AddFavorite()
+                    {
+                        NotificationId = NotificationId
+                    };
+                    response = await _apiService.AddFavoriteAsync(request);
+                }
+                else
+                {
+                    response = await _apiService.RemoveFavoriteAsync(NotificationId);
+                }
+                if (response == null || !response.Success)
+                {
+                    await Shell.Current
+                        .DisplayAlert("Ошибка", $"Не удалось {(!IsFavorite == true ? "добавить в" : "удалить из")} избранное: {response?.Message ?? "Проверьте интернет соединение"}", "OK");
+                    return;
+                }
+                IsFavorite = !originalState;
+
+            }
+            catch (Exception ex)
+            {
+                // Откатываем изменение при ошибке
+                await Shell.Current.DisplayAlert("Ошибка", $"Не удалось {(!IsFavorite == true ? "добавить в" : "удалить из")} избранное: {ex.Message}", "OK");
+                IsFavorite = !IsFavorite;
+            }     
+        }
+
         private void OnReplyReceived(Reply reply)
         {
             MainThread.BeginInvokeOnMainThread(() =>
@@ -566,12 +606,12 @@ namespace Scfet.Notification.ViewModels
             {
                 new()
                 {
-                    Value = NotificationSortOrder.Ascending,
+                    Value = SortOrder.Ascending,
                     DisplayName = "Сначала старые"
                 },
                 new()
                 {
-                    Value = NotificationSortOrder.Descending,
+                    Value = SortOrder.Descending,
                     DisplayName = "Сначала новые"
                 }
             };

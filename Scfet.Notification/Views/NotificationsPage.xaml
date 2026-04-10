@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
              xmlns:models="clr-namespace:Scfet.Notification.Models"
              xmlns:views="clr-namespace:Scfet.Notification.Views"
+             xmlns:converters="clr-namespace:Scfet.Notification.Converters"
              xmlns:ff="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
              x:DataType="vm:NotificationsViewModel"
              Title="{Binding Title}">
@@ -170,33 +171,49 @@
                                             RowSpacing="7"
                                             ColumnSpacing="5">
 
-                                        <!-- Дата -->
-                                        <Label Grid.Row="0" 
-                                                Grid.Column="1"
-                                                Text="{Binding CreatedAt, Converter={StaticResource RelativeTimeConverter}}" 
-                                                FontSize="12" />
+                                        <!-- Дата и иконка закладки -->
+                                        <Grid Grid.Row="0" 
+                                              Grid.ColumnSpan="2" 
+                                              ColumnDefinitions="*,Auto,Auto">
+                                            <!-- Метка личного сообщения-->
+                                            <Border IsVisible="{Binding IsPersonal}"
+                                                    BackgroundColor="#FFE5E5"
+                                                    Padding="8,3"
+                                                    StrokeThickness="0"
+                                                    HorizontalOptions="Start"
+                                                    VerticalOptions="Center"
+                                                    Grid.Column="0">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="12"/>
+                                                </Border.StrokeShape>
+                                                <HorizontalStackLayout Spacing="4">
+                                                    <Label Text="🔒" FontSize="9"/>
+                                                    <Label Text="личное"
+                                                           FontSize="9"
+                                                           TextColor="{AppThemeBinding Light='#E74C3C', Dark='#FF8A7A'}"
+                                                           FontAttributes="Bold"/>
+                                                </HorizontalStackLayout>
+                                            </Border>
 
-                                        <!-- Метка личного сообщения -->
-                                        <Border IsVisible="{Binding IsPersonal}"
-                                                BackgroundColor="#FFE5E5"
-                                                Padding="8,3"
-                                                StrokeThickness="0"
-                                                HorizontalOptions="Start"
-                                                VerticalOptions="Center"
-                                                Grid.Row="0"
-                                                Grid.Column="0">
-                                            <Border.StrokeShape>
-                                                <RoundRectangle CornerRadius="12"/>
-                                            </Border.StrokeShape>
-                                            <HorizontalStackLayout Spacing="4">
-                                                <Label Text="🔒" 
-                                                            FontSize="9"/>
-                                                <Label Text="личное"
-                                                            FontSize="9"
-                                                            TextColor="{AppThemeBinding Light='#E74C3C', Dark='#FF8A7A'}"
-                                                            FontAttributes="Bold"/>
-                                            </HorizontalStackLayout>
-                                        </Border>
+                                            <!-- Дата -->
+                                            <Label Grid.Column="1" 
+                                                   Text="{Binding CreatedAt, Converter={StaticResource RelativeTimeConverter}}" 
+                                                   FontSize="12"
+                                                   VerticalOptions="Center"/>
+
+                                            <!-- Закладка -->
+                                            <ImageButton Grid.Column="2"
+                                                         Source="{Binding IsFavorite, Converter={StaticResource BoolToFavoriteIconConverter}}"
+                                                         WidthRequest="15"
+                                                         HeightRequest="15"
+                                                         BackgroundColor="Transparent"
+                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotificationsViewModel}}, 
+                                                                           Path=ToggleFavoriteCommand}"
+                                                         CommandParameter="{Binding .}"
+                                                         HorizontalOptions="End"
+                                                         VerticalOptions="Center"
+                                                         Padding="8"/>
+                                        </Grid>
 
                                         <!-- Отправитель -->
                                         <Grid

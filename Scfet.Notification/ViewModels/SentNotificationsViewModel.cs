@@ -30,19 +30,19 @@ namespace Scfet.Notification.ViewModels
         private SentNotification selectedNotification;
 
         [ObservableProperty]
-        private NotificationFilter filter = new();
+        private Filter filter = new();
 
         [ObservableProperty]
         public List<int> pageSizes = new List<int> { 5, 10, 20 };
 
         [ObservableProperty]
-        private GetItems<SentNotification> pagedResult = new();
+        private PagedResult<SentNotification> pagedResult = new();
 
         [ObservableProperty]
-        public List<PickerItem<NotificationSortOrder>> sortOrderItems = new();
+        public List<PickerItem<SortOrder>> sortOrderItems = new();
 
         [ObservableProperty]
-        public List<PickerItem<NotificationSortBy>> sortByItems = new();
+        public List<PickerItem<SortBy>> sortByItems = new();
 
         [ObservableProperty]
         public List<PickerItem<string>> dateRangeOptions = new();
@@ -51,10 +51,10 @@ namespace Scfet.Notification.ViewModels
         private PickerItem<string> selectedDateRange;
 
         [ObservableProperty]
-        public PickerItem<NotificationSortOrder>? selectedSortOrder;
+        public PickerItem<SortOrder>? selectedSortOrder;
 
         [ObservableProperty]
-        public PickerItem<NotificationSortBy>? selectedSortBy;
+        public PickerItem<SortBy>? selectedSortBy;
 
         [ObservableProperty]
         private bool showCustomDateInput;
@@ -137,7 +137,7 @@ namespace Scfet.Notification.ViewModels
         {
             try
             {
-                var pageResult = await _apiService.GetSentNotificationsAsync(Filter);
+                var pageResult = await _apiService.GetSentNotificationsAsync((Filter)Filter);
 
                 if (pageResult == null)
                 {
@@ -230,8 +230,8 @@ namespace Scfet.Notification.ViewModels
         public async Task ApplyFiltersAsync()
         {
             Filter.Page = 1;
-            Filter.SortBy = SelectedSortBy?.Value ?? NotificationSortBy.CreatedAt;
-            Filter.SortOrder = SelectedSortOrder?.Value ?? NotificationSortOrder.Descending;
+            Filter.SortBy = SelectedSortBy?.Value ?? SortBy.CreatedAt;
+            Filter.SortOrder = SelectedSortOrder?.Value ?? SortOrder.Descending;
             Filter.StartDate = SelectedStartDate;
             Filter.EndDate = SelectedEndDate;
             IsPaginationEnable = false;
@@ -355,12 +355,12 @@ namespace Scfet.Notification.ViewModels
             {
                 new()
                 {
-                    Value = NotificationSortOrder.Ascending,
+                    Value = SortOrder.Ascending,
                     DisplayName = "Сначала старые"
                 },
                 new()
                 {
-                    Value = NotificationSortOrder.Descending,
+                    Value = SortOrder.Descending,
                     DisplayName = "Сначала новые"
                 }
             };
@@ -369,12 +369,12 @@ namespace Scfet.Notification.ViewModels
             {
                 new()
                 {
-                    Value = NotificationSortBy.CreatedAt,
+                    Value = SortBy.CreatedAt,
                     DisplayName = "Дата публикации"
                 },
                 new()
                 {
-                    Value = NotificationSortBy.Title,
+                    Value = SortBy.Title,
                     DisplayName = "Заголовку"
                 }
             };

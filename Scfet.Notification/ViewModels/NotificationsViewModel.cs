@@ -47,19 +47,19 @@ namespace Scfet.Notification.ViewModels
         public ObservableCollection<Models.Notification> notifications = [];
 
         [ObservableProperty]
-        public GetItems<Models.Notification> pageResult = new();
+        public PagedResult<Models.Notification> pageResult = new();
 
         [ObservableProperty]
-        public NotificationFilter filter = new();
+        public Filter filter = new();
 
         [ObservableProperty]
         public List<int> pageSizes = new List<int> { 5, 10, 20 };
 
         [ObservableProperty]
-        public List<PickerItem<NotificationSortOrder>> sortOrderItems = new();
+        public List<PickerItem<SortOrder>> sortOrderItems = new();
 
         [ObservableProperty]
-        public List<PickerItem<NotificationSortBy>> sortByItems = new();
+        public List<PickerItem<SortBy>> sortByItems = new();
 
         [ObservableProperty]
         public List<PickerItem<string>> dateRangeOptions = new();
@@ -68,10 +68,10 @@ namespace Scfet.Notification.ViewModels
         private PickerItem<string> selectedDateRange;
 
         [ObservableProperty]
-        public PickerItem<NotificationSortOrder>? selectedSortOrder;
+        public PickerItem<SortOrder>? selectedSortOrder;
 
         [ObservableProperty]
-        public PickerItem<NotificationSortBy>? selectedSortBy;
+        public PickerItem<SortBy>? selectedSortBy;
 
         [ObservableProperty]
         private bool showCustomDateInput;
@@ -157,7 +157,7 @@ namespace Scfet.Notification.ViewModels
         {
             try
             {
-                var pageResult = await _apiService.GetNotificationsAsync(Filter);
+                var pageResult = await _apiService.GetNotificationsAsync((Filter)Filter);
 
                 if (pageResult == null)
                 {
@@ -250,8 +250,8 @@ namespace Scfet.Notification.ViewModels
         public async Task ApplyFiltersAsync()
         {
             Filter.Page = 1;
-            Filter.SortBy = SelectedSortBy?.Value ?? NotificationSortBy.CreatedAt;
-            Filter.SortOrder = SelectedSortOrder?.Value ?? NotificationSortOrder.Descending;
+            Filter.SortBy = SelectedSortBy?.Value ?? SortBy.CreatedAt;
+            Filter.SortOrder = SelectedSortOrder?.Value ?? SortOrder.Descending;
             Filter.StartDate = SelectedStartDate;
             Filter.EndDate = SelectedEndDate;
             IsPaginationEnable = false;
@@ -286,6 +286,41 @@ namespace Scfet.Notification.ViewModels
         }
 
         [RelayCommand]
+        private async Task ToggleFavoriteAsync(Models.Notification notification)
+        {
+            try
+            {
+                var notificationId = notification.Id;
+                var originalState = notification.IsFavorite;
+
+                Response? response;
+                if (!originalState)
+                {
+                    AddFavorite request = new AddFavorite()
+                    {
+                        NotificationId = notificationId
+                    };
+                    response = await _apiService.AddFavoriteAsync(request);
+                }
+                else
+                {
+                    response = await _apiService.RemoveFavoriteAsync(notificationId);
+                }
+                if (response == null || !response.Success)
+                {
+                    await Shell.Current
+                        .DisplayAlert("Ошибка", $"Не удалось {(!originalState == true ? "добавить в" : "удалить из")} избранное: {response?.Message ?? "Проверьте интернет соединение"}", "OK");
+                    return;
+                }
+                notification.IsFavorite = !originalState;
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", $"Не удалось {(!notification?.IsFavorite == true ? "добавить в" : "удалить из")} избранное: {ex.Message}", "OK");
+            }
+        }
+
+        [RelayCommand]
         private async Task MarkAsReadAsync(Models.Notification notification)
         {
             if (notification.IsRead) return;
@@ -295,21 +330,15 @@ namespace Scfet.Notification.ViewModels
                 var success = await _apiService.MarkAsReadAsync(notification.Id);
                 if (success)
                 {
-                    notification.IsRead = true;
                     await _notificationService.MarkAsReadAsync(notification.Id);
-
-                    var index = Notifications.IndexOf(notification);
-
-                    if (index >= 0)
-                    {
-                        Notifications[index] = notification;
-                    }
+                    notification.IsRead = true;
                 }
             }
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Ошибка", $"Ошибка: {ex.Message}", "OK");
             }
+            OnPropertyChanged(nameof(Notifications));
         }
 
         [RelayCommand]
@@ -433,12 +462,12 @@ namespace Scfet.Notification.ViewModels
             {
                 new()
                 {
-                    Value = NotificationSortOrder.Ascending,
+                    Value = SortOrder.Ascending,
                     DisplayName = "Сначала старые"
                 },
                 new()
                 {
-                    Value = NotificationSortOrder.Descending,
+                    Value = SortOrder.Descending,
                     DisplayName = "Сначала новые"
                 }
             };
@@ -447,12 +476,12 @@ namespace Scfet.Notification.ViewModels
             {
                 new()
                 {
-                    Value = NotificationSortBy.CreatedAt,
+                    Value = SortBy.CreatedAt,
                     DisplayName = "Дата публикации"
                 },
                 new()
                 {
-                    Value = NotificationSortBy.Title,
+                    Value = SortBy.Title,
                     DisplayName = "Заголовку"
                 }
             };

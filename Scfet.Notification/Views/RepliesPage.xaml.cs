@@ -110,7 +110,7 @@ public partial class RepliesPage : ContentPage
         base.OnDisappearing();
 
         MainScrollView.Scrolled -= OnScrollTopViewScrolled;
-        MainScrollView.Scrolled += OnScrollBottomViewScrolled;
+        MainScrollView.Scrolled -= OnScrollBottomViewScrolled;
 
         scrollToTopButton.Clicked -= OnScrollToTopClicked;
         scrollToBottomButton.Clicked -= OnScrollToBottomClicked;

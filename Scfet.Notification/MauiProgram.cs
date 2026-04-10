@@ -45,6 +45,7 @@ namespace Scfet.Notification
             builder.Services.AddTransient<RepliesViewModel>();
             builder.Services.AddTransient<AppShellViewModel>();
             builder.Services.AddTransient<AvatarsViewModel>();
+            builder.Services.AddTransient<FavoritesViewModel>();
 
             // Pages
             builder.Services.AddTransient<LoginPage>();
@@ -55,6 +56,7 @@ namespace Scfet.Notification
             builder.Services.AddTransient<EditNotificationPage>();
             builder.Services.AddTransient<RepliesPage>();
             builder.Services.AddTransient<AvatarsPage>();
+            builder.Services.AddTransient<FavoritesPage>();
 
             return builder.Build();
         }

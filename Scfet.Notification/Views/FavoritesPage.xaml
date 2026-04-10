@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Scfet.Notification.Views.FavoritesPage"
+             xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
+             xmlns:models="clr-namespace:Scfet.Notification.Models"
+             xmlns:converters="clr-namespace:Scfet.Notification.Converters"
+             xmlns:ff="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
+             x:DataType="vm:FavoritesViewModel"
+             Title="Закладки">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="frame" TargetType="Border">
+                <Setter Property="BackgroundColor">
+                    <Setter.Value>
+                        <AppThemeBinding Light="#F0F0F0"
+                           Dark="#2A2A2A" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <!-- Ошибка загрузки избранных -->
+        <StackLayout HorizontalOptions="Center" 
+                         VerticalOptions="Center"
+                         IsVisible="{Binding IsStartLoadFailed}">
+
+            <Image Source="no_wifi.png" HeightRequest="200" WidthRequest="200" Margin="0,0,0,70"/>
+            <Label Text="Не удалось загрузить избранные уведомления" FontSize="16"/>
+            <Label Text="Проверьте подключение к интернету" FontSize="16"/>
+            <Button Text="Перезагрузить"
+                    Command="{Binding RefreshCommand}"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    TextColor="White"
+                    CornerRadius="5"                    
+                    Margin="0,10,0,0"/>
+        </StackLayout>
+
+        <!-- Состояние загрузки -->
+        <VerticalStackLayout IsVisible="{Binding IsStartLoadFailed, Converter={StaticResource InverseBoolConverter}}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Spacing="20">
+
+            <StackLayout IsVisible="{Binding IsBusy}">
+                <ActivityIndicator IsRunning="True" 
+                             Color="{StaticResource PrimaryColor}"
+                             HeightRequest="50"
+                             WidthRequest="50" />
+                <Label Text="Загрузка закладок..." 
+                               FontSize="16"
+                               HorizontalOptions="Center" />
+            </StackLayout>
+        </VerticalStackLayout>
+
+        <!-- Основной контент -->
+        <ScrollView x:Name="MainScrollView"
+                    IsVisible="{Binding IsStartLoadFailed, Converter={StaticResource InverseBoolConverter}}">
+
+            <StackLayout Padding="10,0">
+                <StackLayout Spacing="20"
+                             x:Name="contentLayout"
+                             IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}">
+
+                    <!-- Фильтрация-->
+                    <Border 
+                        Style="{StaticResource frame}"
+                        Padding="10">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="5"/>
+                        </Border.StrokeShape>
+
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Фильтрация:" 
+                                    FontSize="14" 
+                                    FontAttributes="Bold" />
+
+                            <Picker Title="Размер страницы"
+                                    ItemsSource="{Binding PageSizes}"
+                                    SelectedItem="{Binding Filter.PageSize}" />
+
+                            <Picker Title="Сортировать По:"
+                                    ItemsSource="{Binding SortByItems}"
+                                    SelectedItem="{Binding SelectedSortBy}"
+                                    ItemDisplayBinding="{Binding DisplayName}"/>
+
+                            <Picker Title="Упорядочить:" 
+                                    ItemsSource="{Binding SortOrderItems}"
+                                    SelectedItem="{Binding SelectedSortOrder}"
+                                        ItemDisplayBinding="{Binding DisplayName}"/>
+
+                            <Picker Title="Выберите период"
+                                    ItemsSource="{Binding DateRangeOptions}"
+                                    SelectedItem="{Binding SelectedDateRange}"
+                                    ItemDisplayBinding="{Binding DisplayName}"/>
+
+                            <Grid ColumnDefinitions="Auto,Auto" 
+                                    ColumnSpacing="5"
+                                    IsVisible="{Binding ShowCustomDateInput}">
+                                <StackLayout Grid.Column="0" Padding="10">
+                                    <Label Text="С:"/>
+                                    <DatePicker Date="{Binding SelectedStartDate}"/>
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" Padding="10">
+                                    <Label Text="По:"/>
+                                    <DatePicker Date="{Binding SelectedEndDate}"/>
+                                </StackLayout>
+                            </Grid>
+
+                            <HorizontalStackLayout Spacing="10">
+                                <Button Text="Применить фильтр"
+                                    Command="{Binding ApplyFiltersCommand}"
+                                    BackgroundColor="#2E86AB"
+                                    TextColor="White"
+                                    CornerRadius="5"
+                                    HorizontalOptions="FillAndExpand"
+                                    IsEnabled="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}"/>
+
+                                <Button Text="Сбросить"
+                                    Command="{Binding ResetFiltersCommand}"
+                                    BackgroundColor="#6c757d"
+                                    TextColor="White"
+                                    CornerRadius="5"
+                                    HorizontalOptions="FillAndExpand"
+                                    IsEnabled="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Список избранных уведомлений -->
+                    <CollectionView ItemsSource="{Binding Favorites}"
+                                    SelectionMode="None">
+
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout HorizontalOptions="Center" 
+                                        VerticalOptions="Center"
+                                        Spacing="20"
+                                        Padding="30">
+                                <Label Text="📭" 
+                                        FontSize="48" 
+                                        HorizontalOptions="Center" />
+                                <Label Text="Нет уведомлений" 
+                                        FontSize="18" 
+                                    HorizontalOptions="Center" />
+                                <Label Text="Здесь будут появляться новые уведомления от преподавателей и администрации" 
+                                    FontSize="14" 
+                                        TextColor="Gray"
+                                        HorizontalOptions="Center"
+                                        HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Favorite">
+                                <Border Padding="15" 
+                                        Margin="10,5"
+                                        BackgroundColor="{Binding Type, Converter={StaticResource NotificationTypeToColorConverter}}"
+                                        Opacity="{Binding IsEnable, Converter={StaticResource BoolToOpacityConverter}}"
+                                        >
+                                    <Border.Stroke>
+                                        <MultiBinding Converter="{StaticResource BorderStrokeToColorConverter}">
+                                            <Binding Source="{RelativeSource AncestorType={x:Type vm:FavoritesViewModel}}" 
+                                                     Path="CurrentUserId"/>
+                                            <Binding Path="SenderId"/>
+                                        </MultiBinding>
+                                    </Border.Stroke>
+
+                                    <Grid>
+                                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                                            ColumnDefinitions="*,Auto"
+                                            RowSpacing="7"
+                                            ColumnSpacing="5">
+
+                                        <!-- Дата и иконка удаления закладки -->
+                                        <Grid Grid.Row="0" 
+                                            Grid.ColumnSpan="2" 
+                                            ColumnDefinitions="*,Auto,Auto">
+                                            <!-- Метка личного сообщения-->
+                                            <Border IsVisible="{Binding IsPersonal}"
+                                                BackgroundColor="#FFE5E5"
+                                                Padding="8,3"
+                                                StrokeThickness="0"
+                                                HorizontalOptions="Start"
+                                                VerticalOptions="Center"
+                                                Grid.Column="0">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="12"/>
+                                                </Border.StrokeShape>
+                                                <HorizontalStackLayout Spacing="4">
+                                                    <Label Text="🔒" FontSize="9"/>
+                                                    <Label Text="личное"
+                                                FontSize="9"
+                                                TextColor="{AppThemeBinding Light='#E74C3C', Dark='#FF8A7A'}"
+                                                FontAttributes="Bold"/>
+                                                </HorizontalStackLayout>
+                                            </Border>
+                                            <!-- Дата -->
+                                            <Label Grid.Column="1" 
+                                                Text="{Binding CreatedAt, Converter={StaticResource RelativeTimeConverter}}" 
+                                                FontSize="12"
+                                                VerticalOptions="Center"/>
+                                            
+                                            <!-- Кнопка удаления из закладок -->
+                                            <ImageButton Grid.Column="2"
+                                                    Source="{AppThemeBinding Dark=trash_white.png, Light=trash.png}"  
+                                                    BackgroundColor="Transparent"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:FavoritesViewModel}}, 
+                                                                    Path=RemoveFavoriteCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    HorizontalOptions="End"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="20"
+                                                    HeightRequest="20"
+                                                    Padding="10"/>
+                                        </Grid>
+
+                                        <!-- Отправитель -->
+                                        <Grid
+                                            Grid.Row="1" 
+                                            Grid.Column="0"
+                                            ColumnSpacing="3"
+                                            RowSpacing="6"
+                                            ColumnDefinitions="auto,auto,auto,auto"
+                                            RowDefinitions="*,*"
+                                            VerticalOptions="Center">
+
+                                            <!-- Аватар/иконка -->
+                                            <Border BackgroundColor="#E8F0FE"
+                                                    Style="{StaticResource card_avatar}"
+                                                    Grid.Column="0"
+                                                    HorizontalOptions="Start"
+                                                    Grid.Row="0">
+                                                <ff:CachedImage 
+                                                    Source="{Binding SenderAvatarUrl}"
+                                                    Aspect="AspectFill"
+                                                    DownsampleToViewSize="True"
+                                                    FadeAnimationEnabled="False"
+                                                    LoadingPlaceholder="placeholder.png"
+                                                    ErrorPlaceholder="placeholder.png"
+                                                    RetryCount="2">
+                                                </ff:CachedImage>
+                                            </Border>
+
+                                            <!-- Имя отправителя -->
+                                            <Label Text="{Binding SenderName}" 
+                                                    FontSize="12" 
+                                                    FontAttributes="Bold"
+                                                    TextColor="{AppThemeBinding Light='#2C3E50', Dark='#ECF0F1'}"
+                                                    VerticalOptions="Center"
+                                                   HorizontalOptions="Start"
+                                                   MaximumWidthRequest="170"
+                                                   LineBreakMode="TailTruncation"
+                                                   Grid.Column="0"
+                                                   Grid.Row="1"/>
+
+                                            <!-- Разделитель -->
+                                            <Label Text="·" 
+                                                    FontSize="14"
+                                                    TextColor="{AppThemeBinding Light='#BDC3C7', Dark='#7F8C8D'}"
+                                                    VerticalOptions="Center"
+                                                    Grid.Column="2"
+                                                   Grid.Row="1"/>
+
+                                            <!-- Роль с цветным фоном -->
+                                            <Border BackgroundColor="{Binding SenderRole, Converter={StaticResource RoleToColorConverter}}"
+                                                    Padding="8,3"
+                                                    StrokeThickness="0"
+                                                    HorizontalOptions="Start"
+                                                    VerticalOptions="Center"
+                                                    Grid.Column="3"
+                                                    Grid.Row="1">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="12"/>
+                                                </Border.StrokeShape>
+                                                <Label Text="{Binding SenderRole, Converter={StaticResource RoleToRussianConverter}}"
+                                                        FontSize="10"
+                                                        TextColor="White"
+                                                        FontAttributes="Bold"/>
+                                            </Border>
+                                        </Grid>
+
+                                        <!-- Изображение -->
+                                        <ff:CachedImage 
+                                                Source="{Binding ImageUrl}"
+                                                Grid.Row="2"
+                                                Grid.ColumnSpan="2"
+                                                HeightRequest="350"
+                                                IsVisible="{Binding ImageUrl, Converter={StaticResource StringNotEmptyConverter}}"
+                                                DownsampleToViewSize="True"
+                                                FadeAnimationEnabled="False"
+                                                LoadingPlaceholder="placeholder.png"
+                                                ErrorPlaceholder="placeholder.png"
+                                                RetryCount="2">
+                                        </ff:CachedImage>
+
+                                        <!-- Заголовок -->
+                                        <Label Grid.Row="3" 
+                                                Grid.Column="0"
+                                                Text="{Binding Title}" 
+                                                FontSize="16" 
+                                                FontAttributes="Bold" />
+
+                                        <!-- Сообщение -->
+                                        <Label Grid.Row="4" 
+                                                Grid.ColumnSpan="2"
+                                                Text="{Binding Message}" 
+                                                FontSize="14" 
+                                                LineBreakMode="WordWrap" />
+
+                                        <!-- Статус прочтения -->
+                                        <Label Grid.Row="5" 
+                                               Grid.Column="0"
+                                               Text="{Binding IsRead, Converter={StaticResource ReadStatusConverter}}"
+                                               FontSize="12" 
+                                               IsVisible="{Binding IsEnable}"/>
+
+                                        <!-- Кнопка обсудить -->
+                                        <Button Grid.Row="6" 
+                                                HorizontalOptions="Start"
+                                                WidthRequest="100"
+                                                MinimumHeightRequest="40"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:FavoritesViewModel}}, Path = GoToRepliesPageCommand}"
+                                                CommandParameter="{Binding NotificationId}"
+                                                Text="Обсудить" 
+                                                TextColor="{AppThemeBinding Light=White, Dark=White}"
+                                                FontSize="12"
+                                                IsVisible="{Binding AllowReplies}"
+                                                IsEnabled="{Binding IsEnable}"
+                                                BackgroundColor="{StaticResource PrimaryColor}"/>
+                                        </Grid>
+                                        
+                                        <!-- Затемняющий оверлей для недоступных уведомлений (блокирует тапы) -->
+                                        <Grid IsVisible="{Binding IsEnable, Converter={StaticResource InverseBoolConverter}}"
+                                              BackgroundColor="#80000000"
+                                              InputTransparent="True"
+                                              Margin="-15">
+                                            <!-- Текст поверх затемнения -->
+                                            <VerticalStackLayout HorizontalOptions="Center"
+                                                                 VerticalOptions="Center"
+                                                                 Spacing="10">
+                                                <Label Text="🚫"
+                                                       FontSize="48"
+                                                       HorizontalOptions="Center"/>
+                                                <Label Text="Уведомление недоступно"
+                                                       FontSize="14"
+                                                       TextColor="White"
+                                                       FontAttributes="Bold"
+                                                       HorizontalOptions="Center"/>
+                                                <Label Text="Вы не являетесь получателем"
+                                                       FontSize="12"
+                                                       TextColor="#DDDDDD"
+                                                       HorizontalOptions="Center"/>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Grid>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:FavoritesViewModel}}, 
+                                               Path=MarkAsReadCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Border.GestureRecognizers>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+                <!-- Действия -->
+                <Grid IsVisible="{Binding IsPaginationEnable}">
+
+                    <!-- Состояние загрузки пагинации-->
+                    <VerticalStackLayout IsVisible="{Binding IsPagination}"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               Spacing="20">
+                        <ActivityIndicator IsRunning="True" 
+                                                    Color="{StaticResource PrimaryColor}"
+                                                    HeightRequest="50"
+                                                    WidthRequest="50" />
+                        <Label Text="Загрузка уведомлений..." 
+                                       FontSize="16"
+                                       HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+
+                    <!-- Кнопка Загрузить еще -->
+                    <Grid Margin="0,10,0,0" ColumnDefinitions="*"
+                                 IsVisible="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}">
+
+                        <Button Grid.Column="0" 
+                                        Text="Загрузить еще" 
+                                        TextColor="{AppThemeBinding Light=White, Dark=White}"
+                                        Command="{Binding LoadFavoritesPaginationCommand}"
+                                        BackgroundColor="#2E86AB"/>
+                    </Grid>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Контейнер для плавающих кнопок -->
+        <VerticalStackLayout
+                VerticalOptions="End"
+                HorizontalOptions="End"
+                Margin="20"
+                Spacing="10"
+                IsVisible="{Binding IsShowScrollButtons}">
+
+            <!-- Кнопка вверх -->
+            <Button 
+                x:Name="scrollToTopButton"
+                Text="↑"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                BackgroundColor="{StaticResource PrimaryColor}"
+                TextColor="White"
+                FontSize="20"
+                IsVisible="false"/>
+
+            <!-- Кнопка вниз -->
+            <Button 
+                x:Name="scrollToBottomButton"
+                Text="↓"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                BackgroundColor="{StaticResource PrimaryColor}"
+                FontSize="20"
+                TextColor="White"
+                IsVisible="False"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

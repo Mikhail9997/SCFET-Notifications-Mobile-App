@@ -31,11 +31,9 @@ namespace Scfet.Notification.Utils
                     selectedEndDate = today;
                     break;
                 case "last_week":
-                    var dayOffset2 = today.DayOfWeek == DayOfWeek.Sunday ? 7 : (int)today.DayOfWeek;
-                    var lastWeekStart = today.AddDays(-dayOffset2 - 6);
-                    var lastWeekEnd = lastWeekStart.AddDays(6);
-                    selectedStartDate = lastWeekStart;
-                    selectedEndDate = lastWeekEnd;
+                    var dayOffset2 = today.DayOfWeek == DayOfWeek.Sunday ? 6 : (int)today.DayOfWeek - 1;
+                    selectedStartDate = today.AddDays(-dayOffset2 - 7);
+                    selectedEndDate = selectedStartDate.Value.AddDays(6);
                     break;
                 case "this_month":
                     var monthStart = new DateTime(today.Year, today.Month, 1);

@@ -16,7 +16,7 @@ namespace Scfet.Notification.Services
         Task<AuthResponse<User>> LoginAsync(string email, string password);
         Task Logout();
         Task<Profile> GetCurrentUserAsync();
-        Task<GetItems<Models.Notification>?> GetNotificationsAsync(NotificationFilter filter);
+        Task<PagedResult<Models.Notification>?> GetNotificationsAsync(Filter filter);
         Task<NotificationDetail?> GetNotificationById(Guid id);
         Task<bool> MarkAsReadAsync(Guid notificationId);
         Task<List<Group>> GetGroupsAsync(GroupFilter filter);
@@ -25,19 +25,22 @@ namespace Scfet.Notification.Services
         Task<List<User>> GetTeachersAsync(UserFilter filter);
         Task<List<User>> GetAdministratorsAsync(UserFilter filter);
         Task<NotificationDetail?> GetNotificationDetail(Guid id);
-        Task<GetItems<SentNotification>?> GetSentNotificationsAsync(NotificationFilter filter);
+        Task<PagedResult<SentNotification>?> GetSentNotificationsAsync(Filter filter);
         Task<bool> SendNotificationAsync(CreateNotification request);
         Task<bool> UpdateNotificationAsync(UpdateNotification request);
         Task<bool> RemoveNotificationAsync(Guid id);
         Task<ProfileUpdateResponse> UpdateProfileAsync(string firstName, string lastName, string email, string phoneNumber);
         Task<bool> ChangePasswordAsync(string currentPassword, string newPassword);
-        Task<Response<GetItems<Reply>>?> GetNotificationRepliesAsync(Guid notificationId, NotificationFilter filter);
+        Task<Response<PagedResult<Reply>>?> GetNotificationRepliesAsync(Guid notificationId, Filter filter);
         Task<Response?> CreateReplyAsync(CreateReply request);
         Task<Response?> UpdateReplyAsync(Guid id, UpdateReply request);
         Task<Response?> RemoveReplyAsync(Guid id);
         Task<Response<List<AvatarPreset>>?> GetAllAvatarsAsync();
         Task<Response?> UploadAvatarAsync(string presetKey);
         Task<Response?> UploadCustomAvatarAsync(FileResult Image);
+        Task<Response<PagedResult<Favorite>>?> GetMyFavoritesAsync(Filter filter);
+        Task<Response?> AddFavoriteAsync(AddFavorite request);
+        Task<Response?> RemoveFavoriteAsync(Guid notificationId);
     }
     //http://localhost:5050/api
     //https://amorously-preeminent-godwit.cloudpub.ru/api
@@ -205,7 +208,7 @@ namespace Scfet.Notification.Services
             return profileError;
         }
 
-        public async Task<GetItems<Models.Notification>?> GetNotificationsAsync(NotificationFilter filter)
+        public async Task<PagedResult<Models.Notification>?> GetNotificationsAsync(Filter filter)
         {
             try
             {
@@ -234,7 +237,7 @@ namespace Scfet.Notification.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<GetItems<Models.Notification>?>(content, new JsonSerializerOptions
+                    return JsonSerializer.Deserialize<PagedResult<Models.Notification>?>(content, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
                     }) ?? null;
@@ -576,7 +579,7 @@ namespace Scfet.Notification.Services
             }
         }
 
-        public async Task<GetItems<SentNotification>?> GetSentNotificationsAsync(NotificationFilter filter)
+        public async Task<PagedResult<SentNotification>?> GetSentNotificationsAsync(Filter filter)
         {
             try
             {
@@ -607,7 +610,7 @@ namespace Scfet.Notification.Services
                 {
                     var content = await response.Content.ReadAsStringAsync();
 
-                    return JsonSerializer.Deserialize<GetItems<SentNotification>>(content, new JsonSerializerOptions
+                    return JsonSerializer.Deserialize<PagedResult<SentNotification>>(content, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
                     }) ?? null;
@@ -686,7 +689,7 @@ namespace Scfet.Notification.Services
             }
         }
 
-        public async Task<Response<GetItems<Reply>>?> GetNotificationRepliesAsync(Guid notificationId, NotificationFilter filter)
+        public async Task<Response<PagedResult<Reply>>?> GetNotificationRepliesAsync(Guid notificationId, Filter filter)
         {
             try
             {
@@ -716,7 +719,7 @@ namespace Scfet.Notification.Services
 
                 if (!string.IsNullOrEmpty(content))
                 {
-                    return JsonSerializer.Deserialize<Response<GetItems<Reply>>>(content, new JsonSerializerOptions
+                    return JsonSerializer.Deserialize<Response<PagedResult<Reply>>>(content, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
                     }) ?? null;
@@ -886,6 +889,97 @@ namespace Scfet.Notification.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"upload custom avatar error: {ex.Message}");
+            }
+            return null;
+        }
+
+        public async Task<Response<PagedResult<Favorite>>?> GetMyFavoritesAsync(Filter filter)
+        {
+            try
+            {
+                await AddAuthHeader();
+
+                var query = new Dictionary<string, string?>(){
+                    { "page", filter.Page.ToString() },
+                    { "PageSize", filter.PageSize.ToString() },
+                    { "SortOrder", filter.SortOrder.ToString() },
+                    { "SortBy", filter.SortBy.ToString() }
+                };
+
+                if (filter.StartDate.HasValue)
+                {
+                    query.Add("startDate", filter.StartDate.Value.ToString("yyyy-MM-dd"));
+                }
+
+                if (filter.EndDate.HasValue)
+                {
+                    query.Add("endDate", filter.EndDate.Value.ToString("yyyy-MM-dd"));
+                }
+
+                var queryString = ResponseUtils.GenerateQuery(query);
+
+                var response = await _httpClient.GetAsync($"{BaseUrl}/favorites/my?{queryString}");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                if (!string.IsNullOrEmpty(responseContent))
+                {
+                    return JsonSerializer.Deserialize<Response<PagedResult<Favorite>>>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"get favorites error: {ex.Message}");
+            }
+            return null;
+        }
+
+        public async Task<Response?> AddFavoriteAsync(AddFavorite request)
+        {
+            try
+            {
+                await AddAuthHeader();
+
+                var json = JsonSerializer.Serialize(request);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync($"{BaseUrl}/favorites/add", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+                if (!string.IsNullOrEmpty(responseContent))
+                {
+                    return JsonSerializer.Deserialize<Response>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"add favorite error: {ex.Message}");
+            }
+            return null;
+        }
+
+        public async Task<Response?> RemoveFavoriteAsync(Guid notificationId)
+        {
+            try
+            {
+                await AddAuthHeader();
+
+                var response = await _httpClient.DeleteAsync($"{BaseUrl}/favorites/{notificationId}/remove");
+                var responseContent = await response.Content.ReadAsStringAsync();
+                if (!string.IsNullOrEmpty(responseContent))
+                {
+                    return JsonSerializer.Deserialize<Response>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }) ?? null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"add favorite error: {ex.Message}");
             }
             return null;
         }

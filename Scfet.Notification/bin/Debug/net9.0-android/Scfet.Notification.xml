@@ -371,6 +371,130 @@
         <member name="P:Scfet.Notification.ViewModels.EditNotificationViewModel.ResetGroupFiltersCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.EditNotificationViewModel.ResetGroupFiltersAsync"/>.</summary>
         </member>
+        <member name="T:Scfet.Notification.ViewModels.FavoritesViewModel">
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.CurrentUserId">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.currentUserId"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.Favorites">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.favorites"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.PageResult">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.pageResult"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.Filter">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.filter"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.PageSizes">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.pageSizes"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.SortOrderItems">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.sortOrderItems"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.SortByItems">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.sortByItems"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.DateRangeOptions">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.dateRangeOptions"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.SelectedDateRange">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.selectedDateRange"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.SelectedSortOrder">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.selectedSortOrder"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.SelectedSortBy">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.selectedSortBy"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.SelectedStartDate">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.selectedStartDate"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.SelectedEndDate">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.selectedEndDate"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.ShowCustomDateInput">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.showCustomDateInput"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.IsBusy">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.isBusy"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.IsRefreshing">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.isRefreshing"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.IsPagination">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.isPagination"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.IsPaginationEnable">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.isPaginationEnable"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.IsLoadFailed">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.isLoadFailed"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.IsStartLoadFailed">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.FavoritesViewModel.isStartLoadFailed"/>
+        </member>
+        <member name="M:Scfet.Notification.ViewModels.FavoritesViewModel.OnSelectedDateRangeChanged(Scfet.Notification.ViewModels.PickerItem{System.String})">
+            <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.FavoritesViewModel.SelectedDateRange"/> just changed.</summary>
+            <param name="value">The new property value that was set.</param>
+            <remarks>This method is invoked right after the value of <see cref="P:Scfet.Notification.ViewModels.FavoritesViewModel.SelectedDateRange"/> is changed.</remarks>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.FavoritesViewModel.startCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.FavoritesViewModel.StartCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.StartCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.FavoritesViewModel.StartAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.FavoritesViewModel.loadFavoritesPaginationCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.FavoritesViewModel.LoadFavoritesPaginationCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.LoadFavoritesPaginationCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.FavoritesViewModel.LoadFavoritesPaginationAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.FavoritesViewModel.applyFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.FavoritesViewModel.ApplyFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.ApplyFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.FavoritesViewModel.ApplyFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.FavoritesViewModel.resetFiltersCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.FavoritesViewModel.ResetFiltersCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.ResetFiltersCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.FavoritesViewModel.ResetFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.FavoritesViewModel.refreshCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.FavoritesViewModel.RefreshCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.RefreshCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.FavoritesViewModel.RefreshAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.FavoritesViewModel.markAsReadCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.FavoritesViewModel.MarkAsReadCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.MarkAsReadCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.FavoritesViewModel.MarkAsReadAsync(Scfet.Notification.Models.Favorite)"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.FavoritesViewModel.removeFavoriteCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.FavoritesViewModel.RemoveFavoriteCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.RemoveFavoriteCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.FavoritesViewModel.RemoveFavoriteAsync(Scfet.Notification.Models.Favorite)"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.FavoritesViewModel.goToRepliesPageCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.FavoritesViewModel.GoToRepliesPageCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.FavoritesViewModel.GoToRepliesPageCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.FavoritesViewModel.GoToRepliesPageAsync(System.Guid)"/>.</summary>
+        </member>
         <member name="T:Scfet.Notification.ViewModels.LoginViewModel">
             <inheritdoc/>
             <inheritdoc/>
@@ -398,6 +522,7 @@
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.LoginViewModel.LogoutAsync"/>.</summary>
         </member>
         <member name="T:Scfet.Notification.ViewModels.NotificationsViewModel">
+            <inheritdoc/>
             <inheritdoc/>
             <inheritdoc/>
             <inheritdoc/>
@@ -499,6 +624,12 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.ResetFiltersCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.NotificationsViewModel.ResetFiltersAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.NotificationsViewModel.toggleFavoriteCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.ToggleFavoriteCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.NotificationsViewModel.ToggleFavoriteCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.NotificationsViewModel.ToggleFavoriteAsync(Scfet.Notification.Models.Notification)"/>.</summary>
         </member>
         <member name="F:Scfet.Notification.ViewModels.NotificationsViewModel.markAsReadCommand">
             <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.NotificationsViewModel.MarkAsReadCommand"/>.</summary>
@@ -609,6 +740,7 @@
             <inheritdoc/>
             <inheritdoc/>
             <inheritdoc/>
+            <inheritdoc/>
         </member>
         <member name="P:Scfet.Notification.ViewModels.RepliesViewModel.CurrentUserId">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.RepliesViewModel.currentUserId"/>
@@ -633,6 +765,9 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.RepliesViewModel.SenderAvatarUrl">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.RepliesViewModel.senderAvatarUrl"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.RepliesViewModel.IsFavorite">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.RepliesViewModel.isFavorite"/>
         </member>
         <member name="P:Scfet.Notification.ViewModels.RepliesViewModel.CreatedAt">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.RepliesViewModel.createdAt"/>
@@ -767,6 +902,12 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.RepliesViewModel.RemoveReplyCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand`1"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.RepliesViewModel.RemoveReplyAsync(System.Guid)"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.RepliesViewModel.toggleFavoriteCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.RepliesViewModel.ToggleFavoriteCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.RepliesViewModel.ToggleFavoriteCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.RepliesViewModel.ToggleFavoriteAsync"/>.</summary>
         </member>
         <member name="T:Scfet.Notification.ViewModels.SentNotificationsViewModel">
             <inheritdoc/>
@@ -1026,20 +1167,11 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsImageExist">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsImageExist" generated properties.</summary>
         </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Email">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Email" generated properties.</summary>
-        </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Password">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Password" generated properties.</summary>
-        </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsAuth">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsAuth" generated properties.</summary>
-        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CurrentUserId">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CurrentUserId" generated properties.</summary>
         </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Notifications">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Notifications" generated properties.</summary>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Favorites">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Favorites" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.PageResult">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "PageResult" generated properties.</summary>
@@ -1068,14 +1200,14 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedSortBy">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedSortBy" generated properties.</summary>
         </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ShowCustomDateInput">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ShowCustomDateInput" generated properties.</summary>
-        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedStartDate">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedStartDate" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SelectedEndDate">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SelectedEndDate" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ShowCustomDateInput">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ShowCustomDateInput" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsRefreshing">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsRefreshing" generated properties.</summary>
@@ -1085,6 +1217,24 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsPaginationEnable">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsPaginationEnable" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsLoadFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsLoadFailed" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsStartLoadFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsStartLoadFailed" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Email">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Email" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Password">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Password" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsAuth">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsAuth" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Notifications">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Notifications" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsLoadNotificationsFailed">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsLoadNotificationsFailed" generated properties.</summary>
@@ -1118,6 +1268,9 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SenderAvatarUrl">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SenderAvatarUrl" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsFavorite">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsFavorite" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CreatedAt">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CreatedAt" generated properties.</summary>
@@ -1278,20 +1431,11 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsImageExist">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsImageExist" generated properties.</summary>
         </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Email">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Email" generated properties.</summary>
-        </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Password">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Password" generated properties.</summary>
-        </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsAuth">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsAuth" generated properties.</summary>
-        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CurrentUserId">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CurrentUserId" generated properties.</summary>
         </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Notifications">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Notifications" generated properties.</summary>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Favorites">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Favorites" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.PageResult">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "PageResult" generated properties.</summary>
@@ -1320,14 +1464,14 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedSortBy">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedSortBy" generated properties.</summary>
         </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ShowCustomDateInput">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ShowCustomDateInput" generated properties.</summary>
-        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedStartDate">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedStartDate" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SelectedEndDate">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SelectedEndDate" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ShowCustomDateInput">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ShowCustomDateInput" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsRefreshing">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsRefreshing" generated properties.</summary>
@@ -1337,6 +1481,24 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsPaginationEnable">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsPaginationEnable" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsLoadFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsLoadFailed" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsStartLoadFailed">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsStartLoadFailed" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Email">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Email" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Password">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Password" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsAuth">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsAuth" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Notifications">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Notifications" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsLoadNotificationsFailed">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsLoadNotificationsFailed" generated properties.</summary>
@@ -1370,6 +1532,9 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SenderAvatarUrl">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SenderAvatarUrl" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsFavorite">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsFavorite" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CreatedAt">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CreatedAt" generated properties.</summary>

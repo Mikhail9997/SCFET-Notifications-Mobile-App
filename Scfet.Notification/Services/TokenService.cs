@@ -124,7 +124,7 @@ namespace Scfet.Notification.Services
 
                 if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
                 {
-                    await ClearTokensAsync();
+                    await _loginService.LogoutWithRedirect();
                     return false;
                 }
 
@@ -140,10 +140,9 @@ namespace Scfet.Notification.Services
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await _httpClient.PostAsync($"{BaseUrl}/auth/refresh-token", content);
-
+                var responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    var responseContent = await response.Content.ReadAsStringAsync();
                     var tokenData = JsonSerializer.Deserialize<TokenData>(responseContent, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -162,6 +161,7 @@ namespace Scfet.Notification.Services
                         if (auth != null)
                         {
                             auth.AccessToken = tokenData.AccessToken;
+                            auth.RefreshToken = tokenData.RefreshToken;
                             _loginService.UpdateAuth(auth);
                         }
 

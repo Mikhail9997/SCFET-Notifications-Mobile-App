@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap rescap">
-  <Identity Name="com.companyname.scfet.notification" Publisher="CN=User Name" Version="2.0.2.7" />
+  <Identity Name="com.companyname.scfet.notification" Publisher="CN=User Name" Version="2.1.3.11" />
   <mp:PhoneIdentity PhoneProductId="DA64AE93-7DFD-418F-A271-A651C3F99996" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Scfet.Notification</DisplayName>
