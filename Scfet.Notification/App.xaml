@@ -30,6 +30,8 @@
             <converters:BorderStrokeToColorConverter x:Key="BorderStrokeToColorConverter"/>
             <converters:BoolToFavoriteIconConverter x:Key="BoolToFavoriteIconConverter"/>
             <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
+            <converters:ChannelRoleToColorConverter x:Key="ChannelRoleToColorConverter"/>
+            <converters:ChannelRoleToRussianConverter x:Key="ChannelRoleToRussianConverter"/>
 
             <Color x:Key="PrimaryColor">#2E86AB</Color>
 

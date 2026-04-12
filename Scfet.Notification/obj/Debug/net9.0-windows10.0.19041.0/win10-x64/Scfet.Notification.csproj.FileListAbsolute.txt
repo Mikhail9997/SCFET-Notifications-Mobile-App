@@ -356,7 +356,6 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Maui.Graphics.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Maui.Graphics.Win2D.WinUI.Desktop.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Toolkit.Uwp.Notifications.dll
-C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Win32.SystemEvents.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Graphics.Imaging.Projection.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.InteractiveExperiences.Projection.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Security.Authentication.OAuth.Projection.dll
@@ -384,7 +383,6 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.WindowsAppRuntime.Bootstrap.Net.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Newtonsoft.Json.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Plugin.LocalNotification.dll
-C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\System.Drawing.Common.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\System.Net.ServerSentEvents.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\ar\Microsoft.Maui.Controls.resources.dll
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\ca\Microsoft.Maui.Controls.resources.dll
@@ -594,3 +592,18 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\r\bookmark_white.scale-100.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\r\trash.scale-100.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\r\trash_white.scale-100.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Extensions.Diagnostics.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Extensions.Http.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\System.Diagnostics.DiagnosticSource.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\channels.scale-100.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\channels_white.scale-100.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\r\channels.scale-100.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\r\channels_white.scale-100.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\more_vertical.scale-100.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\more_vertical_white.scale-100.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\r\more_vertical.scale-100.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\r\more_vertical_white.scale-100.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\System.Reactive.dll

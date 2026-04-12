@@ -20,14 +20,18 @@ namespace Scfet.Notification.Models
         public string? Name { get; set; } = string.Empty;
     }
 
-    public class Filter
+    public class Filter:BaseFilter
+    {
+        public SortBy SortBy { get; set; } = SortBy.CreatedAt;
+    }
+
+    public class BaseFilter
     {
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public SortOrder SortOrder { get; set; } = SortOrder.Descending;
-        public SortBy SortBy { get; set; } = SortBy.CreatedAt;
     }
 
     public enum SortOrder

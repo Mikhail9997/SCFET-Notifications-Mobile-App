@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Scfet.Notification.Services;
+using Scfet.Notification.Services.Api;
 
 namespace Scfet.Notification.ViewModels
 {
     public partial class LoginViewModel:BaseViewModel
     {
-        private readonly IApiService _apiService;
-        private readonly NotificationService _notificationService;
+        private readonly IAuthApiService _authApiService;
+        private readonly SignalRService _notificationService;
         private readonly LoginService _loginService;
 
-        public LoginViewModel(IApiService apiService, NotificationService notificationService, LoginService loginService)
+        public LoginViewModel(IAuthApiService authApiService, SignalRService notificationService, LoginService loginService)
         {
-            _apiService = apiService;
+            _authApiService = authApiService;
             _loginService = loginService;
             _notificationService = notificationService;
         }
@@ -52,7 +53,7 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                var result = await _apiService.LoginAsync(Email, Password);
+                var result = await _authApiService.LoginAsync(Email, Password);
                 if (result != null && result.Success && result.Data != null)
                 {
                     await Shell.Current.GoToAsync("//MainPage");
@@ -83,7 +84,7 @@ namespace Scfet.Notification.ViewModels
                 {
                     IsBusy = true;
                     await _notificationService.DisconnectAsync();
-                    await _apiService.Logout();
+                    await _authApiService.Logout();
 
                     IsAuth = await _loginService.IsLoggedIn();
                     Title = IsAuth ? "Выйти" : "Войти";

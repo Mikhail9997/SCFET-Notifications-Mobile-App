@@ -8,20 +8,21 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Scfet.Notification.Models;
 using Scfet.Notification.Services;
+using Scfet.Notification.Services.Api;
 
 namespace Scfet.Notification.ViewModels
 {
     public partial class AvatarsViewModel: ObservableObject
     {
-        private readonly IApiService _apiService;
+        private readonly IProfileApiService _profileApiService;
         private readonly IPickImageService _pickImageService;
         private readonly LoginService _loginService;
 
-        public AvatarsViewModel(IApiService apiService,
+        public AvatarsViewModel(IProfileApiService profileApiService,
             LoginService loginService, 
             IPickImageService pickImageService)
         {
-            _apiService = apiService;
+            _profileApiService = profileApiService;
             _loginService = loginService;
             _pickImageService = pickImageService;
         }
@@ -84,7 +85,7 @@ namespace Scfet.Notification.ViewModels
         {
             try
             {
-                var response = await _apiService.GetAllAvatarsAsync();
+                var response = await _profileApiService.GetAllAvatarsAsync();
 
                 if (response == null || response?.Data == null || !response.Success)
                 {
@@ -159,7 +160,7 @@ namespace Scfet.Notification.ViewModels
                 // Если есть кастомное изображение и пользователь может его загружать
                 if (IsAllowCustomAvatar && SelectedImage != null)
                 {
-                    var response = await _apiService.UploadCustomAvatarAsync(SelectedImage);
+                    var response = await _profileApiService.UploadCustomAvatarAsync(SelectedImage);
 
                     if (response == null || response.Success == false)
                     {
@@ -177,7 +178,7 @@ namespace Scfet.Notification.ViewModels
                 // Иначе используем выбранный пресет
                 else if (SelectedPreset != null)
                 {
-                    var response = await _apiService.UploadAvatarAsync(SelectedPreset.Key);
+                    var response = await _profileApiService.UploadAvatarAsync(SelectedPreset.Key);
 
                     if (response == null || response.Success == false)
                     {

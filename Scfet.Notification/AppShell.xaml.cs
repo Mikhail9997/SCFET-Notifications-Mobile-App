@@ -19,6 +19,10 @@ namespace Scfet.Notification
             Routing.RegisterRoute("EditNotificationPage", typeof(EditNotificationPage));
             Routing.RegisterRoute("RepliesPage", typeof(RepliesPage));
             Routing.RegisterRoute("AvatarsPage", typeof(AvatarsPage));
+            Routing.RegisterRoute("CreateChannelPage", typeof(CreateChannelPage));
+            Routing.RegisterRoute("ChannelInvitationsPage", typeof(ChannelInvitationsPage));
+            Routing.RegisterRoute("InviteUsersPage", typeof(InviteUsersPage));
+            Routing.RegisterRoute("ChannelMembersPage", typeof(ChannelMembersPage));
         }
     }
 }

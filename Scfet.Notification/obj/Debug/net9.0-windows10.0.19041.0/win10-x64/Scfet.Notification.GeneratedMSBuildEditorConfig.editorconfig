@@ -63,6 +63,30 @@ build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.A
 build_metadata.AdditionalFiles.TargetPath = Views\AvatarsPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\AvatarsPage.xaml
 
+[C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/ChannelInvitationsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.ChannelInvitationsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\ChannelInvitationsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\ChannelInvitationsPage.xaml
+
+[C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/ChannelMembersPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.ChannelMembersPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\ChannelMembersPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\ChannelMembersPage.xaml
+
+[C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/ChannelsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.ChannelsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\ChannelsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\ChannelsPage.xaml
+
+[C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/CreateChannelPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.CreateChannelPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\CreateChannelPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\CreateChannelPage.xaml
+
 [C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/CreateNotificationPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.CreateNotificationPage.xaml
@@ -80,6 +104,12 @@ build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.FavoritesPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\FavoritesPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\FavoritesPage.xaml
+
+[C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/InviteUsersPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.InviteUsersPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\InviteUsersPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\InviteUsersPage.xaml
 
 [C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/LoginPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Maui.Controls;
 using Scfet.Notification.Services;
+using Scfet.Notification.Services.Api;
 using Scfet.Notification.ViewModels;
 using Scfet.Notification.Views;
 
@@ -8,11 +9,14 @@ namespace Scfet.Notification
 {
     public partial class App : Application
     {
-        private readonly IApiService _apiService;
+        private readonly IProfileApiService _apiService;
         private readonly LoginService _loginService;
         private readonly NotificationPermissionsService _permissionsService;
         private readonly AppShellViewModel _appShellViewModel;
-        public App(IApiService apiService, LoginService loginService, NotificationPermissionsService permissionsService, AppShellViewModel appShellViewModel)
+        public App(IProfileApiService apiService, 
+            LoginService loginService,
+            NotificationPermissionsService permissionsService, 
+            AppShellViewModel appShellViewModel)
         {
             InitializeComponent();
             _apiService = apiService;

@@ -8,15 +8,16 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Scfet.Notification.Models;
 using Scfet.Notification.Services;
+using Scfet.Notification.Services.Api;
 using Scfet.Notification.Utils;
 
 namespace Scfet.Notification.ViewModels
 {
     public partial class SentNotificationsViewModel:BaseViewModel
     {
-        private readonly IApiService _apiService;
+        private readonly INotificationsApiService _apiService;
 
-        public SentNotificationsViewModel(IApiService apiService)
+        public SentNotificationsViewModel(INotificationsApiService apiService)
         {
             _apiService = apiService;
 
@@ -167,10 +168,8 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                //if (!ValidatePagination()) return;
                 var nextPage = (Notifications.Count / Filter.PageSize) + 1;
                 Filter.Page = nextPage;
-                //Filter.Page += 1;
 
                 await LoadNotificationsAsync();
 

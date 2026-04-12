@@ -10,25 +10,28 @@ using Plugin.LocalNotification;
 using Plugin.LocalNotification.AndroidOption;
 using Scfet.Notification.Models;
 using Scfet.Notification.Services;
+using Scfet.Notification.Services.Api;
 using Scfet.Notification.Utils;
 
 namespace Scfet.Notification.ViewModels
 {
     public partial class NotificationsViewModel : BaseViewModel
     {
-        private readonly IApiService _apiService;
-        private readonly NotificationService _notificationService;
+        private readonly INotificationsApiService _notificationsApiService;
+        private readonly IFavoritesApiService _favoritesApiService;
+        private readonly SignalRService _notificationService;
         private readonly FileService _fileService;
         private readonly LoginService _loginService;
 
-        public NotificationsViewModel(IApiService apiService,
-            NotificationService notificationService, FileService fileService,
-            LoginService loginService)
+        public NotificationsViewModel(INotificationsApiService notificationsApiService,
+            SignalRService notificationService, FileService fileService,
+            LoginService loginService, IFavoritesApiService favoritesApiService)
         {
-            _apiService = apiService;
+            _notificationsApiService = notificationsApiService;
             _notificationService = notificationService;
             _fileService = fileService;
             _loginService = loginService;
+            _favoritesApiService = favoritesApiService;
 
             _notificationService.OnNotificationReceived += OnNotificationReceived;
             _notificationService.OnNotificationRemove += OnNotificationRemove;
@@ -37,7 +40,6 @@ namespace Scfet.Notification.ViewModels
 
             Title = "Уведомления";
             _ = InitializeFields();
-
         }
 
         [ObservableProperty]
@@ -157,7 +159,7 @@ namespace Scfet.Notification.ViewModels
         {
             try
             {
-                var pageResult = await _apiService.GetNotificationsAsync((Filter)Filter);
+                var pageResult = await _notificationsApiService.GetNotificationsAsync((Filter)Filter);
 
                 if (pageResult == null)
                 {
@@ -293,18 +295,18 @@ namespace Scfet.Notification.ViewModels
                 var notificationId = notification.Id;
                 var originalState = notification.IsFavorite;
 
-                Response? response;
+                ApiResponse? response;
                 if (!originalState)
                 {
                     AddFavorite request = new AddFavorite()
                     {
                         NotificationId = notificationId
                     };
-                    response = await _apiService.AddFavoriteAsync(request);
+                    response = await _favoritesApiService.AddFavoriteAsync(request);
                 }
                 else
                 {
-                    response = await _apiService.RemoveFavoriteAsync(notificationId);
+                    response = await _favoritesApiService.RemoveFavoriteAsync(notificationId);
                 }
                 if (response == null || !response.Success)
                 {
@@ -327,7 +329,7 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                var success = await _apiService.MarkAsReadAsync(notification.Id);
+                var success = await _notificationsApiService.MarkAsReadAsync(notification.Id);
                 if (success)
                 {
                     await _notificationService.MarkAsReadAsync(notification.Id);

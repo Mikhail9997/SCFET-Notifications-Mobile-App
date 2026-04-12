@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Scfet.Notification.Views.ChannelsPage"
+             xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
+             xmlns:models="clr-namespace:Scfet.Notification.Models.Channel"
+             xmlns:converters="clr-namespace:Scfet.Notification.Converters"
+             xmlns:ff="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
+             x:DataType="vm:ChannelsViewModel"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="frame" TargetType="Border">
+                <Setter Property="BackgroundColor">
+                    <Setter.Value>
+                        <AppThemeBinding Light="#F0F0F0" Dark="#2A2A2A" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <!-- Ошибка загрузки -->
+        <StackLayout HorizontalOptions="Center" 
+                             VerticalOptions="Center"
+                             IsVisible="{Binding IsStartLoadFailed}">
+
+            <Image Source="no_wifi.png" HeightRequest="200" WidthRequest="200" Margin="0,0,0,70"/>
+            <Label Text="Не удалось загрузить каналы" FontSize="16"/>
+            <Label Text="Проверьте подключение к интернету" FontSize="16"/>
+            <Button Text="Перезагрузить"
+                            Command="{Binding RefreshCommand}"
+                            BackgroundColor="#2E86AB"
+                            TextColor="White"
+                            CornerRadius="5"
+                            Margin="0,10,0,0"/>
+        </StackLayout>
+
+        <!-- Состояние загрузки -->
+        <VerticalStackLayout IsVisible="{Binding IsBusy}"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center"
+                                     Spacing="20">
+            <ActivityIndicator IsRunning="True" 
+                                       Color="#2E86AB"
+                                       HeightRequest="50"
+                                       WidthRequest="50" />
+            <Label Text="Загрузка каналов..." 
+                           FontSize="16"
+                           HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <Grid RowDefinitions="*,Auto"
+              IsVisible="{Binding IsStartLoadFailed, Converter={StaticResource InverseBoolConverter}}">
+
+            <!-- Основной контент -->
+            <ScrollView Grid.Row="0" x:Name="MainScrollView"
+                        IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}">
+                <StackLayout Padding="10,0" x:Name="contentLayout">
+
+                    <!-- Основной контент -->
+                    <StackLayout Spacing="20"
+                         >
+
+                        <!-- Фильтрация -->
+                        <Border Style="{StaticResource frame}" Padding="10">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="5"/>
+                            </Border.StrokeShape>
+
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Фильтрация каналов:" 
+                               FontSize="14" 
+                               FontAttributes="Bold" />
+
+                                <Entry Placeholder="Поиск по названию"
+                               Text="{Binding Filter.SearchTerm}" />
+
+                                <Picker Title="Размер страницы"
+                                ItemsSource="{Binding PageSizes}"
+                                SelectedItem="{Binding Filter.PageSize}" />
+
+                                <Picker Title="Сортировать по:"
+                                ItemsSource="{Binding SortByItems}"
+                                SelectedItem="{Binding SelectedSortBy}"
+                                ItemDisplayBinding="{Binding DisplayName}"/>
+
+                                <Picker Title="Упорядочить:" 
+                                ItemsSource="{Binding SortOrderItems}"
+                                SelectedItem="{Binding SelectedSortOrder}"
+                                ItemDisplayBinding="{Binding DisplayName}"/>
+
+                                <HorizontalStackLayout Spacing="10">
+                                    <Button Text="Применить"
+                                    Command="{Binding ApplyFiltersCommand}"
+                                    BackgroundColor="#2E86AB"
+                                    TextColor="White"
+                                    CornerRadius="5"
+                                    HorizontalOptions="FillAndExpand"/>
+
+                                    <Button Text="Сбросить"
+                                    Command="{Binding ResetFiltersCommand}"
+                                    BackgroundColor="#6c757d"
+                                    TextColor="White"
+                                    CornerRadius="5"
+                                    HorizontalOptions="FillAndExpand"/>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!-- Заголовок , кнопка создания и кнопка мои заявки -->
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="5">
+                            <Label Grid.Column="0" 
+                           Text="Мои каналы" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"/>
+
+                            <Button Grid.Column="1" 
+                                Text="+ Создать" 
+                                Command="{Binding CreateChannelCommand}"
+                                BackgroundColor="#2E86AB"
+                                TextColor="White"
+                                CornerRadius="20"
+                                Padding="15,5"/>
+                            <Button Grid.Column="2" 
+                                Text="Мои заявки" 
+                                Command="{Binding ViewInvitationsCommand}"
+                                BackgroundColor="#2E86AB"
+                                TextColor="White"
+                                CornerRadius="20"
+                                Padding="15,5"/>
+                        </Grid>
+
+                        <!-- Список каналов -->
+                        <CollectionView ItemsSource="{Binding Channels}"
+                                SelectionMode="Single"
+                                SelectedItem="{Binding SelectedChannel}"
+                                SelectionChangedCommand="{Binding ChannelSelectedCommand}">
+
+                            <CollectionView.EmptyView>
+                                <VerticalStackLayout HorizontalOptions="Center" 
+                                             VerticalOptions="Center"
+                                             Spacing="20"
+                                             Padding="30">
+                                    <Label Text="📭" 
+                                   FontSize="48" 
+                                   HorizontalOptions="Center" />
+                                    <Label Text="Нет каналов" 
+                                   FontSize="18" 
+                                   HorizontalOptions="Center" />
+                                    <Label Text="Создайте новый канал или примите приглашение" 
+                                   FontSize="14" 
+                                   TextColor="Gray"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </CollectionView.EmptyView>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:ChannelDto">
+                                    <Border Padding="15" 
+                                    Margin="10,5"
+                                    BackgroundColor="{AppThemeBinding Light='White', Dark='#1E1E1E'}">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10"/>
+                                        </Border.StrokeShape>
+
+                                        <Grid ColumnDefinitions="Auto,*,Auto" RowSpacing="5" ColumnSpacing="10">
+
+                                            <!-- Аватар канала -->
+                                            <Border Grid.Column="0" 
+                                                    Style="{StaticResource card_avatar}"
+                                                    VerticalOptions="Start">
+                                                <ff:CachedImage 
+                                                    Source="{Binding OwnerAvatar}"
+                                                    Aspect="AspectFill"
+                                                    DownsampleToViewSize="True"
+                                                    LoadingPlaceholder="placeholder.png"
+                                                    ErrorPlaceholder="placeholder.png"/>
+                                            </Border>
+
+                                            <!-- Информация о канале -->
+                                            <VerticalStackLayout Grid.Column="1" Spacing="5">
+                                                <Label Text="{Binding Name}" 
+                                                   FontSize="16" 
+                                                   FontAttributes="Bold"/>
+
+                                                <Label Text="{Binding Description}" 
+                                                   FontSize="12"
+                                                   TextColor="Gray"
+                                                   IsVisible="{Binding Description, Converter={StaticResource IsNotNullConverter}}"/>
+
+                                                <HorizontalStackLayout Spacing="10">
+                                                    <Label Text="👤" FontSize="12"/>
+                                                    <Label Text="{Binding MembersCount, StringFormat='{0} участников'}" 
+                                                       FontSize="12"
+                                                       TextColor="Gray"/>
+                                                </HorizontalStackLayout>
+
+                                                <!-- Роль пользователя -->
+                                                <Border IsVisible="{Binding IsMember}"
+                                                    BackgroundColor="{Binding UserRole, Converter={StaticResource ChannelRoleToColorConverter}}"
+                                                    Padding="8,3"
+                                                    StrokeThickness="0"
+                                                    HorizontalOptions="Start">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="12"/>
+                                                    </Border.StrokeShape>
+                                                    <Label Text="{Binding UserRole, Converter={StaticResource ChannelRoleToRussianConverter}}"
+                                                   FontSize="10"
+                                                   TextColor="White"/>
+                                                </Border>
+                                            </VerticalStackLayout>
+
+                                            <!-- Время создания и статус -->
+                                            <VerticalStackLayout Grid.Column="2" 
+                                                         HorizontalOptions="End"
+                                                         VerticalOptions="Center"
+                                                         Spacing="5">
+                                                <Label Text="{Binding CreatedAt, Converter={StaticResource RelativeTimeConverter}}"
+                                                       FontSize="10"
+                                                       TextColor="Gray"
+                                                       HorizontalOptions="Center"/>
+
+                                                <ImageButton 
+                                                    Source="{AppThemeBinding Dark=more_vertical_white.png, Light=more_vertical.png}"
+                                                    Padding="8"
+                                                    WidthRequest="15"
+                                                    HeightRequest="15"
+                                                     BackgroundColor="Transparent"
+                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChannelsViewModel}}, Path=ShowChannelMenuCommand}"
+                                                     CommandParameter="{Binding .}"/>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+
+                    <!-- Пагинация -->
+                    <Grid IsVisible="{Binding IsPaginationEnable}">
+                        <VerticalStackLayout IsVisible="{Binding IsPagination}"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center"
+                                     Spacing="20">
+                            <ActivityIndicator IsRunning="True" 
+                                       Color="{StaticResource PrimaryColor}"
+                                       HeightRequest="50"
+                                       WidthRequest="50" />
+                            <Label Text="Загрузка каналов..." 
+                           FontSize="16"
+                           HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+
+                        <Button IsVisible="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}"
+                        Text="Загрузить еще" 
+                        TextColor="White"
+                        Command="{Binding LoadMoreChannelsCommand}"
+                        BackgroundColor="{StaticResource PrimaryColor}"
+                        Margin="0,10"/>
+                    </Grid>
+
+                </StackLayout>
+            </ScrollView>
+
+            <!-- Индикатор приглашений -->
+            <Border Grid.Row="1" 
+                BackgroundColor="{StaticResource PrimaryColor}"
+                Padding="15,10"
+                IsVisible="{Binding HasPendingInvitations}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="0"/>
+                </Border.StrokeShape>
+
+                <Grid ColumnDefinitions="*,Auto,Auto">
+                    <Label Grid.Column="0" 
+                   Text="{Binding PendingInvitationsCount, StringFormat='У вас {0} новых приглашений'}"
+                   TextColor="White"
+                   VerticalOptions="Center"/>
+
+                    <Button Grid.Column="1" 
+                        Text="Посмотреть" 
+                        Command="{Binding ViewInvitationsCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="White"
+                        BorderColor="White"
+                        BorderWidth="1"
+                        CornerRadius="5"
+                        Margin="0,0,5,0"/>
+
+                    <Button Grid.Column="2" 
+                        Text="✕" 
+                        Command="{Binding DismissInvitationsBannerCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="White"
+                        FontSize="18"
+                        WidthRequest="30"/>
+                </Grid>
+            </Border>
+
+            <!-- Кнопки прокрутки -->
+            <VerticalStackLayout Grid.Row="0"
+                         VerticalOptions="End"
+                         HorizontalOptions="End"
+                         Margin="20"
+                         Spacing="10"
+                         IsVisible="{Binding IsShowScrollButtons}">
+
+                <Button x:Name="scrollToTopButton"
+                Text="↑"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                BackgroundColor="{StaticResource PrimaryColor}"
+                TextColor="White"
+                FontSize="20"
+                IsVisible="false"/>
+
+                <Button x:Name="scrollToBottomButton"
+                Text="↓"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                BackgroundColor="{StaticResource PrimaryColor}"
+                FontSize="20"
+                TextColor="White"
+                IsVisible="False"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -8,19 +8,27 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Scfet.Notification.Models;
 using Scfet.Notification.Services;
+using Scfet.Notification.Services.Api;
 
 namespace Scfet.Notification.ViewModels
 {
     public partial class CreateNotificationViewModel:BaseViewModel
     {
-        private readonly IApiService _apiService;
+        private readonly INotificationsApiService _notificationApiService;
+        private readonly IUsersApiService _usersApiService;
+        private readonly IProfileApiService _profileApiService;
         private readonly IPickImageService _pickImageService;
 
-        public CreateNotificationViewModel(IApiService apiService, 
-            IPickImageService pickImageService)
+        public CreateNotificationViewModel(
+            IPickImageService pickImageService,
+            INotificationsApiService notificationApiService,
+            IUsersApiService usersApiService,
+            IProfileApiService profileApiService)
         {
-            _apiService = apiService;
             _pickImageService = pickImageService;
+            _notificationApiService = notificationApiService;
+            _usersApiService = usersApiService;
+            _profileApiService = profileApiService;
 
             _ = InitializeFields();
         }
@@ -137,10 +145,10 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                var groupsTask = _apiService.GetGroupsAsync(GroupFilter);
-                var studentsTask = _apiService.GetStudentsAsync(UserFilter);
-                var parentsTask = _apiService.GetParentsAsync(UserFilter);
-                var teachersTask = _apiService.GetTeachersAsync(UserFilter);
+                var groupsTask = _usersApiService.GetGroupsAsync(GroupFilter);
+                var studentsTask = _usersApiService.GetStudentsAsync(UserFilter);
+                var parentsTask = _usersApiService.GetParentsAsync(UserFilter);
+                var teachersTask = _usersApiService.GetTeachersAsync(UserFilter);
 
                 await Task.WhenAll(groupsTask, studentsTask, parentsTask ,teachersTask);
 
@@ -151,7 +159,7 @@ namespace Scfet.Notification.ViewModels
 
                 if (IsAdministrator)
                 {
-                    Administrators = await _apiService.GetAdministratorsAsync(UserFilter);
+                    Administrators = await _usersApiService.GetAdministratorsAsync(UserFilter);
                 }
 
                 UpdateUsersCollection();
@@ -241,7 +249,7 @@ namespace Scfet.Notification.ViewModels
                         return;
                 }
 
-                var success = await _apiService.SendNotificationAsync(notification);
+                var success = await _notificationApiService.SendNotificationAsync(notification);
                 if (success)
                 {
                     await Shell.Current.DisplayAlert("Успех", "Уведомление отправлено", "OK");
@@ -305,8 +313,8 @@ namespace Scfet.Notification.ViewModels
             {
                 IsBusy = true;
 
-                var studentsTask = _apiService.GetStudentsAsync(UserFilter);
-                var teachersTask = _apiService.GetTeachersAsync(UserFilter);
+                var studentsTask = _usersApiService.GetStudentsAsync(UserFilter);
+                var teachersTask = _usersApiService.GetTeachersAsync(UserFilter);
 
                 await Task.WhenAll(studentsTask, teachersTask);
 
@@ -315,7 +323,7 @@ namespace Scfet.Notification.ViewModels
 
                 if (IsAdministrator)
                 {
-                    Administrators = await _apiService.GetAdministratorsAsync(UserFilter);
+                    Administrators = await _usersApiService.GetAdministratorsAsync(UserFilter);
                 }
 
                 UpdateUsersCollection();
@@ -338,7 +346,7 @@ namespace Scfet.Notification.ViewModels
             try
             {
                 IsBusy = true;
-                Groups = await _apiService.GetGroupsAsync(GroupFilter);
+                Groups = await _usersApiService.GetGroupsAsync(GroupFilter);
             }
             catch (Exception ex)
             {
@@ -390,8 +398,8 @@ namespace Scfet.Notification.ViewModels
 
         private async Task InitializeFields()
         {
-            var profile = await _apiService.GetCurrentUserAsync();
-            CurrentUser = profile.User;
+            var profile = await _profileApiService.GetCurrentUserAsync();
+            CurrentUser = profile?.User;
             OnPropertyChanged(nameof(IsAdministrator));
 
             NotificationTypes = new ObservableCollection<PickerItem>

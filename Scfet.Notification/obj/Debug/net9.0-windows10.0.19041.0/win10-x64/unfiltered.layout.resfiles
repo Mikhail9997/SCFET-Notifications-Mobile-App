@@ -50,6 +50,8 @@ bookmark.scale-100.png
 bookmark_empty.scale-100.png
 bookmark_filled.scale-100.png
 bookmark_white.scale-100.png
+channels.scale-100.png
+channels_white.scale-100.png
 dotnet_bot.scale-100.png
 dotnet_bot.scale-125.png
 dotnet_bot.scale-150.png
@@ -57,6 +59,8 @@ dotnet_bot.scale-200.png
 dotnet_bot.scale-400.png
 login.scale-100.png
 login_white.scale-100.png
+more_vertical.scale-100.png
+more_vertical_white.scale-100.png
 no_wifi.scale-100.png
 notif.scale-100.png
 notif_white.scale-100.png
