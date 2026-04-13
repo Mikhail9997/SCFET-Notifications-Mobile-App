@@ -13,11 +13,11 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("Scfet.Notification")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("2.1.3.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.1.3+2913483c2a5aa19e45d6179424c65b29c8160ce5")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("2.2.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.2.0+055b6076d1b99619a0b80f1daf58bcfb2b35fd8f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Scfet.Notification")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Scfet.Notification")]
-[assembly: System.Reflection.AssemblyVersionAttribute("2.1.3.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("2.2.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("MacCatalyst26.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("MacCatalyst15.0")]
 
