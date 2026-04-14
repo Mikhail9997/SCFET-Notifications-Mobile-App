@@ -14,8 +14,6 @@
         <ResourceDictionary>
             <converters:ChannelRoleToColorConverter x:Key="ChannelRoleToColorConverter"/>
             <converters:ChannelRoleToRussianConverter x:Key="ChannelRoleToRussianConverter"/>
-            <converters:RoleToRussianConverter x:Key="RoleToRussianConverter"/>
-            <converters:RoleToColorConverter x:Key="RoleToColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
