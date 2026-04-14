@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Scfet.Notification.Views.ChannelMessagesPage"
+             xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
+             xmlns:models="clr-namespace:Scfet.Notification.Models.Channel"
+             xmlns:converters="clr-namespace:Scfet.Notification.Converters"
+             xmlns:ff="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
+             x:DataType="vm:ChannelMessagesViewModel"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="frame" TargetType="Border">
+                <Setter Property="BackgroundColor">
+                    <Setter.Value>
+                        <AppThemeBinding Light="#F0F0F0" Dark="#2A2A2A" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="message_avatar" TargetType="Border">
+                <Setter Property="HeightRequest" Value="35"/>
+                <Setter Property="StrokeShape" Value="RoundRectangle 200,200,200,200"/>
+                <Setter Property="WidthRequest" Value="35"/>
+                <Setter Property="StrokeThickness" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="BackgroundColor" Value="#E8F0FE"/>
+            </Style>
+
+            <converters:ChannelRoleToColorConverter x:Key="ChannelRoleToColorConverter"/>
+            <converters:ChannelRoleToRussianConverter x:Key="ChannelRoleToRussianConverter"/>
+            <converters:MessageBackgroundConverter x:Key="MessageBackgroundConverter"/>
+            <converters:MessageMarginConverter x:Key="MessageMarginConverter"/>
+            <converters:MessageHorizontalOptionsConverter x:Key="MessageHorizontalOptionsConverter"/>
+            <converters:MessageColumnConverter x:Key="MessageColumnConverter"/>
+            <converters:AvatarColumnConverter x:Key="AvatarColumnConverter"/>
+            <converters:MessageTimeColorConverter x:Key="MessageTimeColorConverter"/>
+            <converters:MessageStatusColorConverter x:Key="MessageStatusColorConverter"/>
+            <converters:ReadStatusIconConverter x:Key="ReadStatusIconConverter"/>
+            <converters:MessageTimeConverter x:Key="MessageTimeConverter"/>
+            <converters:DateHeaderConverter x:Key="DateHeaderConverter"/>
+            <converters:LoadingMoreFooterConverter x:Key="LoadingMoreFooterConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Шапка с информацией о канале -->
+        <Border Grid.Row="0" 
+                Style="{StaticResource frame}"
+                Padding="10"
+                Margin="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0"/>
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+
+                <!-- Кнопка назад -->
+                <Button Grid.Column="0" 
+                        Text="←" 
+                        Command="{Binding GoBackCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource PrimaryColor}"
+                        FontSize="24"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="20"/>
+
+                <!-- Информация о канале -->
+                <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                    <Label Text="{Binding Channel.Name}" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           LineBreakMode="TailTruncation"/>
+                    <HorizontalStackLayout Spacing="5">
+                        <Label Text="👥" FontSize="12"/>
+                        <Label Text="{Binding Channel.MembersCount, StringFormat='{0} участников'}" 
+                               FontSize="12"
+                               TextColor="Gray"/>
+                        <Label Text="·" FontSize="12" TextColor="Gray"/>
+                        <Label Text="{Binding OnlineStatus}" 
+                               FontSize="12"
+                               TextColor="Gray"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Кнопка звонка -->
+                <Button Grid.Column="2" 
+                        Text="📞"
+                        BackgroundColor="Transparent"
+                        FontSize="20"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="20"
+                        IsVisible="False"/>
+
+                <!-- Кнопка меню -->
+                <Button Grid.Column="3" 
+                        Text="⋮"
+                        Command="{Binding ShowChannelMenuCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource PrimaryColor}"
+                        FontSize="24"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="20"/>
+            </Grid>
+        </Border>
+
+        <!-- Область сообщений -->
+        <Grid Grid.Row="1">
+
+            <!-- Загрузка -->
+            <VerticalStackLayout IsVisible="{Binding IsMessagesLoading}"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Spacing="20">
+                <ActivityIndicator IsRunning="True" 
+                                   Color="#2E86AB"
+                                   HeightRequest="50"
+                                   WidthRequest="50" />
+                <Label Text="Загрузка сообщений..." 
+                       FontSize="16"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <!-- Ошибка загрузки -->
+            <StackLayout HorizontalOptions="Center" 
+                         VerticalOptions="Center"
+                         IsVisible="{Binding IsMessagesLoadFailed}"
+                         Padding="30">
+                <Image Source="no_wifi.png" HeightRequest="150" WidthRequest="150" Margin="0,0,0,30"/>
+                <Label Text="{Binding MessagesError}" 
+                       FontSize="16"
+                       HorizontalOptions="Center"/>
+                <Button Text="Попробовать снова"
+                        Command="{Binding RetryLoadMessagesCommand}"
+                        BackgroundColor="#2E86AB"
+                        TextColor="White"
+                        CornerRadius="5"
+                        Margin="0,10,0,0"/>
+            </StackLayout>
+
+            <!-- Список сообщений -->
+            <Grid IsVisible="{Binding IsMessagesLoading, Converter={StaticResource InverseBoolConverter}}">
+                
+                <CollectionView x:Name="MessagesCollectionView"
+                    ItemsSource="{Binding Messages}"
+                    SelectionMode="None"
+                    IsVisible="{Binding IsMessagesLoadFailed, Converter={StaticResource InverseBoolConverter}}"
+                    VerticalOptions="End"
+                    ItemSizingStrategy="MeasureFirstItem">
+
+                    <!-- Инвертируем отображение -->
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Vertical"/>
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.Header>
+                        <Grid IsVisible="{Binding IsLoadingMore}">
+                            <ActivityIndicator IsRunning="True" 
+                               Color="#2E86AB"
+                               HeightRequest="30"
+                               WidthRequest="30"
+                               HorizontalOptions="Center"
+                               Margin="0,10"/>
+                        </Grid>
+                    </CollectionView.Header>
+
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center" 
+                                 VerticalOptions="Center"
+                                 Spacing="20"
+                                 Padding="30">
+                            <Label Text="💬" 
+                                   FontSize="48" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="Нет сообщений" 
+                                   FontSize="18" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="Начните общение первым!" 
+                                   FontSize="14" 
+                                   TextColor="Gray"
+                                   HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ChannelMessageDto">
+                            <VerticalStackLayout Padding="10,5">
+
+                                <!-- Дата-разделитель -->
+                                <Label Text="{Binding CreatedAt, Converter={StaticResource DateHeaderConverter}}"
+                                       FontSize="11"
+                                       TextColor="Gray"
+                                       HorizontalOptions="Center"
+                                       Margin="0,10"
+                                       IsVisible="{Binding ShowDateHeader}"/>
+
+                                <!-- Сообщение -->
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="0" >
+
+                                    <!-- ЧУЖОЕ СООБЩЕНИЕ -->
+                                    <HorizontalStackLayout Grid.Column="0" 
+                                       HorizontalOptions="Start"
+                                       IsVisible="{Binding IsOwnMessage, Converter={StaticResource InverseBoolConverter}}"
+                                       Spacing="8">
+
+                                        <!-- Аватар показываем только если нужно -->
+                                        <Border Style="{StaticResource message_avatar}"
+                                                VerticalOptions="End"
+                                                IsVisible="{Binding ShowAvatar}">
+                                            <ff:CachedImage 
+                                                    Source="{Binding SenderAvatar}"
+                                                    Aspect="AspectFill"
+                                                    DownsampleToViewSize="True"
+                                                    LoadingPlaceholder="placeholder.png"
+                                                    ErrorPlaceholder="placeholder.png"/>
+                                        </Border>
+
+                                        <!-- Если аватар не показываем, добавляем пустое место для выравнивания -->
+                                        <BoxView IsVisible="{Binding ShowAvatar, Converter={StaticResource InverseBoolConverter}}"
+                                                 WidthRequest="28"
+                                                 HeightRequest="0"/>
+
+                                        <Border BackgroundColor="{AppThemeBinding Light='White', Dark='#1E1E1E'}"
+                                                Padding="12,8"
+                                                MaximumWidthRequest="280">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="12,12,12,0"/>
+                                            </Border.StrokeShape>
+
+                                            <VerticalStackLayout Spacing="5">
+
+                                                <!-- Информацию о пользователе показываем только если нужно -->
+                                                <VerticalStackLayout  IsVisible="{Binding ShowSenderName}"
+                                                                      Spacing="3">
+                                                    <!-- Имя и Фамилия-->
+                                                    <Label Text="{Binding SenderName}" 
+                                                       FontSize="11" 
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource PrimaryColor}"/>
+
+                                                    <!-- Роли -->
+                                                    <HorizontalStackLayout Spacing="3">
+                                                        <!-- Роль в системе пользователя -->
+                                                        <Border 
+                                                            BackgroundColor="{Binding SenderRoleString, Converter={StaticResource RoleToColorConverter}}"
+                                                            Padding="8,3"
+                                                            StrokeThickness="0"
+                                                            HorizontalOptions="Start">
+                                                            <Border.StrokeShape>
+                                                                <RoundRectangle CornerRadius="12"/>
+                                                            </Border.StrokeShape>
+                                                            <Label Text="{Binding SenderRoleString, Converter={StaticResource RoleToRussianConverter}}"
+                                                               FontSize="8"
+                                                               TextColor="White"/>
+                                                        </Border>
+                                                        <!-- Роль на канале -->
+                                                        <Border 
+                                                            BackgroundColor="{Binding SenderChannelRole, Converter={StaticResource ChannelRoleToColorConverter}}"
+                                                            Padding="8,3"
+                                                            StrokeThickness="0"
+                                                            HorizontalOptions="Start">
+                                                            <Border.StrokeShape>
+                                                                <RoundRectangle CornerRadius="12"/>
+                                                            </Border.StrokeShape>
+                                                            <Label Text="{Binding SenderChannelRole, Converter={StaticResource ChannelRoleToRussianConverter}}"
+                                                               FontSize="8"
+                                                               TextColor="White"/>
+                                                        </Border>
+                                                    </HorizontalStackLayout>
+                                                </VerticalStackLayout>
+
+                                                <Border IsVisible="{Binding ReplyToMessage, Converter={StaticResource NullToVisibilityConverter}}"
+                                                        BackgroundColor="{AppThemeBinding Light='#F0F0F0', Dark='#333333'}"
+                                                        Padding="8"
+                                                        StrokeThickness="0">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="8"/>
+                                                    </Border.StrokeShape>
+                                                    <VerticalStackLayout Spacing="2">
+                                                        <Label Text="{Binding ReplyToMessage.SenderName}" 
+                                                               FontSize="11" 
+                                                               FontAttributes="Bold"
+                                                               TextColor="{StaticResource PrimaryColor}"/>
+                                                        <Label Text="{Binding ReplyToMessage.Content}" 
+                                                               FontSize="12"
+                                                               LineBreakMode="TailTruncation"
+                                                               MaxLines="2"/>
+                                                    </VerticalStackLayout>
+                                                </Border>
+
+                                                <Label Text="{Binding Content}" 
+                                                       FontSize="14"
+                                                       LineBreakMode="WordWrap"/>
+
+                                                <ff:CachedImage 
+                                                    Source="{Binding ImageUrl}"
+                                                    HeightRequest="200"
+                                                    Aspect="AspectFill"
+                                                    DownsampleToViewSize="True"
+                                                    LoadingPlaceholder="placeholder.png"
+                                                    ErrorPlaceholder="placeholder.png"
+                                                    IsVisible="{Binding ImageUrl, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+                                                <HorizontalStackLayout Spacing="5" HorizontalOptions="End">
+                                                    <Label Text="{Binding CreatedAt, Converter={StaticResource MessageTimeConverter}}"
+                                                           FontSize="10"
+                                                           TextColor="Gray"/>
+
+                                                    <Label Text="(изм.)" 
+                                                           FontSize="9"
+                                                           TextColor="Gray"
+                                                           IsVisible="{Binding IsEdited}"/>
+                                                </HorizontalStackLayout>
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </HorizontalStackLayout>
+
+                                    <!-- СВОЕ СООБЩЕНИЕ -->
+                                    <Border Grid.Column="1" 
+                                            BackgroundColor="{AppThemeBinding Light='#DCF8C6', Dark='#056162'}"
+                                            Padding="12,8"
+                                            MaximumWidthRequest="280"
+                                            HorizontalOptions="End"
+                                            IsVisible="{Binding IsOwnMessage}">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12,12,0,12"/>
+                                        </Border.StrokeShape>
+
+                                        <VerticalStackLayout Spacing="5">
+
+                                            <Border IsVisible="{Binding ReplyToMessage, Converter={StaticResource NullToVisibilityConverter}}"
+                                                    BackgroundColor="{AppThemeBinding Light='#C5E8B7', Dark='#045052'}"
+                                                    Padding="8"
+                                                    StrokeThickness="0">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="8"/>
+                                                </Border.StrokeShape>
+                                                <VerticalStackLayout Spacing="2">
+                                                    <Label Text="{Binding ReplyToMessage.SenderName}" 
+                                                           FontSize="11" 
+                                                           FontAttributes="Bold"/>
+                                                    <Label Text="{Binding ReplyToMessage.Content}" 
+                                                           FontSize="12"
+                                                           LineBreakMode="TailTruncation"
+                                                           MaxLines="2"/>
+                                                </VerticalStackLayout>
+                                            </Border>
+
+                                            <Label Text="{Binding Content}" 
+                                                   FontSize="14"
+                                                   LineBreakMode="WordWrap"/>
+
+                                            <ff:CachedImage 
+                                                    Source="{Binding ImageUrl}"
+                                                    HeightRequest="200"
+                                                    Aspect="AspectFill"
+                                                    DownsampleToViewSize="True"
+                                                    LoadingPlaceholder="placeholder.png"
+                                                    ErrorPlaceholder="placeholder.png"
+                                                    IsVisible="{Binding ImageUrl, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+                                            <HorizontalStackLayout Spacing="5" HorizontalOptions="End">
+                                                <Label Text="{Binding CreatedAt, Converter={StaticResource MessageTimeConverter}}"
+                                                       FontSize="10"
+                                                       TextColor="#6B8E6B"/>
+
+                                                <Label Text="{Binding IsRead, Converter={StaticResource ReadStatusIconConverter}}"
+                                                       FontSize="10"
+                                                       TextColor="#6B8E6B"/>
+
+                                                <Label Text="(изм.)" 
+                                                       FontSize="9"
+                                                       TextColor="#6B8E6B"
+                                                       IsVisible="{Binding IsEdited}"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
+
+                                    <!-- Контекстное меню -->
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChannelMessagesViewModel}}, Path=ShowMessageMenuCommand}"
+                                      CommandParameter="{Binding .}"/>
+                                    </Grid.GestureRecognizers>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+
+        <!-- Индикатор ответа -->
+        <Border Grid.Row="1" 
+                VerticalOptions="Start"
+                BackgroundColor="{AppThemeBinding Light='White', Dark='#1E1E1E'}"
+                IsVisible="{Binding ReplyToMessage, Converter={StaticResource NullToVisibilityConverter}}"
+                Padding="15,10">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0"/>
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="{Binding ReplyToMessage.SenderName}" 
+                           FontAttributes="Bold" 
+                           FontSize="12"
+                           TextColor="{StaticResource PrimaryColor}"/>
+                    <Label Text="{Binding ReplyToMessage.Content}" 
+                           FontSize="12" 
+                           MaxLines="2" 
+                           LineBreakMode="TailTruncation"/>
+                </VerticalStackLayout>
+                <Button Grid.Column="1" 
+                        Text="✕" 
+                        Command="{Binding CancelReplyCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="Gray"/>
+            </Grid>
+        </Border>
+
+        <!-- Индикатор редактирования -->
+        <Border Grid.Row="1" 
+                VerticalOptions="Start"
+                BackgroundColor="{AppThemeBinding Light='White', Dark='#1E1E1E'}"
+                IsVisible="{Binding EditingMessage, Converter={StaticResource NullToVisibilityConverter}}"
+                Padding="15,10">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0"/>
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Редактирование сообщения" 
+                           FontSize="12"
+                           TextColor="{StaticResource PrimaryColor}"/>
+                    <Label Text="{Binding EditingMessage.Content}" 
+                           FontSize="12" 
+                           MaxLines="2" 
+                           LineBreakMode="TailTruncation"/>
+                </VerticalStackLayout>
+                <Button Grid.Column="1" 
+                        Text="✕" 
+                        Command="{Binding CancelEditCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="Gray"/>
+            </Grid>
+        </Border>
+
+        <!-- Индикатор печати -->
+        <Label Grid.Row="1" 
+               VerticalOptions="End"
+               HorizontalOptions="Start"
+               Text="{Binding TypingIndicatorText}"
+               FontSize="11"
+               TextColor="Gray"
+               Margin="15,5"
+               IsVisible="{Binding TypingIndicatorText, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+        <!-- Кнопка прокрутки вниз -->
+        <Button Grid.Row="1" 
+                VerticalOptions="End"
+                HorizontalOptions="End"
+                Text="↓"
+                WidthRequest="40"
+                HeightRequest="40"
+                CornerRadius="20"
+                BackgroundColor="{StaticResource PrimaryColor}"
+                TextColor="White"
+                Margin="15"
+                Command="{Binding ScrollToBottomCommand}"
+                IsVisible="{Binding ShowScrollToBottomButton}"/>
+
+        <!-- Поле ввода сообщения -->
+        <Border Grid.Row="2" 
+                Style="{StaticResource frame}"
+                Padding="10">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0"/>
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="5">
+
+                <!-- Кнопка прикрепить -->
+                <Button Grid.Column="0" 
+                        Text="📎" 
+                        Command="{Binding SelectImageCommand}"
+                        BackgroundColor="Transparent"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="20"/>
+
+                <!-- Поле ввода -->
+                <Editor Grid.Column="1" 
+                        Text="{Binding NewMessageText}"
+                        Placeholder="Сообщение..."
+                        AutoSize="TextChanges"
+                        MaximumHeightRequest="100"/>
+
+                <!-- Кнопка отправки -->
+                <Button Grid.Column="3" 
+                        Text="➤" 
+                        Command="{Binding SendMessageCommand}"
+                        IsEnabled="{Binding CanSendMessage}"
+                        BackgroundColor="{StaticResource PrimaryColor}"
+                        TextColor="White"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="20"/>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

@@ -1053,3 +1053,13 @@ C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\bookmark_white.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\trash.png
 C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\trash_white.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\channels.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\channels_white.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\more_vertical.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\resizetizer\r\drawable\more_vertical_white.png
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\assets\arm64-v8a\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\assets\arm64-v8a\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\assets\arm64-v8a\Microsoft.Extensions.Diagnostics.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\assets\arm64-v8a\Microsoft.Extensions.Http.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\assets\arm64-v8a\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\mkazm\source\repos\Scfet.Notification\Scfet.Notification\obj\Debug\net9.0-android\android\assets\arm64-v8a\System.Reactive.dll

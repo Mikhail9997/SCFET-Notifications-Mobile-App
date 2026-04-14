@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Scfet.Notification.Models.Channel
 {
-    public class ChannelMessageDto
+    public partial class ChannelMessageDto: ObservableObject
     {
         public Guid Id { get; set; }
-        public string Content { get; set; } = string.Empty;
+        private string _content;
+        public string Content
+        {
+            get => _content;
+            set => SetProperty(ref _content, value);
+        }
         public Guid ChannelId { get; set; }
 
         public Guid SenderId { get; set; }
         public string SenderName { get; set; } = string.Empty;
         public string? SenderAvatar { get; set; }
         public UserRole SenderRole { get; set; }
+        public string SenderRoleString => SenderRole.ToString();
         public ChannelRole? SenderChannelRole { get; set; }
 
         public Guid? ReplyToMessageId { get; set; }
@@ -23,9 +30,19 @@ namespace Scfet.Notification.Models.Channel
 
         public string? ImageUrl { get; set; }
 
-        public bool IsEdited { get; set; }
+        private bool _isEdited; 
+        public bool IsEdited
+        {
+            get => _isEdited;
+            set => SetProperty(ref _isEdited, value);
+        }
         public DateTime CreatedAt { get; set; }
-        public DateTime? EditedAt { get; set; }
+        private DateTime? _editedAt;
+        public DateTime? EditedAt
+        {
+            get => _editedAt;
+            set => SetProperty(ref _editedAt, value);
+        }
 
         public bool IsRead { get; set; }
         public DateTime? ReadAt { get; set; }
@@ -36,6 +53,12 @@ namespace Scfet.Notification.Models.Channel
         // Вспомогательные свойства для UI
         public string TimeAgo => GetTimeAgo();
         public bool IsOwnMessage { get; set; }
+        public bool ShowDateHeader { get; set; }
+        [ObservableProperty]
+        private bool showAvatar = true;
+
+        [ObservableProperty]
+        private bool showSenderName = true;
         public string SenderInitials => GetInitials();
 
         private string GetTimeAgo()

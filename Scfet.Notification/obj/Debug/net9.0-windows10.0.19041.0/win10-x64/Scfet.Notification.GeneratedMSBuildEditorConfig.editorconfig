@@ -75,6 +75,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.C
 build_metadata.AdditionalFiles.TargetPath = Views\ChannelMembersPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\ChannelMembersPage.xaml
 
+[C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/ChannelMessagesPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.ChannelMessagesPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\ChannelMessagesPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\ChannelMessagesPage.xaml
+
 [C:/Users/mkazm/source/repos/Scfet.Notification/Scfet.Notification/Views/ChannelsPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Scfet.Notification.Views.ChannelsPage.xaml

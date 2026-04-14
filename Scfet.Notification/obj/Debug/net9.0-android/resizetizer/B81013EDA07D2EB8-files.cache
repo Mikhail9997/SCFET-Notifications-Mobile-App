@@ -2,8 +2,12 @@
 obj\Debug\net9.0-android\resizetizer\r\drawable\bookmark_empty.png
 obj\Debug\net9.0-android\resizetizer\r\drawable\bookmark_filled.png
 obj\Debug\net9.0-android\resizetizer\r\drawable\bookmark_white.png
+obj\Debug\net9.0-android\resizetizer\r\drawable\channels.png
+obj\Debug\net9.0-android\resizetizer\r\drawable\channels_white.png
 obj\Debug\net9.0-android\resizetizer\r\drawable\login.png
 obj\Debug\net9.0-android\resizetizer\r\drawable\login_white.png
+obj\Debug\net9.0-android\resizetizer\r\drawable\more_vertical.png
+obj\Debug\net9.0-android\resizetizer\r\drawable\more_vertical_white.png
 obj\Debug\net9.0-android\resizetizer\r\drawable\notif.png
 obj\Debug\net9.0-android\resizetizer\r\drawable\notif_white.png
 obj\Debug\net9.0-android\resizetizer\r\drawable\no_wifi.png

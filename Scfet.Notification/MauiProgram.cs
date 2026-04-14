@@ -84,6 +84,7 @@ namespace Scfet.Notification
             builder.Services.AddTransient<ChannelInvitationsViewModel>();
             builder.Services.AddTransient<InviteUsersViewModel>();
             builder.Services.AddTransient<ChannelMembersViewModel>();
+            builder.Services.AddTransient<ChannelMessagesViewModel>();
 
             // Pages
             builder.Services.AddTransient<LoginPage>();
@@ -100,6 +101,7 @@ namespace Scfet.Notification
             builder.Services.AddTransient<ChannelInvitationsPage>();
             builder.Services.AddTransient<InviteUsersPage>();
             builder.Services.AddTransient<ChannelMembersPage>();
+            builder.Services.AddTransient<ChannelMessagesPage>();
 
             return builder.Build();
         }
