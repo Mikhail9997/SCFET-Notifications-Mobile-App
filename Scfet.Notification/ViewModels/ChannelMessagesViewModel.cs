@@ -132,8 +132,9 @@ namespace Scfet.Notification.ViewModels
             var auth = _loginService.GetCurrentAuth();
             CurrentUserId = Guid.TryParse(auth?.UserId, out var id) ? id : Guid.Empty;
 
-            await LoadChannelInfoAsync();
-            await LoadMessagesAsync();
+            List<Task> tasks = new() { LoadChannelInfoAsync(), LoadMessagesAsync() };
+            await Task.WhenAll(tasks);
+
             await _signalRService.JoinChannelAsync(Guid.Parse(ChannelId));
             await _messageService.MarkAllAsReadAsync(Guid.Parse(ChannelId));
         }

@@ -12,9 +12,8 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
     public string ChannelId { get; set; } = string.Empty;
 
     private bool _isLoadingMore = false;
-    private const int LOAD_MORE_THRESHOLD_INDEX = 3; // Загружаем когда видим 3-й элемент сверху
-    private const int BOTTOM_THRESHOLD_INDEX = 3; // Считаем что внизу если видим 3-й элемент снизу
-    private ChannelMessageDto? _firstVisibleMessage;
+    private const int LOAD_MORE_THRESHOLD = 100; // Пикселей до верха
+    private const int BOTTOM_THRESHOLD = 50; // Пикселей до низа
 
     public ChannelMessagesPage(ChannelMessagesViewModel viewModel)
     {
@@ -23,41 +22,29 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
 
         WeakReferenceMessenger.Default.Register(this);
 
-        MessagesCollectionView.Scrolled += OnCollectionViewScrolled;
+        MessagesScrollView.Scrolled += OnScrollViewScrolled;
     }
 
-    private async void OnCollectionViewScrolled(object sender, ItemsViewScrolledEventArgs e)
+    private async void OnScrollViewScrolled(object sender, ScrolledEventArgs e)
     {
         if (BindingContext is not ChannelMessagesViewModel vm) return;
 
-        var totalItems = vm.Messages.Count;
-        if (totalItems == 0) return;
+        var scrollView = (ScrollView)sender;
 
-        // Сохраняем первый видимый элемент
-        _firstVisibleMessage = vm.Messages.ElementAtOrDefault(e.FirstVisibleItemIndex);
-
-        // Загрузка при скролле вверх
-        if (e.FirstVisibleItemIndex <= LOAD_MORE_THRESHOLD_INDEX && !_isLoadingMore && vm.HasMoreMessages)
+        // Проверяем, достигли ли верха для подгрузки
+        if (e.ScrollY <= LOAD_MORE_THRESHOLD && !_isLoadingMore && vm.HasMoreMessages)
         {
             _isLoadingMore = true;
-            var anchor = _firstVisibleMessage;
-
             await vm.LoadMoreMessagesAsync();
-
-            if (anchor != null)
-            {
-                await Task.Delay(100);
-                var newIndex = vm.Messages.IndexOf(anchor);
-                if (newIndex >= 0)
-                {
-                    MessagesCollectionView.ScrollTo(newIndex, position: ScrollToPosition.Start, animate: false);
-                }
-            }
-
             _isLoadingMore = false;
         }
 
-        vm.ShowScrollToBottomButton = e.LastVisibleItemIndex < totalItems - BOTTOM_THRESHOLD_INDEX;
+        // Проверяем, находимся ли внизу
+        var contentHeight = scrollView.ContentSize.Height;
+        var scrollViewHeight = scrollView.Height;
+        var isAtBottom = (contentHeight - e.ScrollY - scrollViewHeight) <= BOTTOM_THRESHOLD;
+
+        vm.ShowScrollToBottomButton = !isAtBottom && contentHeight > scrollViewHeight;
     }
 
     public async void Receive(ScrollToBottomMessage message)
@@ -67,21 +54,14 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
 
     private async Task ScrollToBottom(bool animated = true)
     {
-        if (MessagesCollectionView.ItemsSource != null)
+        await Task.Delay(50);
+
+        // Скроллим на максимальную высоту контента
+        var maxScrollY = MessagesScrollView.ContentSize.Height - MessagesScrollView.Height;
+
+        if (maxScrollY > 0)
         {
-            try
-            {
-                var itemsSource = MessagesCollectionView.ItemsSource as ObservableCollection<ChannelMessageDto>;
-                if (itemsSource?.Count > 0)
-                {
-                    await Task.Delay(50);
-                    MessagesCollectionView.ScrollTo(itemsSource.Count - 1, position: ScrollToPosition.End, animate: animated);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Scroll to bottom error: {ex.Message}");
-            }
+            await MessagesScrollView.ScrollToAsync(0, maxScrollY, animated);
         }
     }
 

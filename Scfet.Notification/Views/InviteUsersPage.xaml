@@ -350,14 +350,6 @@
                                                         HorizontalOptions="Center"
                                                         VerticalOptions="Center"/>
                                                 </Border>
-
-                                                <!-- Жест нажатия -->
-                                                <Grid.GestureRecognizers>
-                                                    <TapGestureRecognizer 
-                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:InviteUsersViewModel}}, 
-                                                                 Path=ToggleUserSelectionCommand}"
-                                                     CommandParameter="{Binding .}"/>
-                                                </Grid.GestureRecognizers>
                                             </Grid>
 
                                             <!-- Информация о пользователе -->
@@ -396,6 +388,14 @@
                                                  LoadingPlaceholder="placeholder.png"
                                                  ErrorPlaceholder="placeholder.png"/>
                                             </Border>
+
+                                            <!-- Жест нажатия -->
+                                            <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer 
+                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:InviteUsersViewModel}}, 
+                                                                 Path=ToggleUserSelectionCommand}"
+                                                     CommandParameter="{Binding .}"/>
+                                            </Grid.GestureRecognizers>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
