@@ -65,6 +65,7 @@ namespace Scfet.Notification.ViewModels
         private ChannelDto? channel;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasMoreMessages))]
         private ObservableCollection<ChannelMessageDto> messages = new();
 
         [ObservableProperty]
@@ -125,6 +126,17 @@ namespace Scfet.Notification.ViewModels
         partial void OnSelectedImageChanged(FileResult? value)
         {
             OnPropertyChanged(nameof(CanSendMessage));
+        }
+
+        private bool _isCollectionUpdating;
+        partial void OnMessagesChanging(ObservableCollection<ChannelMessageDto> oldValue, ObservableCollection<ChannelMessageDto> newValue)
+        {
+            _isCollectionUpdating = true;
+        }
+
+        partial void OnMessagesChanged(ObservableCollection<ChannelMessageDto> value)
+        {
+            _isCollectionUpdating = false;
         }
 
         public async Task InitializeAsync()
@@ -232,24 +244,63 @@ namespace Scfet.Notification.ViewModels
 
                 if (response?.Success == true && response.Data != null && response.Data.Any())
                 {
-                    // Добавляем старые сообщения в начало
-                    var sortedMessages = response.Data.OrderBy(m => m.CreatedAt).ToList();
+                    var newMessages = response.Data.OrderBy(m => m.CreatedAt).ToList();
 
-                    // Группируем сообщения
-                    ProcessMessagesForGrouping(sortedMessages);
+                    // Получаем первое существующее сообщение
+                    var firstExisting = Messages.FirstOrDefault();
 
-                    DateTime? lastDate = Messages.FirstOrDefault()?.CreatedAt.Date;
-
-                    foreach (var message in sortedMessages)
+                    // Подготавливаем новые сообщения
+                    ChannelMessageDto? previousInNew = null;
+                    foreach (var msg in newMessages)
                     {
-                        if (!Messages.Any(m => m.Id == message.Id))
-                        {
-                            var messageDate = message.CreatedAt.Date;
-                            message.ShowDateHeader = lastDate != messageDate;
-                            lastDate = messageDate;
-                            message.IsOwnMessage = message.SenderId == CurrentUserId;
+                        msg.IsOwnMessage = msg.SenderId == CurrentUserId;
 
-                            Messages.Insert(0, message);
+                        if (previousInNew == null)
+                        {
+                            msg.ShowDateHeader = true;
+                            msg.ShowAvatar = true;
+                            msg.ShowSenderName = !msg.IsOwnMessage;
+                        }
+                        else
+                        {
+                            msg.ShowDateHeader = msg.CreatedAt.Date != previousInNew.CreatedAt.Date;
+
+                            // Показываем аватар если:
+                            // - новая дата
+                            // - другой отправитель
+                            // - прошло больше 1 минуты
+                            var showAvatar = msg.ShowDateHeader ||
+                                            previousInNew.SenderId != msg.SenderId ||
+                                            (msg.CreatedAt - previousInNew.CreatedAt).TotalMinutes > 1;
+                            msg.ShowAvatar = showAvatar;
+                            msg.ShowSenderName = showAvatar && !msg.IsOwnMessage;
+                        }
+                        previousInNew = msg;
+                    }
+
+                    // Корректируем стык
+                    if (previousInNew != null && firstExisting != null)
+                    {
+                        var needDateHeader = previousInNew.CreatedAt.Date != firstExisting.CreatedAt.Date;
+                        var showAvatar = needDateHeader ||
+                                        previousInNew.SenderId != firstExisting.SenderId ||
+                                        (firstExisting.CreatedAt - previousInNew.CreatedAt).TotalMinutes > 1;
+
+                        // Обновляем только если изменилось
+                        if (firstExisting.ShowDateHeader != needDateHeader)
+                            firstExisting.ShowDateHeader = needDateHeader;
+                        if (firstExisting.ShowAvatar != showAvatar)
+                            firstExisting.ShowAvatar = showAvatar;
+                        if (firstExisting.ShowSenderName != (showAvatar && !firstExisting.IsOwnMessage))
+                            firstExisting.ShowSenderName = showAvatar && !firstExisting.IsOwnMessage;
+                    }
+
+                    // Вставляем в обратном порядке
+                    for (int i = newMessages.Count - 1; i >= 0; i--)
+                    {
+                        if (!Messages.Any(m => m.Id == newMessages[i].Id))
+                        {
+                            Messages.Insert(0, newMessages[i]);
                         }
                     }
 
@@ -499,7 +550,6 @@ namespace Scfet.Notification.ViewModels
                 if (response?.Success == true)
                 {
                     Messages.Remove(message);
-                    await ScrollToBottomAsync();
                 }
                 else
                 {

@@ -32,6 +32,8 @@
             <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
             <converters:ChannelRoleToColorConverter x:Key="ChannelRoleToColorConverter"/>
             <converters:ChannelRoleToRussianConverter x:Key="ChannelRoleToRussianConverter"/>
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
+            <converters:InverseBoolToColorConverter x:Key="InverseBoolToColorConverter"/>
 
             <Color x:Key="PrimaryColor">#2E86AB</Color>
 
