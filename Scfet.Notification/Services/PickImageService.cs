@@ -9,6 +9,7 @@ namespace Scfet.Notification.Services
     public interface IPickImageService
     {
         Task<FileResult?> SelectImageAsync();
+        Task<bool> CheckFileResultAsync(FileResult result);
     }
     public class PickImageService : IPickImageService
     {
@@ -110,6 +111,33 @@ namespace Scfet.Notification.Services
             };
 
             return await FilePicker.Default.PickAsync(options);
+        }
+
+        public async Task<bool> CheckFileResultAsync(FileResult result)
+        {
+            // Проверяем размер файла
+            var fileInfo = new FileInfo(result.FullPath);
+            if (fileInfo.Exists && fileInfo.Length > 15 * 1024 * 1024) // 15 MB
+            {
+                await Shell.Current.DisplayAlert(
+                    "Ошибка",
+                    "Размер изображения не должен превышать 15 MB",
+                    "OK");
+                return false;
+            }
+
+            // Проверяем тип файла
+            var extension = Path.GetExtension(result.FileName).ToLower();
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+            if (!allowedExtensions.Contains(extension))
+            {
+                await Shell.Current.DisplayAlert(
+                    "Ошибка",
+                    "Поддерживаются только изображения (jpg, png, gif, webp)",
+                    "OK");
+                return false;
+            }
+            return true;
         }
     }
 }

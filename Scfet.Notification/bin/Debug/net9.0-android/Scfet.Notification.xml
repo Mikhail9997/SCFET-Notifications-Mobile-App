@@ -308,6 +308,8 @@
             <inheritdoc/>
             <inheritdoc/>
             <inheritdoc/>
+            <inheritdoc/>
+            <inheritdoc/>
         </member>
         <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ChannelId">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.channelId"/>
@@ -329,9 +331,6 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.EditingMessage">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.editingMessage"/>
-        </member>
-        <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.SelectedImage">
-            <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.selectedImage"/>
         </member>
         <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.TypingIndicatorText">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.typingIndicatorText"/>
@@ -365,6 +364,18 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.Filter">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.filter"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.SelectedImage">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.selectedImage"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ImagePreview">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.imagePreview"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.IsImageLoading">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.isImageLoading"/>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ImageSizeText">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.imageSizeText"/>
         </member>
         <member name="M:Scfet.Notification.ViewModels.ChannelMessagesViewModel.OnNewMessageTextChanged(System.String)">
             <summary>Executes the logic for when <see cref="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.NewMessageText"/> just changed.</summary>
@@ -405,6 +416,18 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.SelectImageCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ChannelMessagesViewModel.SelectImageAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.viewFullImageCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ViewFullImageCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ViewFullImageCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ViewFullImageAsync"/>.</summary>
+        </member>
+        <member name="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.clearSelectedImageCommand">
+            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ClearSelectedImageCommand"/>.</summary>
+        </member>
+        <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ClearSelectedImageCommand">
+            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ClearSelectedImage"/>.</summary>
         </member>
         <member name="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.replyCommand">
             <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ReplyCommand"/>.</summary>
@@ -1891,6 +1914,9 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Messages">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Messages" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.HasMoreMessages">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "HasMoreMessages" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.NewMessageText">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "NewMessageText" generated properties.</summary>
         </member>
@@ -1927,8 +1953,11 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CurrentPage">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CurrentPage" generated properties.</summary>
         </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.HasMoreMessages">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "HasMoreMessages" generated properties.</summary>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.IsImageLoading">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "IsImageLoading" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.ImageSizeText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "ImageSizeText" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Channels">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Channels" generated properties.</summary>
@@ -2293,6 +2322,9 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Messages">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Messages" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.HasMoreMessages">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "HasMoreMessages" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.NewMessageText">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "NewMessageText" generated properties.</summary>
         </member>
@@ -2329,8 +2361,11 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CurrentPage">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CurrentPage" generated properties.</summary>
         </member>
-        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.HasMoreMessages">
-            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "HasMoreMessages" generated properties.</summary>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.IsImageLoading">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "IsImageLoading" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.ImageSizeText">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "ImageSizeText" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Channels">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Channels" generated properties.</summary>

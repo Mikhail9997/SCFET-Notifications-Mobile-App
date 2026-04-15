@@ -53,7 +53,14 @@ namespace Scfet.Notification.Models.Channel
         // Вспомогательные свойства для UI
         public string TimeAgo => GetTimeAgo();
         public bool IsOwnMessage { get; set; }
-        public bool ShowDateHeader { get; set; }
+
+        private bool _showDateHeader;
+        public bool ShowDateHeader
+        {
+            get => _showDateHeader;
+            set => SetProperty(ref _showDateHeader, value);
+        }
+
         [ObservableProperty]
         private bool showAvatar = true;
 

@@ -14,7 +14,6 @@ using Scfet.Notification.Models.Channel;
 using Scfet.Notification.Models.SignalR;
 using Scfet.Notification.Services;
 using Scfet.Notification.Services.Api;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Scfet.Notification.ViewModels
 {
@@ -25,6 +24,7 @@ namespace Scfet.Notification.ViewModels
         private readonly SignalRService _signalRService;
         private readonly LoginService _loginService;
         private readonly IPickImageService _pickImageService;
+        private readonly FileService _fileService;
 
         private IDisposable? _typingDebounceSubscription;
         private IDisposable? _typingStatusTimer;
@@ -44,17 +44,20 @@ namespace Scfet.Notification.ViewModels
             IChannelApiService channelService,
             SignalRService signalRService,
             LoginService loginService,
-            IPickImageService pickImageService)
+            IPickImageService pickImageService,
+            FileService fileService)
         {
             _messageService = messageService;
             _channelService = channelService;
             _signalRService = signalRService;
             _loginService = loginService;
             _pickImageService = pickImageService;
+            _fileService = fileService;
 
             SubscribeToSignalREvents();
         }
 
+        // Main fields
         [ObservableProperty]
         private string channelId = string.Empty;
 
@@ -77,9 +80,7 @@ namespace Scfet.Notification.ViewModels
         [ObservableProperty]
         private ChannelMessageDto? editingMessage;
 
-        [ObservableProperty]
-        private FileResult? selectedImage;
-
+        // UI
         [ObservableProperty]
         private string typingIndicatorText = string.Empty;
 
@@ -113,6 +114,19 @@ namespace Scfet.Notification.ViewModels
         [ObservableProperty]
         private MessageFilter filter = new() { PageSize = 10, SortOrder = SortOrder.Descending };
 
+        // images
+        [ObservableProperty]
+        private FileResult? selectedImage;
+
+        [ObservableProperty]
+        private ImageSource? imagePreview;
+
+        [ObservableProperty]
+        private bool isImageLoading;
+
+        [ObservableProperty]
+        private string imageSizeText = string.Empty;
+
         public bool CanSendMessage => !string.IsNullOrWhiteSpace(NewMessageText) || SelectedImage != null;
 
         public string Title => Channel?.Name ?? "Канал";
@@ -126,17 +140,37 @@ namespace Scfet.Notification.ViewModels
         partial void OnSelectedImageChanged(FileResult? value)
         {
             OnPropertyChanged(nameof(CanSendMessage));
-        }
 
-        private bool _isCollectionUpdating;
-        partial void OnMessagesChanging(ObservableCollection<ChannelMessageDto> oldValue, ObservableCollection<ChannelMessageDto> newValue)
-        {
-            _isCollectionUpdating = true;
-        }
+            // Загружаем предпросмотр
+            if (value != null)
+            {
+                LoadImagePreviewAsync(value);
 
-        partial void OnMessagesChanged(ObservableCollection<ChannelMessageDto> value)
-        {
-            _isCollectionUpdating = false;
+                // Получаем размер файла
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        using var stream = await value.OpenReadAsync();
+                        var sizeInBytes = stream.Length;
+                        var sizeText = _fileService.FormatFileSize(sizeInBytes);
+
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            ImageSizeText = sizeText;
+                        });
+                    }
+                    catch
+                    {
+                        ImageSizeText = string.Empty;
+                    }
+                });
+            }
+            else
+            {
+                ImagePreview = null;
+                ImageSizeText = string.Empty;
+            }
         }
 
         public async Task InitializeAsync()
@@ -335,11 +369,14 @@ namespace Scfet.Notification.ViewModels
             var replyTo = ReplyToMessage;
             var image = SelectedImage;
 
+            // Очищаем поля
             NewMessageText = string.Empty;
-            SelectedImage = null;
+            ClearSelectedImage();
             CancelReply();
-            _isTyping = false;
+
+            // Отправляем статус печати
             await _signalRService.SendTypingStatusAsync(Guid.Parse(ChannelId), false);
+            StopTyping();
 
             IsSending = true;
 
@@ -372,6 +409,7 @@ namespace Scfet.Notification.ViewModels
             }
             catch (Exception ex)
             {
+                // Восстанавливаем данные при ошибке
                 await Shell.Current.DisplayAlert("Ошибка", ex.Message, "OK");
                 NewMessageText = messageText;
                 SelectedImage = image;
@@ -445,6 +483,7 @@ namespace Scfet.Notification.ViewModels
             }
         }
 
+        #region Image
         [RelayCommand]
         private async Task SelectImageAsync()
         {
@@ -453,6 +492,8 @@ namespace Scfet.Notification.ViewModels
                 var result = await _pickImageService.SelectImageAsync();
                 if (result != null)
                 {
+                    if (!await _pickImageService.CheckFileResultAsync(result)) return;
+
                     SelectedImage = result;
                 }
             }
@@ -461,6 +502,195 @@ namespace Scfet.Notification.ViewModels
                 await Shell.Current.DisplayAlert("Ошибка", $"Не удалось выбрать изображение: {ex.Message}", "OK");
             }
         }
+
+        private async void LoadImagePreviewAsync(FileResult fileResult)
+        {
+            if (fileResult == null) return;
+
+            IsImageLoading = true;
+
+            try
+            {
+                using var stream = await fileResult.OpenReadAsync();
+
+                // Создаем копию потока для предпросмотра
+                using var memoryStream = new MemoryStream();
+                await stream.CopyToAsync(memoryStream);
+                memoryStream.Position = 0;
+
+                ImagePreview = ImageSource.FromStream(() => new MemoryStream(memoryStream.ToArray()));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading image preview: {ex.Message}");
+                ImagePreview = null;
+            }
+            finally
+            {
+                IsImageLoading = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task ViewFullImageAsync()
+        {
+            if (SelectedImage == null) return;
+
+            try
+            {
+                using var stream = await SelectedImage.OpenReadAsync();
+                using var memoryStream = new MemoryStream();
+                await stream.CopyToAsync(memoryStream);
+                memoryStream.Position = 0;
+
+                var imageSource = ImageSource.FromStream(() => new MemoryStream(memoryStream.ToArray()));
+                var fileName = SelectedImage.FileName;
+                var imageSize = ImageSizeText;
+
+                var image = new Image
+                {
+                    Source = imageSource,
+                    Aspect = Aspect.AspectFit,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    BackgroundColor = Colors.Black
+                };
+
+                var pinchGesture = new PinchGestureRecognizer();
+                double currentScale = 1;
+                double startScale = 1;
+
+                pinchGesture.PinchUpdated += (s, e) =>
+                {
+                    if (e.Status == GestureStatus.Started)
+                    {
+                        startScale = currentScale;
+                    }
+                    else if (e.Status == GestureStatus.Running)
+                    {
+                        currentScale = startScale * e.Scale;
+                        currentScale = Math.Clamp(currentScale, 1, 3);
+                        image.Scale = currentScale;
+                    }
+                };
+                image.GestureRecognizers.Add(pinchGesture);
+
+                var doubleTap = new TapGestureRecognizer { NumberOfTapsRequired = 2 };
+                doubleTap.Tapped += (s, e) =>
+                {
+                    currentScale = 1;
+                    image.ScaleTo(1, 250, Easing.CubicOut);
+                };
+                image.GestureRecognizers.Add(doubleTap);
+
+                var grid = new Grid
+                {
+                    RowDefinitions =
+                    {
+                        new RowDefinition { Height = GridLength.Auto },
+                        new RowDefinition { Height = GridLength.Star },
+                        new RowDefinition { Height = GridLength.Auto }
+                    },
+                    BackgroundColor = Colors.Black
+                };
+
+                // Верхняя панель с HorizontalStackLayout для лучшего распределения
+                var topPanel = new Border
+                {
+                    BackgroundColor = Color.FromArgb("#CC000000"),
+                    Padding = new Thickness(12, 8, 12, 8),
+                    HeightRequest = 50
+                };
+
+                var topStack = new HorizontalStackLayout
+                {
+                    Spacing = 10,
+                    HorizontalOptions = LayoutOptions.Fill
+                };
+
+                var closeButton = new Button
+                {
+                    Text = "✕",
+                    BackgroundColor = Colors.Transparent,
+                    TextColor = Colors.White,
+                    FontSize = 18,
+                    WidthRequest = 36,
+                    HeightRequest = 36,
+                    CornerRadius = 18
+                };
+                closeButton.Clicked += async (s, e) => await Shell.Current.Navigation.PopModalAsync();
+
+                var titleLabel = new Label
+                {
+                    Text = fileName?.Length > 25 ? fileName[..22] + "..." : fileName,
+                    TextColor = Colors.White,
+                    FontSize = 13,
+                    HorizontalOptions = LayoutOptions.CenterAndExpand,
+                    VerticalOptions = LayoutOptions.Center,
+                    LineBreakMode = LineBreakMode.TailTruncation
+                };
+
+                var infoButton = new Button
+                {
+                    Text = "ℹ",
+                    BackgroundColor = Colors.Transparent,
+                    TextColor = Colors.White,
+                    FontSize = 16,
+                    WidthRequest = 36,
+                    HeightRequest = 36,
+                    CornerRadius = 18
+                };
+                infoButton.Clicked += async (s, e) =>
+                {
+                    await Shell.Current.DisplayAlert("Информация", $"📁 {fileName}\n📏 {imageSize}", "OK");
+                };
+
+                topStack.Children.Add(closeButton);
+                topStack.Children.Add(titleLabel);
+                topStack.Children.Add(infoButton);
+                topPanel.Content = topStack;
+
+                var bottomHint = new Label
+                {
+                    Text = "👆 Два пальца — масштаб • Двойной тап — сброс",
+                    TextColor = Colors.LightGray,
+                    FontSize = 11,
+                    HorizontalOptions = LayoutOptions.Center,
+                    Margin = new Thickness(0, 0, 0, 15),
+                    Padding = new Thickness(10, 0)
+                };
+
+                grid.Children.Add(topPanel);
+                grid.Children.Add(image);
+                grid.Children.Add(bottomHint);
+                Grid.SetRow(topPanel, 0);
+                Grid.SetRow(image, 1);
+                Grid.SetRow(bottomHint, 2);
+
+                // Для iOS добавляем отступ сверху
+                if (DeviceInfo.Platform == DevicePlatform.iOS)
+                {
+                    topPanel.Margin = new Thickness(0, 20, 0, 0);
+                    topPanel.HeightRequest = 50;
+                }
+
+                var modalPage = new ContentPage { Content = grid, BackgroundColor = Colors.Black };
+                await Shell.Current.Navigation.PushModalAsync(modalPage);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", ex.Message, "OK");
+            }
+        }
+
+        [RelayCommand]
+        private void ClearSelectedImage()
+        {
+            SelectedImage = null;
+            ImagePreview = null;
+        }
+
+        #endregion
 
         [RelayCommand]
         private void Reply(ChannelMessageDto message)
@@ -672,7 +902,7 @@ namespace Scfet.Notification.ViewModels
                     _isTyping = true;
                     _lastTypingSent = DateTime.UtcNow;
 
-                    // Отправляем статус с небольшой задержкой (debounce)
+                    // Отправляем статус с небольшой задержкой
                     _typingDebounceSubscription = Observable.Timer(TimeSpan.FromMilliseconds(TYPING_DEBOUNCE_MS))
                         .Subscribe(timerValue => // timerValue = 0
                         {
@@ -827,7 +1057,10 @@ namespace Scfet.Notification.ViewModels
                         SenderId = message.SenderId,
                         SenderName = message.SenderName,
                         SenderAvatar = message.SenderAvatar,
+                        SenderRole = message.SenderRole,
+                        SenderChannelRole = message.SenderChannelRole,
                         ReplyToMessageId = message.ReplyToMessageId,
+                        ReplyToMessage = message.ReplyToMessage,
                         ImageUrl = message.ImageUrl,
                         CreatedAt = message.CreatedAt,
                         IsOwnMessage = message.SenderId == CurrentUserId,
@@ -989,6 +1222,9 @@ namespace Scfet.Notification.ViewModels
 
         public void Cleanup()
         {
+            // Очищаем изображение
+            ClearSelectedImage();
+
             // Останавливаем все таймеры
             StopTyping();
 

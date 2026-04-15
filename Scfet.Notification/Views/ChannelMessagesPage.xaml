@@ -94,7 +94,7 @@
                         Command="{Binding ShowChannelMenuCommand}"
                         BackgroundColor="Transparent"
                         TextColor="{StaticResource PrimaryColor}"
-                        FontSize="24"
+                        FontSize="20"
                         WidthRequest="40"
                         HeightRequest="40"
                         CornerRadius="20"/>
@@ -480,10 +480,69 @@
                 <RoundRectangle CornerRadius="0"/>
             </Border.StrokeShape>
 
-            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="5">
+            <VerticalStackLayout Spacing="5">
 
-                <!-- Кнопка прикрепить -->
-                <Button Grid.Column="0" 
+                <!-- Предпросмотр изображения с возможностью открытия -->
+                <Grid IsVisible="{Binding SelectedImage, Converter={StaticResource NullToVisibilityConverter}}"
+                      Padding="0,0,0,10"
+                      BackgroundColor="{AppThemeBinding Light='#F5F5F5', Dark='#333333'}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Миниатюра -->
+                    <Border Grid.Column="0"
+                            HeightRequest="80"
+                            WidthRequest="80"
+                            StrokeThickness="1"
+                            Stroke="{StaticResource PrimaryColor}"
+                            Margin="0,0,10,0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8"/>
+                        </Border.StrokeShape>
+                        <Image Source="{Binding ImagePreview}"
+                               Aspect="AspectFill"/>
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ViewFullImageCommand}"/>
+                        </Border.GestureRecognizers>
+                    </Border>
+
+                    <!-- Информация -->
+                    <VerticalStackLayout Grid.Column="1" 
+                         VerticalOptions="Center"
+                         Spacing="2">
+                        <Label Text="{Binding SelectedImage.FileName, StringFormat='📎 {0}'}"
+                               FontSize="12"
+                               LineBreakMode="TailTruncation"/>
+                        <Label Text="{Binding ImageSizeText}"
+                               FontSize="10"
+                               TextColor="Gray"/>
+                        <Label Text="Нажмите для просмотра"
+                               FontSize="10"
+                               TextColor="{StaticResource PrimaryColor}"/>
+                    </VerticalStackLayout>
+
+                    <!-- Кнопка удаления -->
+                    <Button Grid.Column="2"
+                            Text="✕"
+                            Command="{Binding ClearSelectedImageCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="Gray"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            CornerRadius="20"
+                            FontSize="16"
+                            VerticalOptions="Center"/>
+                </Grid>
+
+                <!-- Основная панель ввода -->
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="5">
+
+                    <!-- Кнопка прикрепить -->
+                    <Button Grid.Column="0" 
                         Text="📎" 
                         Command="{Binding SelectImageCommand}"
                         BackgroundColor="Transparent"
@@ -491,15 +550,15 @@
                         HeightRequest="40"
                         CornerRadius="20"/>
 
-                <!-- Поле ввода -->
-                <Editor Grid.Column="1" 
+                    <!-- Поле ввода -->
+                    <Editor Grid.Column="1" 
                         Text="{Binding NewMessageText}"
                         Placeholder="Сообщение..."
                         AutoSize="TextChanges"
                         MaximumHeightRequest="100"/>
 
-                <!-- Кнопка отправки -->
-                <Button Grid.Column="3" 
+                    <!-- Кнопка отправки -->
+                    <Button Grid.Column="3" 
                         Text="➤" 
                         Command="{Binding SendMessageCommand}"
                         IsEnabled="{Binding CanSendMessage}"
@@ -508,7 +567,8 @@
                         WidthRequest="40"
                         HeightRequest="40"
                         CornerRadius="20"/>
-            </Grid>
+                </Grid>
+            </VerticalStackLayout>
         </Border>
     </Grid>
 </ContentPage>
