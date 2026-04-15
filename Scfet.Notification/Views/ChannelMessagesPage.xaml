@@ -30,17 +30,9 @@
 
             <converters:ChannelRoleToColorConverter x:Key="ChannelRoleToColorConverter"/>
             <converters:ChannelRoleToRussianConverter x:Key="ChannelRoleToRussianConverter"/>
-            <converters:MessageBackgroundConverter x:Key="MessageBackgroundConverter"/>
-            <converters:MessageMarginConverter x:Key="MessageMarginConverter"/>
-            <converters:MessageHorizontalOptionsConverter x:Key="MessageHorizontalOptionsConverter"/>
-            <converters:MessageColumnConverter x:Key="MessageColumnConverter"/>
-            <converters:AvatarColumnConverter x:Key="AvatarColumnConverter"/>
-            <converters:MessageTimeColorConverter x:Key="MessageTimeColorConverter"/>
-            <converters:MessageStatusColorConverter x:Key="MessageStatusColorConverter"/>
             <converters:ReadStatusIconConverter x:Key="ReadStatusIconConverter"/>
             <converters:MessageTimeConverter x:Key="MessageTimeConverter"/>
             <converters:DateHeaderConverter x:Key="DateHeaderConverter"/>
-            <converters:LoadingMoreFooterConverter x:Key="LoadingMoreFooterConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -208,9 +200,9 @@
 
                                         <!-- ЧУЖОЕ СООБЩЕНИЕ -->
                                         <HorizontalStackLayout Grid.Column="0" 
-                                       HorizontalOptions="Start"
-                                       IsVisible="{Binding IsOwnMessage, Converter={StaticResource InverseBoolConverter}}"
-                                       Spacing="8">
+                                               HorizontalOptions="Start"
+                                               IsVisible="{Binding IsOwnMessage, Converter={StaticResource InverseBoolConverter}}"
+                                               Spacing="8">
 
                                             <!-- Аватар показываем только если нужно -->
                                             <Border Style="{StaticResource message_avatar}"
@@ -243,45 +235,45 @@
                                                                       Spacing="3">
                                                         <!-- Имя и Фамилия-->
                                                         <Label Text="{Binding SenderName}" 
-                                                       FontSize="11" 
-                                                       FontAttributes="Bold"
-                                                       TextColor="{StaticResource PrimaryColor}"/>
+                                                               FontSize="11" 
+                                                               FontAttributes="Bold"
+                                                               TextColor="{StaticResource PrimaryColor}"/>
 
                                                         <!-- Роли -->
                                                         <HorizontalStackLayout Spacing="3">
                                                             <!-- Роль в системе пользователя -->
                                                             <Border 
-                                                            BackgroundColor="{Binding SenderRoleString, Converter={StaticResource RoleToColorConverter}}"
-                                                            Padding="8,3"
-                                                            StrokeThickness="0"
-                                                            HorizontalOptions="Start">
+                                                                BackgroundColor="{Binding SenderRoleString, Converter={StaticResource RoleToColorConverter}}"
+                                                                Padding="8,3"
+                                                                StrokeThickness="0"
+                                                                HorizontalOptions="Start">
                                                                 <Border.StrokeShape>
                                                                     <RoundRectangle CornerRadius="12"/>
                                                                 </Border.StrokeShape>
                                                                 <Label Text="{Binding SenderRoleString, Converter={StaticResource RoleToRussianConverter}}"
-                                                               FontSize="8"
-                                                               TextColor="White"/>
+                                                                       FontSize="8"
+                                                                       TextColor="White"/>
                                                             </Border>
                                                             <!-- Роль на канале -->
                                                             <Border 
-                                                            BackgroundColor="{Binding SenderChannelRole, Converter={StaticResource ChannelRoleToColorConverter}}"
-                                                            Padding="8,3"
-                                                            StrokeThickness="0"
-                                                            HorizontalOptions="Start">
+                                                                    BackgroundColor="{Binding SenderChannelRole, Converter={StaticResource ChannelRoleToColorConverter}}"
+                                                                    Padding="8,3"
+                                                                    StrokeThickness="0"
+                                                                    HorizontalOptions="Start">
                                                                 <Border.StrokeShape>
                                                                     <RoundRectangle CornerRadius="12"/>
                                                                 </Border.StrokeShape>
                                                                 <Label Text="{Binding SenderChannelRole, Converter={StaticResource ChannelRoleToRussianConverter}}"
-                                                               FontSize="8"
-                                                               TextColor="White"/>
+                                                                       FontSize="8"
+                                                                       TextColor="White"/>
                                                             </Border>
                                                         </HorizontalStackLayout>
                                                     </VerticalStackLayout>
 
                                                     <Border IsVisible="{Binding ReplyToMessage, Converter={StaticResource NullToVisibilityConverter}}"
-                                                        BackgroundColor="{AppThemeBinding Light='#F0F0F0', Dark='#333333'}"
-                                                        Padding="8"
-                                                        StrokeThickness="0">
+                                                            BackgroundColor="{AppThemeBinding Light='#F0F0F0', Dark='#333333'}"
+                                                            Padding="8"
+                                                            StrokeThickness="0">
                                                         <Border.StrokeShape>
                                                             <RoundRectangle CornerRadius="8"/>
                                                         </Border.StrokeShape>
@@ -302,13 +294,12 @@
                                                        LineBreakMode="WordWrap"/>
 
                                                     <ff:CachedImage 
-                                                    Source="{Binding ImageUrl}"
-                                                    HeightRequest="200"
-                                                    Aspect="AspectFill"
-                                                    DownsampleToViewSize="True"
-                                                    LoadingPlaceholder="placeholder.png"
-                                                    ErrorPlaceholder="placeholder.png"
-                                                    IsVisible="{Binding ImageUrl, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                                        Source="{Binding ImageUrl}"
+                                                        HeightRequest="200"
+                                                        DownsampleToViewSize="True"
+                                                        LoadingPlaceholder="placeholder.png"
+                                                        ErrorPlaceholder="placeholder.png"
+                                                        IsVisible="{Binding ImageUrl, Converter={StaticResource NullToVisibilityConverter}}"/>
 
                                                     <HorizontalStackLayout Spacing="5" HorizontalOptions="End">
                                                         <Label Text="{Binding CreatedAt, Converter={StaticResource MessageTimeConverter}}"
@@ -326,11 +317,11 @@
 
                                         <!-- СВОЕ СООБЩЕНИЕ -->
                                         <Border Grid.Column="1" 
-                                            BackgroundColor="{AppThemeBinding Light='#DCF8C6', Dark='#056162'}"
-                                            Padding="12,8"
-                                            MaximumWidthRequest="280"
-                                            HorizontalOptions="End"
-                                            IsVisible="{Binding IsOwnMessage}">
+                                                BackgroundColor="{AppThemeBinding Light='#DCF8C6', Dark='#056162'}"
+                                                Padding="12,8"
+                                                MaximumWidthRequest="280"
+                                                HorizontalOptions="End"
+                                                IsVisible="{Binding IsOwnMessage}">
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="12,12,0,12"/>
                                             </Border.StrokeShape>
@@ -338,9 +329,9 @@
                                             <VerticalStackLayout Spacing="5">
 
                                                 <Border IsVisible="{Binding ReplyToMessage, Converter={StaticResource NullToVisibilityConverter}}"
-                                                    BackgroundColor="{AppThemeBinding Light='#C5E8B7', Dark='#045052'}"
-                                                    Padding="8"
-                                                    StrokeThickness="0">
+                                                        BackgroundColor="{AppThemeBinding Light='#C5E8B7', Dark='#045052'}"
+                                                        Padding="8"
+                                                        StrokeThickness="0">
                                                     <Border.StrokeShape>
                                                         <RoundRectangle CornerRadius="8"/>
                                                     </Border.StrokeShape>
@@ -362,7 +353,7 @@
                                                 <ff:CachedImage 
                                                     Source="{Binding ImageUrl}"
                                                     HeightRequest="200"
-                                                    Aspect="AspectFill"
+                                                    
                                                     DownsampleToViewSize="True"
                                                     LoadingPlaceholder="placeholder.png"
                                                     ErrorPlaceholder="placeholder.png"
