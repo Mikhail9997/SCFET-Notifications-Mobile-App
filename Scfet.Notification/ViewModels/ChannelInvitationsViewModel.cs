@@ -25,11 +25,6 @@ namespace Scfet.Notification.ViewModels
             _channelApiService = channelApiService;
             _signalRService = signalRService;
 
-            _signalRService.OnChannelInvitation += OnInvitationReceived;
-            _signalRService.OnInvitationAccepted += OnInvitationUpdated;
-            _signalRService.OnInvitationDeclined += OnInvitationUpdated;
-            _signalRService.OnInvitationCancelled += OnInvitationCancelled;
-
             Title = "Приглашения";
             _ = InitializeFields();
         }
@@ -80,6 +75,7 @@ namespace Scfet.Notification.ViewModels
         public async Task InitializeAsync()
         {
             await LoadInvitationsAsync();
+            SubscribeToSignalREvents();
         }
 
         [RelayCommand]
@@ -393,19 +389,27 @@ namespace Scfet.Notification.ViewModels
             });
         }
 
+        private void SubscribeToSignalREvents()
+        {
+            _signalRService.OnChannelInvitation += OnInvitationReceived;
+            _signalRService.OnInvitationAccepted += OnInvitationUpdated;
+            _signalRService.OnInvitationDeclined += OnInvitationUpdated;
+            _signalRService.OnInvitationCancelled += OnInvitationCancelled;
+        }
+
         private async Task InitializeFields()
         {
             SortByItems = new()
-        {
-            new() { Value = ChannelSortBy.CreatedAt, DisplayName = "Дата" },
-            new() { Value = ChannelSortBy.Name, DisplayName = "Название канала" }
-        };
+            {
+                new() { Value = ChannelSortBy.CreatedAt, DisplayName = "Дата" },
+                new() { Value = ChannelSortBy.Name, DisplayName = "Название канала" }
+            };
 
             SortOrderItems = new()
-        {
-            new() { Value = SortOrder.Ascending, DisplayName = "По возрастанию" },
-            new() { Value = SortOrder.Descending, DisplayName = "По убыванию" }
-        };
+            {
+                new() { Value = SortOrder.Ascending, DisplayName = "По возрастанию" },
+                new() { Value = SortOrder.Descending, DisplayName = "По убыванию" }
+            };
 
             SelectedSortBy = SortByItems.First();
             SelectedSortOrder = SortOrderItems.First(s => s.Value == SortOrder.Descending);

@@ -49,7 +49,8 @@ namespace Scfet.Notification.Services
         public event Action<UserTypingEvent>? OnUserTyping;
         public event Action<NewMessageEvent>? OnNewMessage;
         public event Action<MessageUpdatedEvent>? OnMessageUpdated;
-        public event Action<MessageDeletedEvent>? OnMessageDeleted;
+        public event Action<Guid>? OnMessageDeleted;
+        public event Action<Guid, Guid>? OnMyMessageRead;
         #endregion
 
         public event Action? OnConnectionLost;
@@ -264,9 +265,14 @@ namespace Scfet.Notification.Services
                 MainThread.BeginInvokeOnMainThread(() => OnMessageUpdated?.Invoke(message));
             });
 
-            _channelHubConnection.On<MessageDeletedEvent>("MessageDeleted", (eventData) =>
+            _channelHubConnection.On<Guid>("MessageDeleted", (messageId) =>
             {
-                MainThread.BeginInvokeOnMainThread(() => OnMessageDeleted?.Invoke(eventData));
+                MainThread.BeginInvokeOnMainThread(() => OnMessageDeleted?.Invoke(messageId));
+            });
+
+            _channelHubConnection.On<Guid, Guid>("MessageRead", (messageId, channelId) =>
+            {
+                MainThread.BeginInvokeOnMainThread(() => OnMyMessageRead?.Invoke(messageId, channelId));
             });
         }
 

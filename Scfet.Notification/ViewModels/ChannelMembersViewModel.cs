@@ -159,9 +159,7 @@ namespace Scfet.Notification.ViewModels
                     }
 
                     MembersCount = Members.Count;
-                    FilterMembers();
-
-                    OnPropertyChanged(nameof(CanManageMembers));
+                    FilterMembers();                
                 }
                 else
                 {
@@ -179,6 +177,7 @@ namespace Scfet.Notification.ViewModels
             {
                 IsMembersLoading = false;
                 OnPropertyChanged(nameof(IsShowScrollButtons));
+                OnPropertyChanged(nameof(CanManageMembers));
             }
         }
 

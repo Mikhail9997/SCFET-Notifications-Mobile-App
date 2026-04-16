@@ -317,6 +317,9 @@
         <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.CurrentUserId">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.currentUserId"/>
         </member>
+        <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.CurrentUserChannelRole">
+            <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.currentUserChannelRole"/>
+        </member>
         <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.Channel">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.channel"/>
         </member>
@@ -1911,6 +1914,9 @@
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.MembersCount">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "MembersCount" generated properties.</summary>
         </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.CurrentUserChannelRole">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "CurrentUserChannelRole" generated properties.</summary>
+        </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.Messages">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "Messages" generated properties.</summary>
         </member>
@@ -2318,6 +2324,9 @@
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.MembersCount">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "MembersCount" generated properties.</summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.CurrentUserChannelRole">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "CurrentUserChannelRole" generated properties.</summary>
         </member>
         <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.Messages">
             <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "Messages" generated properties.</summary>

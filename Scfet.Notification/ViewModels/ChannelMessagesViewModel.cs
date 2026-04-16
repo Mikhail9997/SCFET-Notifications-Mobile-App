@@ -26,6 +26,7 @@ namespace Scfet.Notification.ViewModels
         private readonly IPickImageService _pickImageService;
         private readonly FileService _fileService;
 
+        // для отображения статуса печати
         private IDisposable? _typingDebounceSubscription;
         private IDisposable? _typingStatusTimer;
         private Dictionary<Guid, IDisposable> _typingTimers = new();
@@ -38,6 +39,13 @@ namespace Scfet.Notification.ViewModels
         private const int TYPING_DEBOUNCE_MS = 300; // Задержка перед первой отправкой
         private const int TYPING_RESEND_INTERVAL_SEC = 3; // Интервал повторной отправки
         private const int TYPING_TIMEOUT_SEC = 5; // Таймаут неактивности
+
+        // для статуса прочтения
+        private DateTime _lastMarkReadCall = DateTime.MinValue;
+        private SemaphoreSlim _markReadSemaphore;
+        private Guid? _lastMarkedMessageId;
+
+        private bool _isDisposed;
 
         public ChannelMessagesViewModel(
             IChannelMessageApiService messageService,
@@ -53,8 +61,6 @@ namespace Scfet.Notification.ViewModels
             _loginService = loginService;
             _pickImageService = pickImageService;
             _fileService = fileService;
-
-            SubscribeToSignalREvents();
         }
 
         // Main fields
@@ -63,6 +69,9 @@ namespace Scfet.Notification.ViewModels
 
         [ObservableProperty]
         private Guid currentUserId;
+
+        [ObservableProperty]
+        private ChannelRole? currentUserChannelRole;
 
         [ObservableProperty]
         private ChannelDto? channel;
@@ -175,11 +184,15 @@ namespace Scfet.Notification.ViewModels
 
         public async Task InitializeAsync()
         {
+            _isDisposed = false;
+            _markReadSemaphore = new(1, 1);
             var auth = _loginService.GetCurrentAuth();
             CurrentUserId = Guid.TryParse(auth?.UserId, out var id) ? id : Guid.Empty;
 
             List<Task> tasks = new() { LoadChannelInfoAsync(), LoadMessagesAsync() };
             await Task.WhenAll(tasks);
+
+            SubscribeToSignalREvents();
 
             await _signalRService.JoinChannelAsync(Guid.Parse(ChannelId));
             await _messageService.MarkAllAsReadAsync(Guid.Parse(ChannelId));
@@ -195,6 +208,7 @@ namespace Scfet.Notification.ViewModels
                 if (response?.Success == true && response.Data != null)
                 {
                     Channel = response.Data;
+                    CurrentUserChannelRole = Channel.UserRole;
                     OnPropertyChanged(nameof(Title));
                 }
             }
@@ -204,6 +218,7 @@ namespace Scfet.Notification.ViewModels
             }
         }
 
+        #region main methods
         [RelayCommand]
         private async Task LoadMessagesAsync()
         {
@@ -483,6 +498,54 @@ namespace Scfet.Notification.ViewModels
             }
         }
 
+        public async Task MarkVisibleMessagesAsReadAsync()
+        {
+            if (string.IsNullOrEmpty(ChannelId)) return;
+            if (_isDisposed) return;
+
+            // Защита от частых вызовов
+            if ((DateTime.UtcNow - _lastMarkReadCall).TotalMilliseconds < 300) return;
+
+            // Используем семафор чтобы избежать параллельных вызовов
+            if (!await _markReadSemaphore.WaitAsync(0)) return;
+
+            try
+            {
+                _lastMarkReadCall = DateTime.UtcNow;
+
+                // Находим последнее непрочитанное чужое сообщение
+                var lastUnreadOtherMessage = Messages
+                    .Where(m => m.SenderId != CurrentUserId && !m.IsRead)
+                    .OrderByDescending(m => m.CreatedAt)
+                    .FirstOrDefault();
+
+                if (lastUnreadOtherMessage == null) return;
+
+                // Не отмечаем одно и то же сообщение повторно
+                if (_lastMarkedMessageId == lastUnreadOtherMessage.Id) return;
+
+                _lastMarkedMessageId = lastUnreadOtherMessage.Id;
+
+                // Отмечаем на сервере (fire-and-forget, не ждем)
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _messageService.MarkAsReadAsync(Guid.Parse(ChannelId), lastUnreadOtherMessage.Id);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Mark as read error: {ex.Message}");
+                    }
+                });
+            }
+            finally
+            {
+                _markReadSemaphore.Release();
+            }
+        }
+        #endregion
+
         #region Image
         [RelayCommand]
         private async Task SelectImageAsync()
@@ -692,6 +755,34 @@ namespace Scfet.Notification.ViewModels
 
         #endregion
 
+        #region actions
+
+        private bool CanDeleteMessage(ChannelMessageDto message)
+        {
+            // Отправитель всегда может удалить своё сообщение
+            if (message.SenderId == CurrentUserId)
+                return true;
+
+            // Проверяем права текущего пользователя
+            return CurrentUserChannelRole switch
+            {
+                ChannelRole.Owner => true, // Владелец может удалять всё
+
+                ChannelRole.Admin => message.SenderChannelRole != ChannelRole.Owner &&
+                                    message.SenderChannelRole != ChannelRole.Admin,
+
+                ChannelRole.Moderator => message.SenderChannelRole == ChannelRole.Member,
+
+                _ => false
+            };
+        }
+
+        private bool CanEditMessage(ChannelMessageDto message)
+        {
+            // Только отправитель может редактировать
+            return message.SenderId == CurrentUserId;
+        }
+
         [RelayCommand]
         private void Reply(ChannelMessageDto message)
         {
@@ -878,6 +969,7 @@ namespace Scfet.Notification.ViewModels
         {
             await LoadMessagesAsync();
         }
+        #endregion
 
         #region Typing methods
         private void HandleTypingIndicator(string text)
@@ -904,7 +996,7 @@ namespace Scfet.Notification.ViewModels
 
                     // Отправляем статус с небольшой задержкой
                     _typingDebounceSubscription = Observable.Timer(TimeSpan.FromMilliseconds(TYPING_DEBOUNCE_MS))
-                        .Subscribe(timerValue => // timerValue = 0
+                        .Subscribe(timerValue =>
                         {
                             MainThread.BeginInvokeOnMainThread(() =>
                             {
@@ -1039,6 +1131,7 @@ namespace Scfet.Notification.ViewModels
             _signalRService.OnUserTyping += OnUserTyping;
             _signalRService.OnUserJoined += OnUserJoined;
             _signalRService.OnUserLeft += OnUserLeft;
+            _signalRService.OnMyMessageRead += OnMyMessageRead;
         }
 
         private void OnNewMessageReceived(NewMessageEvent message)
@@ -1064,23 +1157,27 @@ namespace Scfet.Notification.ViewModels
                         ImageUrl = message.ImageUrl,
                         CreatedAt = message.CreatedAt,
                         IsOwnMessage = message.SenderId == CurrentUserId,
+                        IsRead = message.SenderId == CurrentUserId ? false : true,
                         ShowDateHeader = ShouldShowDateHeader(new ChannelMessageDto { CreatedAt = message.CreatedAt }, Messages.LastOrDefault())
                     };
 
-                    var lastMessage = Messages.LastOrDefault();
+                    // Рассчитываем права на клиенте
+                    messageDto.CanEdit = CanEditMessage(messageDto);
+                    messageDto.CanDelete = CanDeleteMessage(messageDto);
 
-                    // Применяем группировку
+                    var lastMessage = Messages.LastOrDefault();
                     ApplyGroupingForSingleMessage(messageDto, lastMessage);
 
                     Messages.Add(messageDto);
                     ShowScrollToBottomButton = true;
 
-                    // Автоматически отмечаем как прочитанное
-                    _ = _messageService.MarkAsReadAsync(Guid.Parse(ChannelId), message.Id);
+                    if (message.SenderId != CurrentUserId)
+                    {
+                        _ = _messageService.MarkAsReadAsync(Guid.Parse(ChannelId), message.Id);
+                    }
                 }
             });
         }
-
         private void OnMessageUpdated(MessageUpdatedEvent message)
         {
             if (message.ChannelId.ToString() != ChannelId || IsSending) return;
@@ -1097,13 +1194,11 @@ namespace Scfet.Notification.ViewModels
             });
         }
 
-        private void OnMessageDeleted(MessageDeletedEvent eventData)
+        private void OnMessageDeleted(Guid messageId)
         {
-            if (eventData.ChannelId.ToString() != ChannelId) return;
-
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                var existing = Messages.FirstOrDefault(m => m.Id == eventData.MessageId);
+                var existing = Messages.FirstOrDefault(m => m.Id == messageId);
                 if (existing != null)
                 {
                     Messages.Remove(existing);
@@ -1152,18 +1247,6 @@ namespace Scfet.Notification.ViewModels
             });
         }
 
-        private void OnUserJoined(UserJoinedEvent eventData)
-        {
-            if (eventData.ChannelId.ToString() != ChannelId) return;
-            OnlineStatus = "онлайн";
-        }
-
-        private void OnUserLeft(UserLeftEvent eventData)
-        {
-            if (eventData.ChannelId.ToString() != ChannelId) return;
-            OnlineStatus = "офлайн";
-        }
-
         private void UpdateTypingIndicator()
         {
             if (_typingUsers.Count == 0)
@@ -1178,6 +1261,43 @@ namespace Scfet.Notification.ViewModels
             {
                 TypingIndicatorText = $"{_typingUsers.Count} человека печатают...";
             }
+        }
+
+        private void OnMyMessageRead(Guid messageId, Guid channelId)
+        {
+            if (channelId.ToString() != ChannelId) return;
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                var targetMessage = Messages.FirstOrDefault(m => m.Id == messageId);
+                if (targetMessage?.SenderId != CurrentUserId) return;
+
+                var cutoffTime = targetMessage.CreatedAt;
+
+                // Обновляем только свои непрочитанные сообщения до этого времени
+                foreach (var msg in Messages)
+                {
+                    if (msg.SenderId == CurrentUserId &&
+                        !msg.IsRead &&
+                        msg.CreatedAt <= cutoffTime)
+                    {
+                        msg.IsRead = true;
+                        msg.ReadAt = DateTime.UtcNow;
+                    }
+                }
+            });
+        }
+
+        private void OnUserJoined(UserJoinedEvent eventData)
+        {
+            if (eventData.ChannelId.ToString() != ChannelId) return;
+            OnlineStatus = "онлайн";
+        }
+
+        private void OnUserLeft(UserLeftEvent eventData)
+        {
+            if (eventData.ChannelId.ToString() != ChannelId) return;
+            OnlineStatus = "офлайн";
         }
 
         #endregion
@@ -1222,6 +1342,9 @@ namespace Scfet.Notification.ViewModels
 
         public void Cleanup()
         {
+            if (_isDisposed) return;
+            _isDisposed = true;
+
             // Очищаем изображение
             ClearSelectedImage();
 
@@ -1238,6 +1361,8 @@ namespace Scfet.Notification.ViewModels
             _typingTimers.Clear();
             _typingUsers.Clear();
 
+            _markReadSemaphore?.Dispose();
+
             // Отписываемся от событий SignalR
             _signalRService.OnNewMessage -= OnNewMessageReceived;
             _signalRService.OnMessageUpdated -= OnMessageUpdated;
@@ -1245,11 +1370,19 @@ namespace Scfet.Notification.ViewModels
             _signalRService.OnUserTyping -= OnUserTyping;
             _signalRService.OnUserJoined -= OnUserJoined;
             _signalRService.OnUserLeft -= OnUserLeft;
+            _signalRService.OnMyMessageRead -= OnMyMessageRead;
 
             // Покидаем канал
             if (!string.IsNullOrEmpty(ChannelId))
             {
-                _ = _signalRService.LeaveChannelAsync(Guid.Parse(ChannelId));
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _signalRService.LeaveChannelAsync(Guid.Parse(ChannelId));
+                    }
+                    catch {}
+                });
             }
         }
     }

@@ -21,5 +21,7 @@ namespace Scfet.Notification.Models.SignalR
         public ReplyMessageDto? ReplyToMessage { get; set; }
         public string? ImageUrl { get; set; }
         public DateTime CreatedAt { get; set; }
+        public bool CanEdit { get; set; }
+        public bool CanDelete { get; set; }
     }
 }

@@ -26,10 +26,6 @@ namespace Scfet.Notification.ViewModels
             _channelApiService = channelApiService;
             _signalRService = signalRService;
 
-            _signalRService.OnChannelInvitation += OnChannelInvitationReceived;
-            _signalRService.OnInvitationAccepted += OnInvitationAccepted;
-            _signalRService.OnInvitationDeclined += OnInvitationDeclined;
-
             Title = "Каналы";
             _ = InitializeFields();
         }
@@ -81,6 +77,7 @@ namespace Scfet.Notification.ViewModels
         {
             await LoadChannelsAsync();
             await CheckPendingInvitationsAsync();
+            SubscribeToSignalREvents();
         }
 
 
@@ -315,6 +312,13 @@ namespace Scfet.Notification.ViewModels
             {
                 await CheckPendingInvitationsAsync();
             });
+        }
+
+        private void SubscribeToSignalREvents()
+        {
+            _signalRService.OnChannelInvitation += OnChannelInvitationReceived;
+            _signalRService.OnInvitationAccepted += OnInvitationAccepted;
+            _signalRService.OnInvitationDeclined += OnInvitationDeclined;
         }
 
         private async Task InitializeFields()

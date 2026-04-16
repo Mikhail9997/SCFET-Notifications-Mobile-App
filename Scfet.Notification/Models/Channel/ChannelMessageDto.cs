@@ -44,7 +44,13 @@ namespace Scfet.Notification.Models.Channel
             set => SetProperty(ref _editedAt, value);
         }
 
-        public bool IsRead { get; set; }
+        private bool _isRead;
+        public bool IsRead
+        {
+            get => _isRead;
+            set => SetProperty(ref _isRead, value);
+        }
+
         public DateTime? ReadAt { get; set; }
 
         public bool CanEdit { get; set; }

@@ -136,18 +136,19 @@
             </StackLayout>
 
             <!-- Список сообщений -->
-            <Grid IsVisible="{Binding IsMessagesLoading, Converter={StaticResource InverseBoolConverter}}">
+            <Grid IsVisible="{Binding IsMessagesLoadFailed, Converter={StaticResource InverseBoolConverter}}">
 
                 <ScrollView x:Name="MessagesScrollView"
                             VerticalOptions="End"
-                            Scrolled="OnScrollViewScrolled">
+                            Scrolled="OnScrollViewScrolled"
+                            IsVisible="{Binding IsMessagesLoading, Converter={StaticResource InverseBoolConverter}}">
 
                     <CollectionView x:Name="MessagesCollectionView"
                                 ItemsSource="{Binding Messages}"
                                 SelectionMode="None"
-                                IsVisible="{Binding IsMessagesLoadFailed, Converter={StaticResource InverseBoolConverter}}"
                                 VerticalOptions="End"
-                                ItemSizingStrategy="MeasureAllItems">
+                                ItemSizingStrategy="MeasureAllItems"
+                                ItemsUpdatingScrollMode="KeepScrollOffset">
 
                         <!-- Инвертируем отображение -->
                         <CollectionView.ItemsLayout>
@@ -225,7 +226,7 @@
                                                 Padding="12,8"
                                                 MaximumWidthRequest="280">
                                                 <Border.StrokeShape>
-                                                    <RoundRectangle CornerRadius="12,12,12,0"/>
+                                                    <RoundRectangle CornerRadius="12,12,0,12"/>
                                                 </Border.StrokeShape>
 
                                                 <VerticalStackLayout Spacing="5">
@@ -323,7 +324,7 @@
                                                 HorizontalOptions="End"
                                                 IsVisible="{Binding IsOwnMessage}">
                                             <Border.StrokeShape>
-                                                <RoundRectangle CornerRadius="12,12,0,12"/>
+                                                <RoundRectangle CornerRadius="12,12,12,0"/>
                                             </Border.StrokeShape>
 
                                             <VerticalStackLayout Spacing="5">
