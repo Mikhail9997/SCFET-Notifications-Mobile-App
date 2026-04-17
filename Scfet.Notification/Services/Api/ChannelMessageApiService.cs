@@ -45,12 +45,12 @@ namespace Scfet.Notification.Services.Api
             try
             {
                 var query = new Dictionary<string, string?>
-            {
-                { "page", filter.Page.ToString() },
-                { "pageSize", filter.PageSize.ToString() },
-                { "sortOrder", filter.SortOrder.ToString() },
-                { "searchTerm", filter.SearchTerm }
-            };
+                {
+                    { "page", filter.Page.ToString() },
+                    { "pageSize", filter.PageSize.ToString() },
+                    { "sortOrder", filter.SortOrder.ToString() },
+                    { "searchTerm", filter.SearchTerm }
+                };
 
                 var queryString = BuildQueryString(query);
                 var response = await HttpClient.GetAsync($"channels/{channelId}/messages?{queryString}");

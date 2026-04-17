@@ -115,7 +115,7 @@ namespace Scfet.Notification.ViewModels
         private bool hasMoreMessages = true;
 
         [ObservableProperty]
-        private MessageFilter filter = new() { PageSize = 10, SortOrder = SortOrder.Ascending };
+        private MessageFilter filter = new() { PageSize = 10, SortOrder = SortOrder.Descending };
 
         // images
         [ObservableProperty]
