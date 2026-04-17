@@ -28,17 +28,11 @@ namespace Scfet.Notification.ViewModels
 
         // для отображения статуса печати
         private IDisposable? _typingDebounceSubscription;
-        private IDisposable? _typingStatusTimer;
-        private Dictionary<Guid, IDisposable> _typingTimers = new();
+        private IDisposable? _typingTimeoutSubscription; 
         private Dictionary<Guid, string> _typingUsers = new();
 
         private bool _isTyping = false;
-        private DateTime _lastTypingSent = DateTime.MinValue;
-        private readonly object _typingLock = new object();
-
-        private const int TYPING_DEBOUNCE_MS = 300; // Задержка перед первой отправкой
-        private const int TYPING_RESEND_INTERVAL_SEC = 3; // Интервал повторной отправки
-        private const int TYPING_TIMEOUT_SEC = 5; // Таймаут неактивности
+        private readonly object _typingLock = new();
 
         // для статуса прочтения
         private DateTime _lastMarkReadCall = DateTime.MinValue;
@@ -121,7 +115,7 @@ namespace Scfet.Notification.ViewModels
         private bool hasMoreMessages = true;
 
         [ObservableProperty]
-        private MessageFilter filter = new() { PageSize = 10, SortOrder = SortOrder.Descending };
+        private MessageFilter filter = new() { PageSize = 10, SortOrder = SortOrder.Ascending };
 
         // images
         [ObservableProperty]
@@ -192,10 +186,10 @@ namespace Scfet.Notification.ViewModels
             List<Task> tasks = new() { LoadChannelInfoAsync(), LoadMessagesAsync() };
             await Task.WhenAll(tasks);
 
-            SubscribeToSignalREvents();
+            await SubscribeToSignalREvents();
 
             await _signalRService.JoinChannelAsync(Guid.Parse(ChannelId));
-            await _messageService.MarkAllAsReadAsync(Guid.Parse(ChannelId));
+            await MarkVisibleMessagesAsReadAsync();
         }
 
         private async Task LoadChannelInfoAsync()
@@ -969,6 +963,39 @@ namespace Scfet.Notification.ViewModels
         {
             await LoadMessagesAsync();
         }
+
+        private void ApplyGroupingToMessages(ICollection<ChannelMessageDto> messages)
+        {
+            ChannelMessageDto? previousMessage = null;
+
+            foreach (var message in messages)
+            {
+                ApplyGroupingForSingleMessage(message, previousMessage);
+                previousMessage = message;
+            }
+        }
+
+        private void ApplyGroupingForSingleMessage(ChannelMessageDto message, ChannelMessageDto? previousMessage)
+        {
+            if (previousMessage == null)
+            {
+                message.ShowAvatar = true;
+                message.ShowSenderName = !message.IsOwnMessage;
+                message.ShowDateHeader = true;
+                return;
+            }
+
+            // Проверяем заголовок даты
+            message.ShowDateHeader = message.CreatedAt.Date != previousMessage.CreatedAt.Date;
+
+            // Проверяем аватар и имя
+            var shouldShowAvatar = message.ShowDateHeader || // Новая дата - всегда показываем аватар
+                                  previousMessage.SenderId != message.SenderId ||
+                                  (message.CreatedAt - previousMessage.CreatedAt).TotalMinutes > 1;
+
+            message.ShowAvatar = shouldShowAvatar;
+            message.ShowSenderName = shouldShowAvatar && !message.IsOwnMessage;
+        }
         #endregion
 
         #region Typing methods
@@ -978,8 +1005,9 @@ namespace Scfet.Notification.ViewModels
 
             lock (_typingLock)
             {
-                // Отменяем предыдущий debounce
+                // Отменяем все предыдущие таймеры
                 _typingDebounceSubscription?.Dispose();
+                _typingTimeoutSubscription?.Dispose();
 
                 // Если текст пустой, сразу отправляем статус "не печатает"
                 if (string.IsNullOrWhiteSpace(text))
@@ -988,92 +1016,51 @@ namespace Scfet.Notification.ViewModels
                     return;
                 }
 
-                // Если только начали печатать
+                // Если ещё не печатаем — отправляем с debounce
                 if (!_isTyping)
                 {
                     _isTyping = true;
-                    _lastTypingSent = DateTime.UtcNow;
 
-                    // Отправляем статус с небольшой задержкой
-                    _typingDebounceSubscription = Observable.Timer(TimeSpan.FromMilliseconds(TYPING_DEBOUNCE_MS))
-                        .Subscribe(timerValue =>
+                    _typingDebounceSubscription = Observable.Timer(TimeSpan.FromMilliseconds(300))
+                        .Subscribe(_ =>
                         {
-                            MainThread.BeginInvokeOnMainThread(() =>
+                            MainThread.BeginInvokeOnMainThread(async () =>
                             {
-                                _ = SendTypingStatusSafeAsync(true);
+                                await SendTypingStatusSafeAsync(true);
                             });
 
-                            // Запускаем таймер повторной отправки
-                            StartTypingResendTimer();
-
-                            // Запускаем таймер автоматического сброса статуса
-                            StartTypingTimeoutTimer();
+                            // Запускаем таймер автоматического сброса
+                            _typingTimeoutSubscription = Observable.Timer(TimeSpan.FromSeconds(5))
+                                .Subscribe(__ =>
+                                {
+                                    MainThread.BeginInvokeOnMainThread(() =>
+                                    {
+                                        lock (_typingLock)
+                                        {
+                                            if (_isTyping)
+                                                StopTyping();
+                                        }
+                                    });
+                                });
                         });
                 }
                 else
                 {
-                    // Уже печатаем, просто обновляем таймер неактивности
-                    ResetTypingTimeoutTimer();
-
-                    // Проверяем, нужно ли отправить повторный сигнал
-                    var now = DateTime.UtcNow;
-                    if ((now - _lastTypingSent).TotalSeconds >= TYPING_RESEND_INTERVAL_SEC)
-                    {
-                        _lastTypingSent = now;
-                        _ = SendTypingStatusSafeAsync(true);
-                    }
+                    // Уже печатаем — просто сбрасываем таймер неактивности
+                    _typingTimeoutSubscription = Observable.Timer(TimeSpan.FromSeconds(5))
+                        .Subscribe(_ =>
+                        {
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                lock (_typingLock)
+                                {
+                                    if (_isTyping)
+                                        StopTyping();
+                                }
+                            });
+                        });
                 }
             }
-        }
-
-        private void StartTypingResendTimer()
-        {
-            _typingStatusTimer?.Dispose();
-
-            _typingStatusTimer = Observable.Interval(TimeSpan.FromSeconds(TYPING_RESEND_INTERVAL_SEC))
-                .Subscribe(interval =>
-                {
-                    lock (_typingLock)
-                    {
-                        if (_isTyping && !string.IsNullOrWhiteSpace(NewMessageText))
-                        {
-                            _lastTypingSent = DateTime.UtcNow;
-                            _ = SendTypingStatusSafeAsync(true);
-                        }
-                        else
-                        {
-                            _typingStatusTimer?.Dispose();
-                        }
-                    }
-                });
-        }
-
-        private void StartTypingTimeoutTimer()
-        {
-            // Отменяем предыдущий таймер
-            _typingDebounceSubscription?.Dispose();
-
-            // Устанавливаем таймер автоматического сброса статуса печати
-            _typingDebounceSubscription = Observable.Timer(TimeSpan.FromSeconds(TYPING_TIMEOUT_SEC))
-                .Subscribe(_ =>
-                {
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        lock (_typingLock)
-                        {
-                            if (_isTyping)
-                            {
-                                StopTyping();
-                            }
-                        }
-                    });
-                });
-        }
-
-        private void ResetTypingTimeoutTimer()
-        {
-            _typingDebounceSubscription?.Dispose();
-            StartTypingTimeoutTimer();
         }
 
         private void StopTyping()
@@ -1084,7 +1071,8 @@ namespace Scfet.Notification.ViewModels
                 {
                     _isTyping = false;
                     _typingDebounceSubscription?.Dispose();
-                    _typingStatusTimer?.Dispose();
+                    _typingTimeoutSubscription?.Dispose();
+                    _typingUsers.Clear();
                     _ = SendTypingStatusSafeAsync(false);
                 }
             }
@@ -1097,19 +1085,17 @@ namespace Scfet.Notification.ViewModels
                 if (Guid.TryParse(ChannelId, out var channelId))
                 {
                     await _signalRService.SendTypingStatusAsync(channelId, isTyping);
-                    Console.WriteLine($"Typing status sent: {isTyping}");
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error sending typing status: {ex.Message}");
 
-                // При ошибке сбрасываем состояние
                 lock (_typingLock)
                 {
                     _isTyping = false;
                     _typingDebounceSubscription?.Dispose();
-                    _typingStatusTimer?.Dispose();
+                    _typingTimeoutSubscription?.Dispose();
                 }
             }
         }
@@ -1123,8 +1109,10 @@ namespace Scfet.Notification.ViewModels
 
         #region SignalR Events
 
-        private void SubscribeToSignalREvents()
+        private async Task SubscribeToSignalREvents()
         {
+            await _signalRService.ConnectAsync();
+
             _signalRService.OnNewMessage += OnNewMessageReceived;
             _signalRService.OnMessageUpdated += OnMessageUpdated;
             _signalRService.OnMessageDeleted += OnMessageDeleted;
@@ -1215,32 +1203,10 @@ namespace Scfet.Notification.ViewModels
                 if (eventData.IsTyping)
                 {
                     _typingUsers[eventData.UserId] = eventData.UserFullName;
-
-                    if (_typingTimers.TryGetValue(eventData.UserId, out var timer))
-                    {
-                        timer.Dispose();
-                    }
-
-                    var newTimer = Observable.Timer(TimeSpan.FromSeconds(5))
-                        .Subscribe(_ =>
-                        {
-                            MainThread.BeginInvokeOnMainThread(() =>
-                            {
-                                _typingUsers.Remove(eventData.UserId);
-                                UpdateTypingIndicator();
-                            });
-                        });
-
-                    _typingTimers[eventData.UserId] = newTimer;
                 }
                 else
                 {
                     _typingUsers.Remove(eventData.UserId);
-                    if (_typingTimers.TryGetValue(eventData.UserId, out var timer))
-                    {
-                        timer.Dispose();
-                        _typingTimers.Remove(eventData.UserId);
-                    }
                 }
 
                 UpdateTypingIndicator();
@@ -1302,39 +1268,6 @@ namespace Scfet.Notification.ViewModels
 
         #endregion
 
-        private void ApplyGroupingToMessages(ICollection<ChannelMessageDto> messages)
-        {
-            ChannelMessageDto? previousMessage = null;
-
-            foreach (var message in messages)
-            {
-                ApplyGroupingForSingleMessage(message, previousMessage);
-                previousMessage = message;
-            }
-        }
-
-        private void ApplyGroupingForSingleMessage(ChannelMessageDto message, ChannelMessageDto? previousMessage)
-        {
-            if (previousMessage == null)
-            {
-                message.ShowAvatar = true;
-                message.ShowSenderName = !message.IsOwnMessage;
-                message.ShowDateHeader = true;
-                return;
-            }
-
-            // Проверяем заголовок даты
-            message.ShowDateHeader = message.CreatedAt.Date != previousMessage.CreatedAt.Date;
-
-            // Проверяем аватар и имя
-            var shouldShowAvatar = message.ShowDateHeader || // Новая дата - всегда показываем аватар
-                                  previousMessage.SenderId != message.SenderId ||
-                                  (message.CreatedAt - previousMessage.CreatedAt).TotalMinutes > 1;
-
-            message.ShowAvatar = shouldShowAvatar;
-            message.ShowSenderName = shouldShowAvatar && !message.IsOwnMessage;
-        }
-
         private void ProcessMessagesForGrouping(ICollection<ChannelMessageDto> messages)
         {
             ApplyGroupingToMessages(messages);
@@ -1350,16 +1283,6 @@ namespace Scfet.Notification.ViewModels
 
             // Останавливаем все таймеры
             StopTyping();
-
-            _typingDebounceSubscription?.Dispose();
-            _typingStatusTimer?.Dispose();
-
-            foreach (var timer in _typingTimers.Values)
-            {
-                timer.Dispose();
-            }
-            _typingTimers.Clear();
-            _typingUsers.Clear();
 
             _markReadSemaphore?.Dispose();
 
