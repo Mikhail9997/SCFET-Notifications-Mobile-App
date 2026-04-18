@@ -115,7 +115,7 @@ namespace Scfet.Notification.ViewModels
         private bool hasMoreMessages = true;
 
         [ObservableProperty]
-        private MessageFilter filter = new() { PageSize = 10, SortOrder = SortOrder.Descending };
+        private MessageFilter filter = new() { PageSize = 30, SortOrder = SortOrder.Descending };
 
         // images
         [ObservableProperty]
@@ -508,24 +508,27 @@ namespace Scfet.Notification.ViewModels
                 _lastMarkReadCall = DateTime.UtcNow;
 
                 // Находим последнее непрочитанное чужое сообщение
-                var lastUnreadOtherMessage = Messages
+                var messagesToReadIds = Messages
                     .Where(m => m.SenderId != CurrentUserId && !m.IsRead)
-                    .OrderByDescending(m => m.CreatedAt)
-                    .FirstOrDefault();
+                    .Select(m => m.Id)
+                    .ToList();
 
-                if (lastUnreadOtherMessage == null) return;
+                Guid? lastUnreadOtherMessageId = messagesToReadIds
+                    .LastOrDefault();
+
+                if (lastUnreadOtherMessageId == null) return;
 
                 // Не отмечаем одно и то же сообщение повторно
-                if (_lastMarkedMessageId == lastUnreadOtherMessage.Id) return;
+                if (_lastMarkedMessageId == lastUnreadOtherMessageId) return;
 
-                _lastMarkedMessageId = lastUnreadOtherMessage.Id;
+                _lastMarkedMessageId = lastUnreadOtherMessageId;
 
                 // Отмечаем на сервере (fire-and-forget, не ждем)
                 _ = Task.Run(async () =>
                 {
                     try
                     {
-                        await _messageService.MarkAsReadAsync(Guid.Parse(ChannelId), lastUnreadOtherMessage.Id);
+                        await _messageService.MarkMessagesAsReadAsync(Guid.Parse(ChannelId), messagesToReadIds);
                     }
                     catch (Exception ex)
                     {

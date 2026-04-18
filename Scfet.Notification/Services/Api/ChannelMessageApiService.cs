@@ -27,6 +27,7 @@ namespace Scfet.Notification.Services.Api
         // Отметка о прочтении
         Task<ApiResponse?> MarkAsReadAsync(Guid channelId, Guid messageId);
         Task<ApiResponse?> MarkAllAsReadAsync(Guid channelId);
+        Task<ApiResponse?> MarkMessagesAsReadAsync(Guid channelId, List<Guid> messageIds);
 
         // Получение количества непрочитанных
         Task<UnreadCountResponse?> GetUnreadCountAsync(Guid channelId);
@@ -180,6 +181,26 @@ namespace Scfet.Notification.Services.Api
             catch (Exception ex)
             {
                 Console.WriteLine($"Mark all as read error: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<ApiResponse?> MarkMessagesAsReadAsync(Guid channelId, List<Guid> messageIds)
+        {
+            try
+            {
+                var request = new { MessageIds = messageIds };
+                var json = JsonSerializer.Serialize(request);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await HttpClient.PostAsync($"channels/{channelId}/messages/mark-as-read", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                return DeserializeResponse<ApiResponse>(responseContent);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Mark messages as read error: {ex.Message}");
                 return null;
             }
         }
