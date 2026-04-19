@@ -278,7 +278,8 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                Filter.Page = CurrentPage + 1;
+                int nextPage = (Messages.Count / Filter.PageSize) + 1;
+                Filter.Page = nextPage;
                 var response = await _messageService.GetMessagesAsync(Guid.Parse(ChannelId), Filter);
 
                 if (response?.Success == true && response.Data != null && response.Data.Any())
@@ -317,10 +318,7 @@ namespace Scfet.Notification.ViewModels
                     // Вставляем в обратном порядке
                     for (int i = newMessages.Count - 1; i >= 0; i--)
                     {
-                        if (!Messages.Any(m => m.Id == newMessages[i].Id))
-                        {
-                            Messages.Insert(0, newMessages[i]);
-                        }
+                         Messages.Insert(0, newMessages[i]);
                     }
 
                     CurrentPage = response.Pagination.Page;
@@ -944,7 +942,7 @@ namespace Scfet.Notification.ViewModels
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                if (!Messages.Any(m => m.Id == message.Id) && !IsSending)
+                if (!IsSending)
                 {
                     var messageDto = new ChannelMessageDto
                     {

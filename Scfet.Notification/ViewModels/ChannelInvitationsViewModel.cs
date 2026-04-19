@@ -133,7 +133,8 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                Filter.Page++;
+                int nextPage = (Invitations.Count / Filter.PageSize) + 1;
+                Filter.Page = nextPage;
 
                 var response = IsIncomingTab
                     ? await _channelApiService.GetMyInvitationsAsync(Filter)
@@ -143,11 +144,8 @@ namespace Scfet.Notification.ViewModels
                 {
                     foreach (var invitation in response.Data)
                     {
-                        if (!Invitations.Any(i => i.Id == invitation.Id))
-                        {
-                            invitation.IsIncomingTab = IsIncomingTab;
-                            Invitations.Add(invitation);
-                        }
+                        invitation.IsIncomingTab = IsIncomingTab;
+                        Invitations.Add(invitation);
                     }
 
                     IsPaginationEnable = response.Pagination.Page < response.Pagination.TotalPages;
