@@ -15,7 +15,6 @@
             <converters:BoolToNameMultiConverter x:Key="BoolToNameMultiConverter"/>
             <converters:BoolToLabelMultiConverter x:Key="BoolToLabelMultiConverter"/>
             <converters:ShowDeleteInvitationButtonMultiConverter x:Key="ShowDeleteInvitationButtonMultiConverter"/>
-            
             <converters:IsNotPendingConverter x:Key="IsNotPendingConverter"/>
             <converters:IsPendingConverter x:Key="IsPendingConverter"/>
             <converters:InvitationStatusToTextConverter x:Key="InvitationStatusToTextConverter"/>

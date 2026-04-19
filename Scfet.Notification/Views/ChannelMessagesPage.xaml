@@ -28,6 +28,16 @@
                 <Setter Property="BackgroundColor" Value="#E8F0FE"/>
             </Style>
 
+            <Style x:Key="HeaderBorder" TargetType="Border">
+                <Setter Property="BackgroundColor">
+                    <Setter.Value>
+                        <AppThemeBinding Light="#FFFFFF" Dark="#2A2A2A" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Padding" Value="12,8" />
+                <Setter Property="StrokeThickness" Value="0" />
+            </Style>
+
             <converters:ChannelRoleToColorConverter x:Key="ChannelRoleToColorConverter"/>
             <converters:ChannelRoleToRussianConverter x:Key="ChannelRoleToRussianConverter"/>
             <converters:ReadStatusIconConverter x:Key="ReadStatusIconConverter"/>
@@ -38,16 +48,9 @@
 
     <Grid RowDefinitions="Auto,*,Auto">
 
-        <!-- Шапка с информацией о канале -->
-        <Border Grid.Row="0" 
-                Style="{StaticResource frame}"
-                Padding="10"
-                Margin="0">
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="0"/>
-            </Border.StrokeShape>
-
-            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+        <!-- Шапка -->
+        <Border Grid.Row="0" Style="{StaticResource HeaderBorder}">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
 
                 <!-- Кнопка назад -->
                 <Button Grid.Column="0" 
@@ -58,38 +61,28 @@
                         FontSize="24"
                         WidthRequest="40"
                         HeightRequest="40"
-                        CornerRadius="20"/>
+                        CornerRadius="20" />
 
                 <!-- Информация о канале -->
                 <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
-                    <Label Text="{Binding Channel.Name}" 
-                           FontSize="16" 
+                    <Label Text="{Binding Channel.Name}"
+                           FontSize="16"
                            FontAttributes="Bold"
-                           LineBreakMode="TailTruncation"/>
-                    <HorizontalStackLayout Spacing="5">
-                        <Label Text="👥" FontSize="12"/>
-                        <Label Text="{Binding Channel.MembersCount, StringFormat='{0} участников'}" 
+                           LineBreakMode="TailTruncation" />
+                    <HorizontalStackLayout Spacing="4">
+                        <Label Text="👥" FontSize="12" />
+                        <Label Text="{Binding Channel.MembersCount, StringFormat='{0}'}"
                                FontSize="12"
-                               TextColor="Gray"/>
-                        <Label Text="·" FontSize="12" TextColor="Gray"/>
-                        <Label Text="{Binding OnlineStatus}" 
+                               TextColor="Gray" />
+                        <Label Text="·" FontSize="12" TextColor="Gray" />
+                        <Label Text="{Binding OnlineStatus}"
                                FontSize="12"
-                               TextColor="Gray"/>
+                               TextColor="Gray" />
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
 
-                <!-- Кнопка звонка -->
-                <Button Grid.Column="2" 
-                        Text="📞"
-                        BackgroundColor="Transparent"
-                        FontSize="20"
-                        WidthRequest="40"
-                        HeightRequest="40"
-                        CornerRadius="20"
-                        IsVisible="False"/>
-
                 <!-- Кнопка меню -->
-                <Button Grid.Column="3" 
+                <Button Grid.Column="2" 
                         Text="⋮"
                         Command="{Binding ShowChannelMenuCommand}"
                         BackgroundColor="Transparent"
@@ -97,7 +90,7 @@
                         FontSize="20"
                         WidthRequest="40"
                         HeightRequest="40"
-                        CornerRadius="20"/>
+                        CornerRadius="20" />
             </Grid>
         </Border>
 
@@ -146,8 +139,11 @@
                     <CollectionView x:Name="MessagesCollectionView"
                                     ItemsSource="{Binding Messages}"
                                     SelectionMode="None"
-                                    ItemsUpdatingScrollMode="KeepLastItemInView"
-                                    ItemSizingStrategy="MeasureFirstItem">
+                                    ItemsUpdatingScrollMode="KeepLastItemInView">
+
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
+                        </CollectionView.ItemsLayout>
 
                         <CollectionView.Header>
                             <Grid IsVisible="{Binding IsLoadingMore}">
@@ -192,8 +188,7 @@
 
                                     <!-- Сообщение -->
                                     <Grid ColumnDefinitions="*,Auto"
-                                          ColumnSpacing="0" 
-                                          RowDefinitions="auto">
+                                          ColumnSpacing="0">
 
                                         <!-- ЧУЖОЕ СООБЩЕНИЕ -->
                                         <HorizontalStackLayout Grid.Column="0" 

@@ -176,7 +176,9 @@
                     <Grid IsVisible="{Binding IsMembersLoading, Converter={StaticResource InverseBoolConverter}}">
                         <CollectionView ItemsSource="{Binding FilteredMembers}"
                                     SelectionMode="None"
-                                    IsVisible="{Binding IsMembersLoadFailed, Converter={StaticResource InverseBoolConverter}}">
+                                    IsVisible="{Binding IsMembersLoadFailed, Converter={StaticResource InverseBoolConverter}}"
+                                    ItemsUpdatingScrollMode="KeepLastItemInView"
+                                    ItemSizingStrategy="MeasureFirstItem">
 
                             <CollectionView.EmptyView>
                                 <VerticalStackLayout HorizontalOptions="Center" 
@@ -274,14 +276,14 @@
                                             <!-- Кнопка меню действий -->
                                             <Grid Grid.Column="2" VerticalOptions="Center">
                                                 <ImageButton 
-                                                Source="{AppThemeBinding Dark=more_vertical_white.png, Light=more_vertical.png}"
-                                                Padding="8"
-                                                WidthRequest="15"
-                                                HeightRequest="15"
-                                                BackgroundColor="Transparent"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChannelMembersViewModel}}, Path=ShowMemberMenuCommand}"
-                                                CommandParameter="{Binding .}"
-                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ChannelMembersViewModel}}, Path=CanManageMembers}"/>
+                                                    Source="{AppThemeBinding Dark=more_vertical_white.png, Light=more_vertical.png}"
+                                                    Padding="8"
+                                                    WidthRequest="15"
+                                                    HeightRequest="15"
+                                                    BackgroundColor="Transparent"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChannelMembersViewModel}}, Path=ShowMemberMenuCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ChannelMembersViewModel}}, Path=CanManageMembers}"/>
                                             </Grid>
                                         </Grid>
                                     </Border>

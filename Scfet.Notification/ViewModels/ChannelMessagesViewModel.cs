@@ -116,7 +116,7 @@ namespace Scfet.Notification.ViewModels
         private bool hasMoreMessages = true;
 
         [ObservableProperty]
-        private MessageFilter filter = new() { PageSize = 30, SortOrder = SortOrder.Descending };
+        private MessageFilter filter = new() { PageSize = 10, SortOrder = SortOrder.Descending };
 
         // images
         [ObservableProperty]
@@ -133,7 +133,7 @@ namespace Scfet.Notification.ViewModels
 
         public bool CanSendMessage => !string.IsNullOrWhiteSpace(NewMessageText) || SelectedImage != null;
 
-        public string Title => Channel?.Name ?? "Канал";
+        public string Title => "Сообщения";
 
         partial void OnNewMessageTextChanged(string value)
         {
@@ -204,7 +204,6 @@ namespace Scfet.Notification.ViewModels
                 {
                     Channel = response.Data;
                     CurrentUserChannelRole = Channel.UserRole;
-                    OnPropertyChanged(nameof(Title));
                 }
             }
             catch (Exception ex)
