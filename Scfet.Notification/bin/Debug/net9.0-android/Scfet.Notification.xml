@@ -309,7 +309,6 @@
             <inheritdoc/>
             <inheritdoc/>
             <inheritdoc/>
-            <inheritdoc/>
         </member>
         <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ChannelId">
             <inheritdoc cref="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.channelId"/>
@@ -419,12 +418,6 @@
         </member>
         <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.SelectImageCommand">
             <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ChannelMessagesViewModel.SelectImageAsync"/>.</summary>
-        </member>
-        <member name="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.viewFullImageCommand">
-            <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ViewFullImageCommand"/>.</summary>
-        </member>
-        <member name="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ViewFullImageCommand">
-            <summary>Gets an <see cref="T:CommunityToolkit.Mvvm.Input.IAsyncRelayCommand"/> instance wrapping <see cref="M:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ViewFullImageAsync"/>.</summary>
         </member>
         <member name="F:Scfet.Notification.ViewModels.ChannelMessagesViewModel.clearSelectedImageCommand">
             <summary>The backing field for <see cref="P:Scfet.Notification.ViewModels.ChannelMessagesViewModel.ClearSelectedImageCommand"/>.</summary>

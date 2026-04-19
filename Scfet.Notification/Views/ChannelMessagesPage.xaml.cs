@@ -34,7 +34,8 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
 
     private async void OnScrollViewScrolled(object sender, ScrolledEventArgs e)
     {
-        if (BindingContext is not ChannelMessagesViewModel vm) return;
+        if (BindingContext is not ChannelMessagesViewModel vm
+            || vm.IsMessagesLoading) return;
         if (_isRestoringScroll) return;
 
         var scrollView = (ScrollView)sender;
@@ -149,7 +150,7 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
     {
         base.OnDisappearing();
 
-        MessagingCenter.Unsubscribe<ChannelMessagesViewModel>(this, "ScrollToBottom");
+        WeakReferenceMessenger.Default.Unregister<ScrollToBottomMessage>(this);
 
         if (BindingContext is ChannelMessagesViewModel viewModel)
         {

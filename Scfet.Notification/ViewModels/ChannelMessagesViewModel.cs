@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Scfet.Notification.Extensions;
 using Scfet.Notification.Messages;
 using Scfet.Notification.Models;
 using Scfet.Notification.Models.Channel;
@@ -228,44 +229,61 @@ namespace Scfet.Notification.ViewModels
                 Filter.Page = CurrentPage;
 
                 var response = await _messageService.GetMessagesAsync(Guid.Parse(ChannelId), Filter);
-
                 if (response?.Success == true && response.Data != null)
                 {
-                    Messages.Clear();
-
-                    // Добавляем сообщения в обратном порядке (новые снизу)
-                    var sortedMessages = response.Data.OrderBy(m => m.CreatedAt).ToList();
-
-                    ChannelMessageDto? lastMessage = null;
-                    foreach (var message in sortedMessages)
+                    // Выполняем тяжелую обработку в фоновом потоке
+                    var processedMessages = await Task.Run(() =>
                     {
-                        message.IsOwnMessage = message.SenderId == CurrentUserId;
-                        // Добавляем заголовки дат и группировку
-                        ApplyGroupingForSingleMessage(message, lastMessage);
-                        lastMessage = message;
+                        var sortedMessages = response.Data.OrderBy(m => m.CreatedAt).ToList();
 
-                        Messages.Add(message);
-                    }
+                        ChannelMessageDto? lastMessage = null;
+                        foreach (var message in sortedMessages)
+                        {
+                            message.IsOwnMessage = message.SenderId == CurrentUserId;
+                            ApplyGroupingForSingleMessage(message, lastMessage);
+                            lastMessage = message;
+                        }
 
-                    HasMoreMessages = response.Pagination.Page < response.Pagination.TotalPages;
-                    CurrentPage = response.Pagination.Page;
+                        return sortedMessages;
+                    });
+
+                    // Обновляем UI в основном потоке, но более эффективно
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        Messages.Clear();
+
+                        // Добавляем сообщения пачкой через AddRange если доступно
+                        Messages.AddRange(processedMessages);
+
+                        HasMoreMessages = response.Pagination.Page < response.Pagination.TotalPages;
+                        CurrentPage = response.Pagination.Page;
+                    });
 
                     await ScrollToBottomAsync();
                 }
                 else
                 {
-                    IsMessagesLoadFailed = true;
-                    MessagesError = response?.Message ?? "Не удалось загрузить сообщения";
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        IsMessagesLoadFailed = true;
+                        MessagesError = response?.Message ?? "Не удалось загрузить сообщения";
+                    });
                 }
             }
             catch (Exception ex)
             {
-                IsMessagesLoadFailed = true;
-                MessagesError = ex.Message;
+                await MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    IsMessagesLoadFailed = true;
+                    MessagesError = ex.Message;
+                });
             }
             finally
             {
-                IsMessagesLoading = false;
+                await MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    IsMessagesLoading = false;
+                });
             }
         }
 
@@ -284,45 +302,50 @@ namespace Scfet.Notification.ViewModels
 
                 if (response?.Success == true && response.Data != null && response.Data.Any())
                 {
-                    var newMessages = response.Data.OrderBy(m => m.CreatedAt).ToList();
-
-                    // Получаем первое существующее сообщение
-                    var firstExisting = Messages.FirstOrDefault();
-
-                    // Подготавливаем новые сообщения
-                    ChannelMessageDto? previousInNew = null;
-                    foreach (var msg in newMessages)
+                    // Обработка в фоновом потоке
+                    var processedData = await Task.Run(() =>
                     {
-                        msg.IsOwnMessage = msg.SenderId == CurrentUserId;
-                        ApplyGroupingForSingleMessage(msg, previousInNew);
-                        previousInNew = msg;
-                    }
+                        var newMessages = response.Data.OrderBy(m => m.CreatedAt).ToList();
 
-                    // Корректируем стык
-                    if (previousInNew != null && firstExisting != null)
+                        ChannelMessageDto? previousInNew = null;
+                        foreach (var msg in newMessages)
+                        {
+                            msg.IsOwnMessage = msg.SenderId == CurrentUserId;
+                            ApplyGroupingForSingleMessage(msg, previousInNew);
+                            previousInNew = msg;
+                        }
+
+                        return (newMessages, previousInNew);
+                    });
+
+                    var (newMessages, previousInNew) = processedData;
+
+                    // Обновление UI
+                    await MainThread.InvokeOnMainThreadAsync(() =>
                     {
-                        var needDateHeader = previousInNew.CreatedAt.Date != firstExisting.CreatedAt.Date;
-                        var showAvatar = needDateHeader ||
-                                        previousInNew.SenderId != firstExisting.SenderId ||
-                                        (firstExisting.CreatedAt - previousInNew.CreatedAt).TotalMinutes > 1;
+                        // Корректируем стык
+                        var firstExisting = Messages.FirstOrDefault();
+                        if (previousInNew != null && firstExisting != null)
+                        {
+                            var needDateHeader = previousInNew.CreatedAt.Date != firstExisting.CreatedAt.Date;
+                            var showAvatar = needDateHeader ||
+                                            previousInNew.SenderId != firstExisting.SenderId ||
+                                            (firstExisting.CreatedAt - previousInNew.CreatedAt).TotalMinutes > 1;
 
-                        // Обновляем только если изменилось
-                        if (firstExisting.ShowDateHeader != needDateHeader)
-                            firstExisting.ShowDateHeader = needDateHeader;
-                        if (firstExisting.ShowAvatar != showAvatar)
-                            firstExisting.ShowAvatar = showAvatar;
-                        if (firstExisting.ShowSenderName != (showAvatar && !firstExisting.IsOwnMessage))
-                            firstExisting.ShowSenderName = showAvatar && !firstExisting.IsOwnMessage;
-                    }
+                            if (firstExisting.ShowDateHeader != needDateHeader)
+                                firstExisting.ShowDateHeader = needDateHeader;
+                            if (firstExisting.ShowAvatar != showAvatar)
+                                firstExisting.ShowAvatar = showAvatar;
+                            if (firstExisting.ShowSenderName != (showAvatar && !firstExisting.IsOwnMessage))
+                                firstExisting.ShowSenderName = showAvatar && !firstExisting.IsOwnMessage;
+                        }
 
-                    // Вставляем в обратном порядке
-                    for (int i = newMessages.Count - 1; i >= 0; i--)
-                    {
-                         Messages.Insert(0, newMessages[i]);
-                    }
+                        // Вставляем сообщения в начало коллекции
+                        Messages.InsertRange(0, newMessages);
 
-                    CurrentPage = response.Pagination.Page;
-                    HasMoreMessages = response.Pagination.Page < response.Pagination.TotalPages;
+                        CurrentPage = response.Pagination.Page;
+                        HasMoreMessages = response.Pagination.Page < response.Pagination.TotalPages;
+                    });
                 }
             }
             catch (Exception ex)
@@ -331,7 +354,10 @@ namespace Scfet.Notification.ViewModels
             }
             finally
             {
-                IsLoadingMore = false;
+                await MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    IsLoadingMore = false;
+                });
             }
         }
 
@@ -938,7 +964,8 @@ namespace Scfet.Notification.ViewModels
 
         private void OnNewMessageReceived(NewMessageEvent message)
         {
-            if (message.ChannelId.ToString() != ChannelId) return;
+            if (message.ChannelId.ToString() != ChannelId
+                && message.SenderId == CurrentUserId) return;
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
