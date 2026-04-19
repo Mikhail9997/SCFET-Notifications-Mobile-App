@@ -403,6 +403,7 @@ namespace Scfet.Notification.ViewModels
                 {
                     var message = response.Data;
                     message.IsOwnMessage = true;
+                    message.ShowAvatar = false;
                     message.ShowDateHeader = ShouldShowDateHeader(message, Messages.LastOrDefault());
                     Messages.Add(message);
                     await ScrollToBottomAsync();
@@ -818,7 +819,7 @@ namespace Scfet.Notification.ViewModels
         {
             if (previousMessage == null)
             {
-                message.ShowAvatar = true;
+                message.ShowAvatar = !message.IsOwnMessage;
                 message.ShowSenderName = !message.IsOwnMessage;
                 message.ShowDateHeader = true;
                 return;
@@ -832,7 +833,7 @@ namespace Scfet.Notification.ViewModels
                                   previousMessage.SenderId != message.SenderId ||
                                   (message.CreatedAt - previousMessage.CreatedAt).TotalMinutes > 1;
 
-            message.ShowAvatar = shouldShowAvatar;
+            message.ShowAvatar = shouldShowAvatar && !message.IsOwnMessage;
             message.ShowSenderName = shouldShowAvatar && !message.IsOwnMessage;
         }
         #endregion
