@@ -236,17 +236,13 @@ namespace Scfet.Notification.ViewModels
                     // Добавляем сообщения в обратном порядке (новые снизу)
                     var sortedMessages = response.Data.OrderBy(m => m.CreatedAt).ToList();
 
-                    // Группируем сообщения
-                    ProcessMessagesForGrouping(sortedMessages);
-
-                    // Добавляем заголовки дат
-                    DateTime? lastDate = null;
+                    ChannelMessageDto? lastMessage = null;
                     foreach (var message in sortedMessages)
                     {
-                        var messageDate = message.CreatedAt.Date;
-                        message.ShowDateHeader = lastDate != messageDate;
-                        lastDate = messageDate;
                         message.IsOwnMessage = message.SenderId == CurrentUserId;
+                        // Добавляем заголовки дат и группировку
+                        ApplyGroupingForSingleMessage(message, lastMessage);
+                        lastMessage = message;
 
                         Messages.Add(message);
                     }
@@ -297,27 +293,7 @@ namespace Scfet.Notification.ViewModels
                     foreach (var msg in newMessages)
                     {
                         msg.IsOwnMessage = msg.SenderId == CurrentUserId;
-
-                        if (previousInNew == null)
-                        {
-                            msg.ShowDateHeader = true;
-                            msg.ShowAvatar = true;
-                            msg.ShowSenderName = !msg.IsOwnMessage;
-                        }
-                        else
-                        {
-                            msg.ShowDateHeader = msg.CreatedAt.Date != previousInNew.CreatedAt.Date;
-
-                            // Показываем аватар если:
-                            // - новая дата
-                            // - другой отправитель
-                            // - прошло больше 1 минуты
-                            var showAvatar = msg.ShowDateHeader ||
-                                            previousInNew.SenderId != msg.SenderId ||
-                                            (msg.CreatedAt - previousInNew.CreatedAt).TotalMinutes > 1;
-                            msg.ShowAvatar = showAvatar;
-                            msg.ShowSenderName = showAvatar && !msg.IsOwnMessage;
-                        }
+                        ApplyGroupingForSingleMessage(msg, previousInNew);
                         previousInNew = msg;
                     }
 
@@ -592,158 +568,6 @@ namespace Scfet.Notification.ViewModels
         }
 
         [RelayCommand]
-        private async Task ViewFullImageAsync()
-        {
-            if (SelectedImage == null) return;
-
-            try
-            {
-                using var stream = await SelectedImage.OpenReadAsync();
-                using var memoryStream = new MemoryStream();
-                await stream.CopyToAsync(memoryStream);
-                memoryStream.Position = 0;
-
-                var imageSource = ImageSource.FromStream(() => new MemoryStream(memoryStream.ToArray()));
-                var fileName = SelectedImage.FileName;
-                var imageSize = ImageSizeText;
-
-                var image = new Image
-                {
-                    Source = imageSource,
-                    Aspect = Aspect.AspectFit,
-                    HorizontalOptions = LayoutOptions.Fill,
-                    VerticalOptions = LayoutOptions.Fill,
-                    BackgroundColor = Colors.Black
-                };
-
-                var pinchGesture = new PinchGestureRecognizer();
-                double currentScale = 1;
-                double startScale = 1;
-
-                pinchGesture.PinchUpdated += (s, e) =>
-                {
-                    if (e.Status == GestureStatus.Started)
-                    {
-                        startScale = currentScale;
-                    }
-                    else if (e.Status == GestureStatus.Running)
-                    {
-                        currentScale = startScale * e.Scale;
-                        currentScale = Math.Clamp(currentScale, 1, 3);
-                        image.Scale = currentScale;
-                    }
-                };
-                image.GestureRecognizers.Add(pinchGesture);
-
-                var doubleTap = new TapGestureRecognizer { NumberOfTapsRequired = 2 };
-                doubleTap.Tapped += (s, e) =>
-                {
-                    currentScale = 1;
-                    image.ScaleTo(1, 250, Easing.CubicOut);
-                };
-                image.GestureRecognizers.Add(doubleTap);
-
-                var grid = new Grid
-                {
-                    RowDefinitions =
-                    {
-                        new RowDefinition { Height = GridLength.Auto },
-                        new RowDefinition { Height = GridLength.Star },
-                        new RowDefinition { Height = GridLength.Auto }
-                    },
-                    BackgroundColor = Colors.Black
-                };
-
-                // Верхняя панель с HorizontalStackLayout для лучшего распределения
-                var topPanel = new Border
-                {
-                    BackgroundColor = Color.FromArgb("#CC000000"),
-                    Padding = new Thickness(12, 8, 12, 8),
-                    HeightRequest = 50
-                };
-
-                var topStack = new HorizontalStackLayout
-                {
-                    Spacing = 10,
-                    HorizontalOptions = LayoutOptions.Fill
-                };
-
-                var closeButton = new Button
-                {
-                    Text = "✕",
-                    BackgroundColor = Colors.Transparent,
-                    TextColor = Colors.White,
-                    FontSize = 18,
-                    WidthRequest = 36,
-                    HeightRequest = 36,
-                    CornerRadius = 18
-                };
-                closeButton.Clicked += async (s, e) => await Shell.Current.Navigation.PopModalAsync();
-
-                var titleLabel = new Label
-                {
-                    Text = fileName?.Length > 25 ? fileName[..22] + "..." : fileName,
-                    TextColor = Colors.White,
-                    FontSize = 13,
-                    HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    VerticalOptions = LayoutOptions.Center,
-                    LineBreakMode = LineBreakMode.TailTruncation
-                };
-
-                var infoButton = new Button
-                {
-                    Text = "ℹ",
-                    BackgroundColor = Colors.Transparent,
-                    TextColor = Colors.White,
-                    FontSize = 16,
-                    WidthRequest = 36,
-                    HeightRequest = 36,
-                    CornerRadius = 18
-                };
-                infoButton.Clicked += async (s, e) =>
-                {
-                    await Shell.Current.DisplayAlert("Информация", $"📁 {fileName}\n📏 {imageSize}", "OK");
-                };
-
-                topStack.Children.Add(closeButton);
-                topStack.Children.Add(titleLabel);
-                topStack.Children.Add(infoButton);
-                topPanel.Content = topStack;
-
-                var bottomHint = new Label
-                {
-                    Text = "👆 Два пальца — масштаб • Двойной тап — сброс",
-                    TextColor = Colors.LightGray,
-                    FontSize = 11,
-                    HorizontalOptions = LayoutOptions.Center,
-                    Margin = new Thickness(0, 0, 0, 15),
-                    Padding = new Thickness(10, 0)
-                };
-
-                grid.Children.Add(topPanel);
-                grid.Children.Add(image);
-                grid.Children.Add(bottomHint);
-                Grid.SetRow(topPanel, 0);
-                Grid.SetRow(image, 1);
-                Grid.SetRow(bottomHint, 2);
-
-                // Для iOS добавляем отступ сверху
-                if (DeviceInfo.Platform == DevicePlatform.iOS)
-                {
-                    topPanel.Margin = new Thickness(0, 20, 0, 0);
-                    topPanel.HeightRequest = 50;
-                }
-
-                var modalPage = new ContentPage { Content = grid, BackgroundColor = Colors.Black };
-                await Shell.Current.Navigation.PushModalAsync(modalPage);
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Ошибка", ex.Message, "OK");
-            }
-        }
-
-        [RelayCommand]
         private void ClearSelectedImage()
         {
             SelectedImage = null;
@@ -965,17 +789,6 @@ namespace Scfet.Notification.ViewModels
         private async Task RetryLoadMessagesAsync()
         {
             await LoadMessagesAsync();
-        }
-
-        private void ApplyGroupingToMessages(ICollection<ChannelMessageDto> messages)
-        {
-            ChannelMessageDto? previousMessage = null;
-
-            foreach (var message in messages)
-            {
-                ApplyGroupingForSingleMessage(message, previousMessage);
-                previousMessage = message;
-            }
         }
 
         private void ApplyGroupingForSingleMessage(ChannelMessageDto message, ChannelMessageDto? previousMessage)
@@ -1270,11 +1083,6 @@ namespace Scfet.Notification.ViewModels
         }
 
         #endregion
-
-        private void ProcessMessagesForGrouping(ICollection<ChannelMessageDto> messages)
-        {
-            ApplyGroupingToMessages(messages);
-        }
 
         public void Cleanup()
         {
