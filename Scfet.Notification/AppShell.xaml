@@ -69,6 +69,12 @@
                     Route="ProfilePage" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Каналы" Icon="{AppThemeBinding Light=channels.png, Dark=channels_white.png}">
+        <ShellContent Title="Каналы"
+                    ContentTemplate="{DataTemplate views:ChannelsPage}"
+                    Route="ChannelsPage" />
+    </FlyoutItem>
+
     <FlyoutItem Title="Войти" Icon="{AppThemeBinding Light=login.png, Dark=login_white.png}">
         <ShellContent Title="Войти"
                   ContentTemplate="{DataTemplate views:LoginPage}"
@@ -79,7 +85,7 @@
         <Grid Padding="15,10"
               BackgroundColor="{AppThemeBinding Light=#E5E5E5, Dark=#2A2A2A}">
             <StackLayout Spacing="5">
-                <Label Text="Разработал: Казьманов Михаил"
+                <Label Text="Разработал: Казьманов Михаил Николаевич"
                        FontSize="12"
                        TextColor="{AppThemeBinding Light={StaticResource LightFooterText}, 
                                                   Dark={StaticResource DarkFooterText}}"

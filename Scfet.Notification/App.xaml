@@ -30,6 +30,10 @@
             <converters:BorderStrokeToColorConverter x:Key="BorderStrokeToColorConverter"/>
             <converters:BoolToFavoriteIconConverter x:Key="BoolToFavoriteIconConverter"/>
             <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter"/>
+            <converters:ChannelRoleToColorConverter x:Key="ChannelRoleToColorConverter"/>
+            <converters:ChannelRoleToRussianConverter x:Key="ChannelRoleToRussianConverter"/>
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
+            <converters:InverseBoolToColorConverter x:Key="InverseBoolToColorConverter"/>
 
             <Color x:Key="PrimaryColor">#2E86AB</Color>
 
@@ -79,6 +83,13 @@
                 <Setter Property="VerticalOptions" Value="Center"/>
             </Style>
 
+            <Style x:Key="frame" TargetType="Border">
+                <Setter Property="BackgroundColor">
+                    <Setter.Value>
+                        <AppThemeBinding Light="#F0F0F0" Dark="#2A2A2A" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

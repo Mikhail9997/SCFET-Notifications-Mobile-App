@@ -9,19 +9,24 @@ using CommunityToolkit.Mvvm.Input;
 using Plugin.LocalNotification;
 using Scfet.Notification.Models;
 using Scfet.Notification.Services;
+using Scfet.Notification.Services.Api;
 using Scfet.Notification.Utils;
 
 namespace Scfet.Notification.ViewModels
 {
     public partial class FavoritesViewModel:ObservableObject
     {
-        private readonly IApiService _apiService;
+        private readonly IFavoritesApiService _favoritesApiService;
+        private readonly INotificationsApiService _notificationsApiService;
         private readonly LoginService _loginService;
 
-        public FavoritesViewModel(IApiService apiService, LoginService loginService)
+        public FavoritesViewModel(IFavoritesApiService apiService, 
+            LoginService loginService,
+            INotificationsApiService notificationsApiService)
         {
-            _apiService = apiService;
+            _favoritesApiService = apiService;
             _loginService = loginService;
+            _notificationsApiService = notificationsApiService;
 
             _ = InitializeFields();
         }
@@ -159,7 +164,7 @@ namespace Scfet.Notification.ViewModels
         {
             try
             {
-                var response = await _apiService.GetMyFavoritesAsync((Filter)Filter);
+                var response = await _favoritesApiService.GetMyFavoritesAsync((Filter)Filter);
 
                 if (response == null || response?.Data == null || !response.Success)
                 {
@@ -203,10 +208,11 @@ namespace Scfet.Notification.ViewModels
 
                 if (PageResult?.Items != null && PageResult.Items.Any())
                 {
+                    var existingIds = Favorites.Select(f => f.NotificationId).ToHashSet();
                     foreach (var item in PageResult.Items)
                     {
                         // Проверяем, нет ли уже такого элемента
-                        if (!Favorites.Any(n => n.NotificationId == item.NotificationId))
+                        if (!existingIds.Contains(item.NotificationId))
                         {
                             Favorites.Add(item);
                         }
@@ -309,7 +315,7 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                var success = await _apiService.MarkAsReadAsync(favorite.NotificationId);
+                var success = await _notificationsApiService.MarkAsReadAsync(favorite.NotificationId);
                 if (success)
                 {
                     favorite.IsRead = true;
@@ -328,7 +334,7 @@ namespace Scfet.Notification.ViewModels
             {
                 var notificationId = favorite.NotificationId;
 
-                var result = await _apiService.RemoveFavoriteAsync(notificationId);
+                var result = await _favoritesApiService.RemoveFavoriteAsync(notificationId);
 
                 if (result == null || !result.Success)
                 {

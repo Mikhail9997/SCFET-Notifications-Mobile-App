@@ -70,14 +70,31 @@
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="9.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.2.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.5" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
 		<PackageReference Include="Plugin.LocalNotification" Version="12.0.2" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
+		<PackageReference Include="System.Reactive" Version="6.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\AvatarsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ChannelInvitationsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ChannelMembersPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ChannelMessagesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ChannelsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\CreateChannelPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\CreateNotificationPage.xaml">
@@ -87,6 +104,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\FavoritesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\InviteUsersPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\LoginPage.xaml">
@@ -120,8 +140,8 @@
 	    <AndroidSigningStorePass>KlaVrik1234</AndroidSigningStorePass>
 	    <AndroidSigningKeyAlias>mykey</AndroidSigningKeyAlias>
 	    <AndroidSigningKeyPass>KlaVrik1234</AndroidSigningKeyPass>
-	    <ApplicationDisplayVersion>2.2.0</ApplicationDisplayVersion>
-	    <ApplicationVersion>12</ApplicationVersion>
+	    <ApplicationDisplayVersion>3.0.0</ApplicationDisplayVersion>
+	    <ApplicationVersion>13</ApplicationVersion>
 	  </PropertyGroup>
 
 	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
@@ -130,8 +150,8 @@
 	    <AndroidSigningStorePass>KlaVrik1234</AndroidSigningStorePass>
 	    <AndroidSigningKeyAlias>mykey</AndroidSigningKeyAlias>
 	    <AndroidSigningKeyPass>KlaVrik1234</AndroidSigningKeyPass>
-	    <ApplicationDisplayVersion>2.2.0</ApplicationDisplayVersion>
-	    <ApplicationVersion>12</ApplicationVersion>
+	    <ApplicationDisplayVersion>3.0.0</ApplicationDisplayVersion>
+	    <ApplicationVersion>13</ApplicationVersion>
 	  </PropertyGroup>
 
 	  <PropertyGroup>
@@ -141,33 +161,33 @@
 	  </PropertyGroup>
 
 	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-maccatalyst|AnyCPU'">
-	    <ApplicationDisplayVersion>2.2.0</ApplicationDisplayVersion>
-	    <ApplicationVersion>12</ApplicationVersion>
+	    <ApplicationDisplayVersion>3.0.0</ApplicationDisplayVersion>
+	    <ApplicationVersion>13</ApplicationVersion>
 	  </PropertyGroup>
 
 	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
-	    <ApplicationDisplayVersion>2.2.0</ApplicationDisplayVersion>
-	    <ApplicationVersion>12</ApplicationVersion>
+	    <ApplicationDisplayVersion>3.0.0</ApplicationDisplayVersion>
+	    <ApplicationVersion>13</ApplicationVersion>
 	  </PropertyGroup>
 
 	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows10.0.19041.0|AnyCPU'">
-	    <ApplicationDisplayVersion>2.2.0</ApplicationDisplayVersion>
-	    <ApplicationVersion>12</ApplicationVersion>
+	    <ApplicationDisplayVersion>3.0.0</ApplicationDisplayVersion>
+	    <ApplicationVersion>13</ApplicationVersion>
 	  </PropertyGroup>
 
 	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-maccatalyst|AnyCPU'">
-	    <ApplicationDisplayVersion>2.2.0</ApplicationDisplayVersion>
-	    <ApplicationVersion>12</ApplicationVersion>
+	    <ApplicationDisplayVersion>3.0.0</ApplicationDisplayVersion>
+	    <ApplicationVersion>13</ApplicationVersion>
 	  </PropertyGroup>
 
 	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
-	    <ApplicationDisplayVersion>2.2.0</ApplicationDisplayVersion>
-	    <ApplicationVersion>12</ApplicationVersion>
+	    <ApplicationDisplayVersion>3.0.0</ApplicationDisplayVersion>
+	    <ApplicationVersion>13</ApplicationVersion>
 	  </PropertyGroup>
 
 	  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows10.0.19041.0|AnyCPU'">
-	    <ApplicationDisplayVersion>2.2.0</ApplicationDisplayVersion>
-	    <ApplicationVersion>12</ApplicationVersion>
+	    <ApplicationDisplayVersion>3.0.0</ApplicationDisplayVersion>
+	    <ApplicationVersion>13</ApplicationVersion>
 	  </PropertyGroup>
 
 </Project>

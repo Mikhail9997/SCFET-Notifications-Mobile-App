@@ -8,13 +8,16 @@ using CommunityToolkit.Mvvm.Input;
 using PhoneNumbers;
 using Scfet.Notification.Models;
 using Scfet.Notification.Services;
+using Scfet.Notification.Services.Api;
 
 namespace Scfet.Notification.ViewModels
 {
-    public partial class ProfileViewModel(IApiService apiService, NotificationService notificationService, FileService fileService) : BaseViewModel
+    public partial class ProfileViewModel(IProfileApiService profileApiService, SignalRService notificationService, 
+        FileService fileService, IAuthApiService authApiService) : BaseViewModel
     {
-        private readonly IApiService _apiService = apiService;
-        private readonly NotificationService _notificationService = notificationService;
+        private readonly IProfileApiService _profileApiService = profileApiService;
+        private readonly IAuthApiService _authApiService = authApiService;
+        private readonly SignalRService _notificationService = notificationService;
         private readonly FileService _fileService = fileService;
 
         [ObservableProperty]
@@ -67,7 +70,7 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                Profile profile = await _apiService.GetCurrentUserAsync();
+                Profile profile = await _profileApiService.GetCurrentUserAsync();
                 CurrentUser = profile.User;
 
                 if (profile.User == null)
@@ -118,7 +121,7 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                ProfileUpdateResponse result = await _apiService.UpdateProfileAsync(FirstName, LastName, Email, Phone);
+                ProfileUpdateResponse result = await _profileApiService.UpdateProfileAsync(FirstName, LastName, Email, Phone);
                 if (result.Success)
                 {
                     await Shell.Current.DisplayAlert("Успех", "Профиль обновлен", "OK");
@@ -162,7 +165,7 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                var success = await _apiService.ChangePasswordAsync(currentPassword, newPassword);
+                var success = await _authApiService.ChangePasswordAsync(currentPassword, newPassword);
                 if (success)
                 {
                     await Shell.Current.DisplayAlert("Успех", "Пароль изменен", "OK");
@@ -185,7 +188,7 @@ namespace Scfet.Notification.ViewModels
             if (confirm)
             {
                 await _notificationService.DisconnectAsync();
-                await _apiService.Logout();
+                await _authApiService.Logout();
                 await Shell.Current.GoToAsync("//LoginPage");
             }
         }

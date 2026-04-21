@@ -8,21 +8,28 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Scfet.Notification.Models;
 using Scfet.Notification.Services;
+using Scfet.Notification.Services.Api;
 using Scfet.Notification.Utils;
 
 namespace Scfet.Notification.ViewModels
 {
     public partial class RepliesViewModel : ObservableObject
     {
-        private readonly IApiService _apiService;
-        private readonly NotificationService _notificationService;
+        private readonly IRepliesApiService _repliesApiService;
+        private readonly INotificationsApiService _notificationsApiService;
+        private readonly IFavoritesApiService _favoritesApiService;
+        private readonly SignalRService _notificationService;
         private readonly LoginService _loginService;
 
-        public RepliesViewModel(IApiService apiService,
-            NotificationService notificationService, LoginService loginService)
+        public RepliesViewModel(IRepliesApiService repliesApiService,
+            SignalRService notificationService, LoginService loginService,
+            INotificationsApiService notificationsApiService,
+            IFavoritesApiService favoritesApiService)
         {
-            _apiService = apiService;
+            _repliesApiService = repliesApiService;
+            _notificationsApiService = notificationsApiService;
             _notificationService = notificationService;
+            _favoritesApiService = favoritesApiService;
             _loginService = loginService;
 
             _notificationService.OnReplyRead += OnReplyReceived;
@@ -210,7 +217,7 @@ namespace Scfet.Notification.ViewModels
         {
             try
             {
-                var notification = await _apiService.GetNotificationById(NotificationId);
+                var notification = await _notificationsApiService.GetNotificationById(NotificationId);
                 if (notification == null)
                 {
                     IsStartLoadRepliesFailed = true;
@@ -239,7 +246,7 @@ namespace Scfet.Notification.ViewModels
         {
             try
             {
-                var response = await _apiService.GetNotificationRepliesAsync(NotificationId, (Filter)Filter);
+                var response = await _repliesApiService.GetNotificationRepliesAsync(NotificationId, (Filter)Filter);
 
                 if (response == null || response?.Data == null || !response.Success)
                 {
@@ -283,10 +290,11 @@ namespace Scfet.Notification.ViewModels
 
                 if (PageResult?.Items != null && PageResult.Items.Any())
                 {
+                    var existingIds = Replies.Select(r => r.Id).ToHashSet();
                     foreach (var reply in PageResult.Items)
                     {
                         // Проверяем, нет ли уже такого ответа
-                        if (!Replies.Any(n => n.Id == reply.Id))
+                        if (!existingIds.Contains(reply.Id))
                         {
                             Replies.Add(reply);
                         }
@@ -413,7 +421,7 @@ namespace Scfet.Notification.ViewModels
                     Message = ReplyMessage
                 };
 
-                var result = await _apiService.CreateReplyAsync(createReply);
+                var result = await _repliesApiService.CreateReplyAsync(createReply);
 
                 if (result != null && result.Success)
                 {
@@ -476,7 +484,7 @@ namespace Scfet.Notification.ViewModels
                     Message = EditingMessage
                 };
 
-                var result = await _apiService.UpdateReplyAsync(EditingReplyId, updateReply);
+                var result = await _repliesApiService.UpdateReplyAsync(EditingReplyId, updateReply);
 
                 if (result != null && result.Success)
                 {
@@ -508,7 +516,7 @@ namespace Scfet.Notification.ViewModels
             try
             {
 
-                var result = await _apiService.RemoveReplyAsync(replyId);
+                var result = await _repliesApiService.RemoveReplyAsync(replyId);
 
                 if (result == null || !result.Success)
                 {
@@ -531,18 +539,18 @@ namespace Scfet.Notification.ViewModels
             try
             {
                 var originalState = IsFavorite;
-                Response? response;
+                ApiResponse? response;
                 if (!originalState)
                 {
                     AddFavorite request = new AddFavorite()
                     {
                         NotificationId = NotificationId
                     };
-                    response = await _apiService.AddFavoriteAsync(request);
+                    response = await _favoritesApiService.AddFavoriteAsync(request);
                 }
                 else
                 {
-                    response = await _apiService.RemoveFavoriteAsync(NotificationId);
+                    response = await _favoritesApiService.RemoveFavoriteAsync(NotificationId);
                 }
                 if (response == null || !response.Success)
                 {

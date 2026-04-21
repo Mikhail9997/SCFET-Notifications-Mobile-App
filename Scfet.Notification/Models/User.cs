@@ -25,6 +25,7 @@ namespace Scfet.Notification.Models
     {
         Student = 1,
         Teacher = 2,
-        Administrator = 3
+        Administrator = 3,
+        Parent = 4
     }
 }

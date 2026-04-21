@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Scfet.Notification.Views.InviteUsersPage"
+             xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
+             xmlns:models="clr-namespace:Scfet.Notification.Models.Channel"
+             xmlns:converters="clr-namespace:Scfet.Notification.Converters"
+             xmlns:ff="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
+             x:DataType="vm:InviteUsersViewModel"
+             Title="Пригласить пользователей">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- Основной контент -->
+        <ScrollView Grid.Row="0" x:Name="MainScrollView">
+            <StackLayout Padding="10,0" x:Name="contentLayout">
+
+                <!-- Информация о канале с отдельной загрузкой и ошибкой -->
+                <Border Style="{StaticResource frame}" Padding="15" Margin="0,10,0,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+
+                    <Grid>
+                        <!-- Состояние загрузки канала -->
+                        <VerticalStackLayout IsVisible="{Binding IsChannelLoading}"
+                                         HorizontalOptions="Center"
+                                         VerticalOptions="Center"
+                                         Spacing="10"
+                                         Padding="20">
+                            <ActivityIndicator IsRunning="True" 
+                                           Color="#2E86AB"
+                                           HeightRequest="30"
+                                           WidthRequest="30" />
+                            <Label Text="Загрузка информации о канале..." 
+                               FontSize="12"
+                               HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+
+                        <!-- Ошибка загрузки канала -->
+                        <VerticalStackLayout IsVisible="{Binding IsChannelLoadFailed}"
+                                         Spacing="10"
+                                         Padding="20">
+                            <Label Text="⚠️" 
+                               FontSize="30"
+                               HorizontalOptions="Center"/>
+                            <Label Text="{Binding ChannelError}" 
+                               FontSize="12"
+                               TextColor="Red"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"/>
+                            <Button Text="Повторить"
+                                Command="{Binding RetryLoadChannelCommand}"
+                                BackgroundColor="#2E86AB"
+                                TextColor="White"
+                                CornerRadius="5"
+                                HeightRequest="30"/>
+                        </VerticalStackLayout>
+
+                        <Grid IsVisible="{Binding IsChannelLoadFailed, Converter={StaticResource InverseBoolConverter}}">
+                            <!-- Контент канала -->
+                            <VerticalStackLayout IsVisible="{Binding IsChannelLoading, Converter={StaticResource InverseBoolConverter}}"
+                                         Spacing="10">
+                                <Label Text="Канал:" 
+                                       FontSize="14" 
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource PrimaryColor}"/>
+
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Border Grid.Column="0" 
+                                            Style="{StaticResource card_avatar}"
+                                            VerticalOptions="Center"
+                                            Margin="0,0,10,0">
+                                        <ff:CachedImage 
+                                            Source="{Binding Channel.OwnerAvatar}"
+                                            Aspect="AspectFill"
+                                            DownsampleToViewSize="True"
+                                            LoadingPlaceholder="placeholder.png"
+                                            ErrorPlaceholder="placeholder.png"/>
+                                    </Border>
+
+                                    <VerticalStackLayout Grid.Column="1" Spacing="5">
+                                        <Label Text="{Binding Channel.Name}" 
+                                               FontSize="16" 
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding Channel.Description}" 
+                                               FontSize="12"
+                                               TextColor="Gray"
+                                               IsVisible="{Binding Channel.Description, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label Text="👤" FontSize="12"/>
+                                            <Label Text="{Binding Channel.MembersCount, StringFormat='{0} участников'}" 
+                                           FontSize="12"
+                                           TextColor="Gray"/>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- Сообщение для приглашения (всегда видно) -->
+                <Border Style="{StaticResource frame}" Padding="15" Margin="0,10,0,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10"/>
+                    </Border.StrokeShape>
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Сообщение (необязательно):" 
+                               FontSize="14" 
+                               FontAttributes="Bold"/>
+
+                        <Editor Placeholder="Введите сообщение для приглашаемых пользователей..."
+                                Text="{Binding InvitationMessage}"
+                                HeightRequest="80"
+                                MaxLength="500"/>
+
+                        <HorizontalStackLayout IsVisible="{Binding InvitationMessage.Length, Converter={StaticResource IsNotZeroConverter}}">
+                            <Label Text="{Binding InvitationMessage.Length}"
+                                   TextColor="{Binding InvitationMessage.Length, Converter={StaticResource CounterColorConverter}, ConverterParameter=500}"/>
+                            <Label Text="/500"
+                                   TextColor="{Binding InvitationMessage.Length, Converter={StaticResource CounterColorConverter}, ConverterParameter=500}"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Фильтрация с отдельной загрузкой групп -->
+                <Border Style="{StaticResource frame}" Padding="10" Margin="0,10,0,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="5"/>
+                    </Border.StrokeShape>
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Фильтрация пользователей:" 
+                               FontSize="14" 
+                               FontAttributes="Bold" />
+
+                        <Entry Placeholder="Поиск по имени или email"
+                               Text="{Binding Filter.SearchTerm}" />
+
+                        <Picker Title="Роль"
+                                ItemsSource="{Binding RoleOptions}"
+                                SelectedItem="{Binding SelectedRole}"
+                                ItemDisplayBinding="{Binding DisplayName}"/>
+
+                        <!-- Picker группы с загрузкой и ошибкой -->
+                        <Grid>
+                            <!-- Загрузка групп -->
+                            <VerticalStackLayout IsVisible="{Binding IsGroupsLoading}"
+                                                 HorizontalOptions="Center"
+                                                 Spacing="5"
+                                                 Padding="10">
+                                <ActivityIndicator IsRunning="True" 
+                                                   Color="#2E86AB"
+                                                   HeightRequest="20"
+                                                   WidthRequest="20" />
+                                <Label Text="Загрузка групп..." 
+                                       FontSize="10"
+                                       HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+
+                            <!-- Ошибка групп -->
+                            <VerticalStackLayout IsVisible="{Binding IsGroupsLoadFailed}"
+                                                 Spacing="5"
+                                                 Padding="10">
+                                <Label Text="⚠️" 
+                                       FontSize="16"
+                                       HorizontalOptions="Center"/>
+                                <Label Text="{Binding GroupsError}" 
+                                       FontSize="10"
+                                       TextColor="Red"
+                                       HorizontalOptions="Center"/>
+                                <Button Text="Повторить"
+                                        Command="{Binding RetryLoadGroupsCommand}"
+                                        BackgroundColor="#2E86AB"
+                                        TextColor="White"
+                                        CornerRadius="5"
+                                        HeightRequest="25"
+                                        FontSize="10"/>
+                            </VerticalStackLayout>
+
+                            <!-- Picker групп -->
+                            <Picker Title="Группа"
+                                    ItemsSource="{Binding Groups}"
+                                    SelectedItem="{Binding SelectedGroup}"
+                                    ItemDisplayBinding="{Binding Name}"
+                                    IsVisible="{Binding ShowGroupSelector}"/>
+                        </Grid>
+
+                        <Picker Title="Размер страницы"
+                                ItemsSource="{Binding PageSizes}"
+                                SelectedItem="{Binding Filter.PageSize}" />
+
+                        <HorizontalStackLayout Spacing="10">
+                            <Button Text="Применить"
+                                    Command="{Binding ApplyFiltersCommand}"
+                                    BackgroundColor="#2E86AB"
+                                    TextColor="White"
+                                    CornerRadius="5"
+                                    HorizontalOptions="FillAndExpand"/>
+
+                            <Button Text="Сбросить"
+                                    Command="{Binding ResetFiltersCommand}"
+                                    BackgroundColor="#6c757d"
+                                    TextColor="White"
+                                    CornerRadius="5"
+                                    HorizontalOptions="FillAndExpand"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Заголовок и выбор всех -->
+                <Grid ColumnDefinitions="*,Auto" Margin="0,10,0,5">
+                    <Label Grid.Column="0" 
+                           Text="Доступные пользователи" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"/>
+
+                    <HorizontalStackLayout Grid.Column="1" Spacing="5">
+                        <Button Text="Выбрать всех"
+                                Command="{Binding SelectAllCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource PrimaryColor}"
+                                BorderColor="{StaticResource PrimaryColor}"
+                                BorderWidth="1"
+                                CornerRadius="5"
+                                Padding="10,5"
+                                FontSize="12"
+                                IsEnabled="{Binding HasUsers}"/>
+
+                        <Button Text="Снять всех"
+                                Command="{Binding DeselectAllCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="#6c757d"
+                                BorderColor="#6c757d"
+                                BorderWidth="1"
+                                CornerRadius="5"
+                                Padding="10,5"
+                                FontSize="12"
+                                IsEnabled="{Binding HasSelectedUsers}"/>
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <!-- Список пользователей с отдельной загрузкой и ошибкой -->
+                <Grid>
+                    <!-- Загрузка пользователей -->
+                    <VerticalStackLayout IsVisible="{Binding IsUsersLoading}"
+                                         HorizontalOptions="Center"
+                                         VerticalOptions="Center"
+                                         Spacing="20"
+                                         Padding="30">
+                        <ActivityIndicator IsRunning="True" 
+                                           Color="#2E86AB"
+                                           HeightRequest="50"
+                                           WidthRequest="50" />
+                        <Label Text="Загрузка пользователей..." 
+                               FontSize="16"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+
+                    <!-- Ошибка загрузки пользователей -->
+                    <StackLayout HorizontalOptions="Center" 
+                                 VerticalOptions="Center"
+                                 IsVisible="{Binding IsUsersLoadFailed}"
+                                 Padding="30">
+                        <Image Source="no_wifi.png" HeightRequest="150" WidthRequest="150" Margin="0,0,0,30"/>
+                        <Label Text="{Binding UsersError}" 
+                               FontSize="16"
+                               HorizontalOptions="Center"/>
+                        <Label Text="Не удалось загрузить пользователей" 
+                               FontSize="14"
+                               TextColor="Gray"
+                               HorizontalOptions="Center"/>
+                        <Button Text="Попробовать снова"
+                                Command="{Binding RetryLoadUsersCommand}"
+                                BackgroundColor="#2E86AB"
+                                TextColor="White"
+                                CornerRadius="5"
+                                Margin="0,10,0,0"/>
+                    </StackLayout>
+
+                    <Grid IsVisible="{Binding IsUsersLoadFailed, Converter={StaticResource InverseBoolConverter}}">
+                        <!-- Список пользователей -->
+                        <CollectionView ItemsSource="{Binding Users}"
+                                    SelectionMode="None"
+                                    IsVisible="{Binding IsUsersLoading, Converter={StaticResource InverseBoolConverter}, FallbackValue=False}">
+
+                            <CollectionView.EmptyView>
+                                <VerticalStackLayout HorizontalOptions="Center" 
+                                             VerticalOptions="Center"
+                                             Spacing="20"
+                                             Padding="30">
+                                    <Label Text="🔍" 
+                                   FontSize="48" 
+                                   HorizontalOptions="Center" />
+                                    <Label Text="Нет доступных пользователей" 
+                                   FontSize="18" 
+                                   HorizontalOptions="Center" />
+                                    <Label Text="Все пользователи уже приглашены или являются участниками канала" 
+                                   FontSize="14" 
+                                   TextColor="Gray"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </CollectionView.EmptyView>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:AvailableUserDto">
+                                    <Border Padding="15" 
+                                         Margin="10,5"
+                                         BackgroundColor="{AppThemeBinding Light='White', Dark='#1E1E1E'}">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10"/>
+                                        </Border.StrokeShape>
+
+                                        <Grid ColumnDefinitions="Auto,*,Auto" RowSpacing="5" ColumnSpacing="10">
+
+                                            <!-- галочкой в круге -->
+                                            <Grid Grid.Column="0" 
+                                           WidthRequest="24" 
+                                           HeightRequest="24"
+                                           VerticalOptions="Center">
+
+                                                <!-- Внешний круг -->
+                                                <Border Stroke="{StaticResource PrimaryColor}"
+                                                     StrokeThickness="2"
+                                                     WidthRequest="22"
+                                                     HeightRequest="22">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="11"/>
+                                                    </Border.StrokeShape>
+                                                </Border>
+
+                                                <!-- Внутренний круг с галочкой (виден при выборе) -->
+                                                <Border BackgroundColor="{StaticResource PrimaryColor}"
+                                                     WidthRequest="22"
+                                                     HeightRequest="22"
+                                                     IsVisible="{Binding IsSelected}">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="11"/>
+                                                    </Border.StrokeShape>
+
+                                                    <!-- Галочка -->
+                                                    <Label Text="✓" 
+                                                        TextColor="White" 
+                                                        FontSize="14"
+                                                        FontAttributes="Bold"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"/>
+                                                </Border>
+                                            </Grid>
+
+                                            <!-- Информация о пользователе -->
+                                            <VerticalStackLayout Grid.Column="1" Spacing="3">
+                                                <Label Text="{Binding FullName}" 
+                                                    FontSize="14" 
+                                                    FontAttributes="Bold"/>
+
+                                                <Label Text="{Binding Email}" 
+                                                    FontSize="12"
+                                                    TextColor="Gray"/>
+
+                                                <HorizontalStackLayout Spacing="5">
+                                                    <Border BackgroundColor="{Binding RoleText, Converter={StaticResource RoleToColorConverter}}"
+                                                         Padding="8,2"
+                                                         StrokeThickness="0"
+                                                         HorizontalOptions="Start">
+                                                        <Border.StrokeShape>
+                                                            <RoundRectangle CornerRadius="10"/>
+                                                        </Border.StrokeShape>
+                                                        <Label Text="{Binding RoleText}"
+                                                            FontSize="10"
+                                                            TextColor="White"/>
+                                                    </Border>
+                                                </HorizontalStackLayout>
+                                            </VerticalStackLayout>
+
+                                            <!-- Аватар-->
+                                            <Border Grid.Column="2" 
+                                             Style="{StaticResource card_avatar}"
+                                             VerticalOptions="Center">
+                                                <ff:CachedImage 
+                                                 Source="{Binding AvatarUrl}"
+                                                 Aspect="AspectFill"
+                                                 DownsampleToViewSize="True"
+                                                 LoadingPlaceholder="placeholder.png"
+                                                 ErrorPlaceholder="placeholder.png"/>
+                                            </Border>
+
+                                            <!-- Жест нажатия -->
+                                            <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer 
+                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:InviteUsersViewModel}}, 
+                                                                 Path=ToggleUserSelectionCommand}"
+                                                     CommandParameter="{Binding .}"/>
+                                            </Grid.GestureRecognizers>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+
+                </Grid>
+
+                <!-- Пагинация -->
+                <Grid IsVisible="{Binding IsPaginationEnable}" Margin="0,10">
+                    <VerticalStackLayout IsVisible="{Binding IsPagination}"
+                                         HorizontalOptions="Center"
+                                         VerticalOptions="Center"
+                                         Spacing="20">
+                        <ActivityIndicator IsRunning="True" 
+                                           Color="{StaticResource PrimaryColor}"
+                                           HeightRequest="50"
+                                           WidthRequest="50" />
+                        <Label Text="Загрузка..." 
+                               FontSize="16"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+
+                    <Button IsVisible="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}"
+                            Text="Загрузить еще" 
+                            TextColor="White"
+                            Command="{Binding LoadMoreCommand}"
+                            BackgroundColor="{StaticResource PrimaryColor}"/>
+                </Grid>
+
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Нижняя панель с выбранными пользователями -->
+        <Border Grid.Row="1" 
+                BackgroundColor="{AppThemeBinding Light='White', Dark='#1E1E1E'}"
+                Padding="15"
+                IsVisible="{Binding HasSelectedUsers}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0"/>
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                <Label Grid.Column="0" 
+                       Text="{Binding SelectedCount, StringFormat='Выбрано: {0}'}"
+                       FontSize="14"
+                       VerticalOptions="Center"/>
+
+                <Button Grid.Column="1" 
+                        Text="Очистить"
+                        Command="{Binding ClearSelectionCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="#6c757d"
+                        BorderColor="#6c757d"
+                        BorderWidth="1"
+                        CornerRadius="5"
+                        Padding="15,5"
+                        FontSize="12"/>
+
+                <Button Grid.Column="2" 
+                        Text="Пригласить"
+                        Command="{Binding InviteCommand}"
+                        BackgroundColor="{StaticResource PrimaryColor}"
+                        TextColor="White"
+                        CornerRadius="5"
+                        Padding="15,5"
+                        FontSize="12"
+                        IsEnabled="{Binding CanInvite}"/>
+            </Grid>
+        </Border>
+
+        <!-- Кнопки прокрутки -->
+        <VerticalStackLayout Grid.Row="0"
+                             VerticalOptions="End"
+                             HorizontalOptions="End"
+                             Margin="20"
+                             Spacing="10"
+                             IsVisible="{Binding IsShowScrollButtons}">
+
+            <Button x:Name="scrollToTopButton"
+                    Text="↑"
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    CornerRadius="30"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    TextColor="White"
+                    FontSize="20"
+                    IsVisible="false"/>
+
+            <Button x:Name="scrollToBottomButton"
+                    Text="↓"
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    CornerRadius="30"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    FontSize="20"
+                    TextColor="White"
+                    IsVisible="False"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

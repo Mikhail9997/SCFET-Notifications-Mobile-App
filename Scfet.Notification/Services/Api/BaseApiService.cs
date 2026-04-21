@@ -13,24 +13,11 @@ namespace Scfet.Notification.Services.Api
     {
         protected readonly HttpClient HttpClient;
         protected readonly LoginService LoginService;
-        protected const string BaseUrl = "http://81.94.159.27:5050/api";
 
-        protected BaseApiService(LoginService loginService, ITokenService tokenService)
+        protected BaseApiService(HttpClient httpClient, LoginService loginService)
         {
+            HttpClient = httpClient;
             LoginService = loginService;
-
-            var handler = new AuthHandler(tokenService, loginService)
-            {
-                InnerHandler = new HttpClientHandler()
-                {
-                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true,
-                }
-            };
-
-            HttpClient = new HttpClient(handler)
-            {
-                BaseAddress = new Uri(BaseUrl)
-            };
         }
 
         protected async Task AddAuthHeader()
@@ -57,6 +44,37 @@ namespace Scfet.Notification.Services.Api
             {
                 PropertyNameCaseInsensitive = true
             });
+        }
+
+        protected async Task<T?> GetAsync<T>(string url)
+        {
+            var response = await HttpClient.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            return DeserializeResponse<T>(content);
+        }
+
+        protected async Task<T?> PostAsync<T>(string url, object data)
+        {
+            var json = JsonSerializer.Serialize(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await HttpClient.PostAsync(url, content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            return DeserializeResponse<T>(responseContent);
+        }
+
+        protected async Task<T?> PutAsync<T>(string url, object data)
+        {
+            var json = JsonSerializer.Serialize(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await HttpClient.PutAsync(url, content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            return DeserializeResponse<T>(responseContent);
+        }
+
+        protected async Task<bool> DeleteAsync(string url)
+        {
+            var response = await HttpClient.DeleteAsync(url);
+            return response.IsSuccessStatusCode;
         }
     }
 }

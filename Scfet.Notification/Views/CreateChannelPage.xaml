@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Scfet.Notification.Views.CreateChannelPage"
+             xmlns:vm="clr-namespace:Scfet.Notification.ViewModels"
+             xmlns:converters="clr-namespace:Scfet.Notification.Converters"
+             x:DataType="vm:CreateChannelViewModel"
+             Title="Создать канал">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="frame" TargetType="Border">
+                <Setter Property="BackgroundColor">
+                    <Setter.Value>
+                        <AppThemeBinding Light="#F0F0F0" Dark="#2A2A2A" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="20">
+
+            <!-- Информация о канале -->
+            <Border Style="{StaticResource frame}" Padding="15">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Информация о канале" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource PrimaryColor}"/>
+
+                    <!-- Название канала -->
+                    <StackLayout>
+                        <Label Text="Название канала *" FontSize="14"/>
+                        <Entry Placeholder="Введите название канала" 
+                               Text="{Binding Name}"
+                               MaxLength="100"/>
+                        <HorizontalStackLayout IsVisible="{Binding Name.Length, Converter={StaticResource IsNotZeroConverter}}">
+                            <Label Text="{Binding Name.Length}"
+                                   TextColor="{Binding Name.Length, Converter={StaticResource CounterColorConverter}, ConverterParameter=100}"/>
+                            <Label Text="/100"
+                                   TextColor="{Binding Name.Length, Converter={StaticResource CounterColorConverter}, ConverterParameter=100}"/>
+                        </HorizontalStackLayout>
+                    </StackLayout>
+
+                    <!-- Описание канала -->
+                    <StackLayout>
+                        <Label Text="Описание" FontSize="14"/>
+                        <Editor Placeholder="Введите описание канала (необязательно)" 
+                                Text="{Binding Description}"
+                                HeightRequest="100"
+                                MaxLength="500"/>
+                        <HorizontalStackLayout IsVisible="{Binding Description.Length, Converter={StaticResource IsNotZeroConverter}}">
+                            <Label Text="{Binding Description.Length}"
+                                   TextColor="{Binding Description.Length, Converter={StaticResource CounterColorConverter}, ConverterParameter=500}"/>
+                            <Label Text="/500"
+                                   TextColor="{Binding Description.Length, Converter={StaticResource CounterColorConverter}, ConverterParameter=500}"/>
+                        </HorizontalStackLayout>
+                    </StackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Информация о канале (подсказки) -->
+            <Border Style="{StaticResource frame}" Padding="15">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"/>
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="💡 Информация" 
+                           FontSize="14" 
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource PrimaryColor}"/>
+
+                    <Label Text="• Вы станете владельцем канала" FontSize="12"/>
+                    <Label Text="• Сможете приглашать участников" FontSize="12"/>
+                    <Label Text="• Управлять ролями участников" FontSize="12"/>
+                    <Label Text="• Удалять сообщения и участников" FontSize="12"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Индикатор загрузки -->
+            <ActivityIndicator IsVisible="{Binding IsBusy}"
+                              IsRunning="{Binding IsBusy}"
+                              HorizontalOptions="Center"
+                              Color="{StaticResource PrimaryColor}"/>
+
+            <!-- Кнопка создания -->
+            <Button Text="Создать канал" 
+                    Command="{Binding CreateChannelCommand}"
+                    BackgroundColor="{StaticResource PrimaryColor}"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Margin="0,20,0,0"
+                    IsEnabled="{Binding CanCreate}"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
