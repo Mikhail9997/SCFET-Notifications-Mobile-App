@@ -979,7 +979,7 @@ namespace Scfet.Notification.ViewModels
         private void OnNewMessageReceived(NewMessageEvent message)
         {
             if (message.ChannelId.ToString() != ChannelId
-                && message.SenderId == CurrentUserId) return;
+                || message.SenderId == CurrentUserId) return;
 
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -1012,7 +1012,8 @@ namespace Scfet.Notification.ViewModels
                     ApplyGroupingForSingleMessage(messageDto, lastMessage);
 
                     Messages.Add(messageDto);
-                    ShowScrollToBottomButton = true;
+                    if(Messages.Count > 10)
+                        ShowScrollToBottomButton = true;
 
                     if (message.SenderId != CurrentUserId)
                     {

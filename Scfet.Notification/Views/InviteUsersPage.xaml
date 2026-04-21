@@ -255,7 +255,7 @@
                                            Color="#2E86AB"
                                            HeightRequest="50"
                                            WidthRequest="50" />
-                        <Label Text="Загрузка пользователей..." 
+                        <Label Text="Загрузка..." 
                                FontSize="16"
                                HorizontalOptions="Center" />
                     </VerticalStackLayout>
@@ -319,9 +319,9 @@
 
                                             <!-- галочкой в круге -->
                                             <Grid Grid.Column="0" 
-                                           WidthRequest="24" 
-                                           HeightRequest="24"
-                                           VerticalOptions="Center">
+                                               WidthRequest="24" 
+                                               HeightRequest="24"
+                                               VerticalOptions="Center">
 
                                                 <!-- Внешний круг -->
                                                 <Border Stroke="{StaticResource PrimaryColor}"

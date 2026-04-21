@@ -27,7 +27,7 @@ namespace Scfet.Notification
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-            const string baseUrl = "https://amorously-preeminent-godwit.cloudpub.ru/api/";
+            const string baseUrl = "http://81.94.159.27:5050/api/";
             //https://amorously-preeminent-godwit.cloudpub.ru/api/
             //http://81.94.159.27:5050/api/
 

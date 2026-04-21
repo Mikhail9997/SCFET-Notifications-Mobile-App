@@ -24,7 +24,7 @@ namespace Scfet.Notification.Services
         private System.Timers.Timer _tokenCheckTimer;
         private DateTime _lastTokenRefreshTime;
 
-        private readonly string BaseUrl = "https://amorously-preeminent-godwit.cloudpub.ru";
+        private readonly string BaseUrl = "http://81.94.159.27:5050";
         //http://localhost:5050/notificationHub
         //https://amorously-preeminent-godwit.cloudpub.ru
         //http://81.94.159.27:5050
