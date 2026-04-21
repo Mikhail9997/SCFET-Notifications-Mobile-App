@@ -181,10 +181,11 @@ namespace Scfet.Notification.ViewModels
 
                 if (PagedResult?.Items != null && PagedResult.Items.Any())
                 {
+                    var existingIds = Notifications.Select(n => n.Id).ToHashSet();
                     foreach (var notification in PagedResult.Items)
                     {
                         // Проверяем, нет ли уже такого уведомления
-                        if (!Notifications.Any(n => n.Id == notification.Id))
+                        if (!existingIds.Contains(notification.Id))
                         {
                             Notifications.Add(notification);
                         }

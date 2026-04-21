@@ -137,9 +137,10 @@ namespace Scfet.Notification.ViewModels
 
                 if (response?.Success == true && response.Data != null)
                 {
+                    var existingIds = Channels.Select(m => m.Id).ToHashSet();
                     foreach (var channel in response.Data)
                     {
-                        if (!Channels.Any(c => c.Id == channel.Id))
+                        if (!existingIds.Contains(channel.Id))
                         {
                             Channels.Add(channel);
                         }

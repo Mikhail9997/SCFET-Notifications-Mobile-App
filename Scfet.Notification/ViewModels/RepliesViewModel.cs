@@ -290,10 +290,11 @@ namespace Scfet.Notification.ViewModels
 
                 if (PageResult?.Items != null && PageResult.Items.Any())
                 {
+                    var existingIds = Replies.Select(r => r.Id).ToHashSet();
                     foreach (var reply in PageResult.Items)
                     {
                         // Проверяем, нет ли уже такого ответа
-                        if (!Replies.Any(n => n.Id == reply.Id))
+                        if (!existingIds.Contains(reply.Id))
                         {
                             Replies.Add(reply);
                         }

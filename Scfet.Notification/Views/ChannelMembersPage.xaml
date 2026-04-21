@@ -121,17 +121,40 @@
                             IsVisible="{Binding CanManageMembers}"/>
                 </Grid>
 
-                <!-- Поиск -->
-                <Border Style="{StaticResource frame}" Padding="10" Margin="0,0,0,10">
-                    <Entry Placeholder="Поиск по имени или email"
-                           Text="{Binding SearchTerm}"
-                           ReturnCommand="{Binding SearchCommand}">
-                        <Entry.Behaviors>
-                            <!-- Задержка поиска при вводе -->
-                            <converters:DebounceBehavior Delay="500" 
-                                                          Command="{Binding SearchCommand}"/>
-                        </Entry.Behaviors>
-                    </Entry>
+                <!-- Фильтрация -->
+                <Border Style="{StaticResource frame}" Padding="10" Margin="0,0,0,10"
+                        IsVisible="{Binding IsMembersLoading, Converter={StaticResource InverseBoolConverter}}">
+                    <VerticalStackLayout Spacing="10"
+                                         IsVisible="{Binding IsMembersLoadFailed, Converter={StaticResource InverseBoolConverter}}">
+                        <Label Text="Фильтрация:" FontSize="14" FontAttributes="Bold" />
+
+                        <!-- Поле поиска -->
+                        <Entry Placeholder="Поиск по имени или email"
+                               Text="{Binding Filter.SearchTerm}"
+                               ReturnCommand="{Binding ApplyFiltersCommand}"
+                               ClearButtonVisibility="WhileEditing"/>
+
+                        <Picker Title="Размер страницы"
+                                ItemsSource="{Binding PageSizes}"
+                                SelectedItem="{Binding Filter.PageSize}" />
+
+                        <HorizontalStackLayout Spacing="10">
+                            <Button Text="Применить"
+                                    Command="{Binding ApplyFiltersCommand}"
+                                    BackgroundColor="{StaticResource PrimaryColor}"
+                                    TextColor="White"
+                                    CornerRadius="5"
+                                    HorizontalOptions="FillAndExpand"
+                                    IsEnabled="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}"/>
+                            <Button Text="Сбросить"
+                                    Command="{Binding ResetFiltersCommand}"
+                                    BackgroundColor="#6c757d"
+                                    TextColor="White"
+                                    CornerRadius="5"
+                                    HorizontalOptions="FillAndExpand"
+                                    IsEnabled="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
                 </Border>
 
                 <!-- Список участников -->
@@ -173,8 +196,8 @@
                     </StackLayout>
 
                     <!-- Список участников -->
-                    <Grid IsVisible="{Binding IsMembersLoading, Converter={StaticResource InverseBoolConverter}}">
-                        <CollectionView ItemsSource="{Binding FilteredMembers}"
+                    <VerticalStackLayout IsVisible="{Binding IsMembersLoading, Converter={StaticResource InverseBoolConverter}}">
+                        <CollectionView ItemsSource="{Binding Members}"
                                     SelectionMode="None"
                                     IsVisible="{Binding IsMembersLoadFailed, Converter={StaticResource InverseBoolConverter}}"
                                     ItemsUpdatingScrollMode="KeepLastItemInView"
@@ -290,7 +313,28 @@
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
-                    </Grid>
+                        <!-- Пагинация -->
+                        <StackLayout IsVisible="{Binding IsPaginationEnable}" Margin="0,10">
+                            <VerticalStackLayout IsVisible="{Binding IsPagination}"
+                                                 HorizontalOptions="Center"
+                                                 VerticalOptions="Center"
+                                                 Spacing="20">
+                                <ActivityIndicator IsRunning="True" 
+                                                   Color="{StaticResource PrimaryColor}"
+                                                   HeightRequest="50"
+                                                   WidthRequest="50" />
+                                <Label Text="Загрузка..." 
+                                       FontSize="16"
+                                       HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+
+                            <Button IsVisible="{Binding IsPagination, Converter={StaticResource InverseBoolConverter}}"
+                                    Text="Загрузить еще" 
+                                    TextColor="White"
+                                    Command="{Binding LoadMoreMembersCommand}"
+                                    BackgroundColor="{StaticResource PrimaryColor}"/>
+                        </StackLayout>
+                    </VerticalStackLayout>
 
                 </Grid>
 

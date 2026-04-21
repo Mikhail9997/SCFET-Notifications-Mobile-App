@@ -208,10 +208,11 @@ namespace Scfet.Notification.ViewModels
 
                 if (PageResult?.Items != null && PageResult.Items.Any())
                 {
+                    var existingIds = Favorites.Select(f => f.NotificationId).ToHashSet();
                     foreach (var item in PageResult.Items)
                     {
                         // Проверяем, нет ли уже такого элемента
-                        if (!Favorites.Any(n => n.NotificationId == item.NotificationId))
+                        if (!existingIds.Contains(item.NotificationId))
                         {
                             Favorites.Add(item);
                         }

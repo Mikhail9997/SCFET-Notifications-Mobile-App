@@ -290,9 +290,10 @@ namespace Scfet.Notification.ViewModels
 
                 if (response?.Success == true && response.Data != null)
                 {
+                    var existingIds = Users.Select(u => u.Id).ToHashSet();
                     foreach (var user in response.Data)
                     {
-                        if (!Users.Any(u => u.Id == user.Id))
+                        if (!existingIds.Contains(user.Id))
                         {
                             user.IsSelected = false;
                             Users.Add(user);
@@ -324,6 +325,7 @@ namespace Scfet.Notification.ViewModels
         private async Task ResetFiltersAsync()
         {
             Filter = new AvailableUsersFilter();
+            Filter.PageSize = pageSizes[1];
             SelectedRole = null;
             SelectedGroup = null;
             await LoadUsersAsync();
@@ -424,6 +426,8 @@ namespace Scfet.Notification.ViewModels
         {
             var auth = _loginService.GetCurrentAuth();
             CurrentUserRole = Enum.TryParse(auth?.Role, out UserRole role) ? role : null;
+
+            Filter.PageSize = pageSizes[1];
 
             // Создаем все возможные опции
             var allRoles = new List<PickerItem<UserRole?>>

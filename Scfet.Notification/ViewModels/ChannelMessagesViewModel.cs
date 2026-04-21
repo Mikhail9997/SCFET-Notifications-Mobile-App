@@ -116,7 +116,7 @@ namespace Scfet.Notification.ViewModels
         private bool hasMoreMessages = true;
 
         [ObservableProperty]
-        private MessageFilter filter = new() { PageSize = 10, SortOrder = SortOrder.Descending };
+        private MessageFilter filter = new() { PageSize = 20, SortOrder = SortOrder.Descending };
 
         // images
         [ObservableProperty]
@@ -246,12 +246,11 @@ namespace Scfet.Notification.ViewModels
                         return sortedMessages;
                     });
 
-                    // Обновляем UI в основном потоке, но более эффективно
+                    // Обновляем UI в основном потоке
                     await MainThread.InvokeOnMainThreadAsync(() =>
                     {
                         Messages.Clear();
 
-                        // Добавляем сообщения пачкой через AddRange если доступно
                         Messages.AddRange(processedMessages);
 
                         HasMoreMessages = response.Pagination.Page < response.Pagination.TotalPages;
@@ -338,9 +337,25 @@ namespace Scfet.Notification.ViewModels
                             if (firstExisting.ShowSenderName != (showAvatar && !firstExisting.IsOwnMessage))
                                 firstExisting.ShowSenderName = showAvatar && !firstExisting.IsOwnMessage;
                         }
-
+                        // Фильтруем новые сообщения
+                        var existingIds = Messages.Select(m => m.Id).ToHashSet();
+                        var uniqueNewMessages = new List<ChannelMessageDto>(newMessages.Count);
+                        for (int i = newMessages.Count - 1; i >= 0; i--) 
+                        {
+                            var message = newMessages[i];
+                            if (existingIds.Add(message.Id))
+                            {
+                                uniqueNewMessages.Add(message);
+                            }
+                        }
                         // Вставляем сообщения в начало коллекции
-                        Messages.InsertRange(0, newMessages);
+                        if (uniqueNewMessages.Count > 0)
+                        {
+                            foreach (var message in uniqueNewMessages)
+                            {
+                                Messages.Insert(0, message); 
+                            }
+                        }
 
                         CurrentPage = response.Pagination.Page;
                         HasMoreMessages = response.Pagination.Page < response.Pagination.TotalPages;
@@ -739,16 +754,16 @@ namespace Scfet.Notification.ViewModels
         [RelayCommand]
         private async Task ShowChannelMenuAsync()
         {
-            var actions = new List<string> { "Участники", "Пригласить" };
-
-            if (Channel?.IsOwner == true || Channel?.UserRole == ChannelRole.Admin)
-            {
-                actions.Add("Настройки канала");
-            }
+            var actions = new List<string> { "Участники"};
 
             if (!Channel?.IsOwner == true)
             {
                 actions.Add("Покинуть канал");
+            }
+
+            if(Channel?.IsOwner == true || CurrentUserChannelRole == ChannelRole.Admin)
+            {
+                actions.Add("Пригласить");
             }
 
             var action = await Shell.Current.DisplayActionSheet(
@@ -803,7 +818,6 @@ namespace Scfet.Notification.ViewModels
         [RelayCommand]
         private async Task ScrollToBottomAsync()
         {
-            await Task.Delay(100);
             ShowScrollToBottomButton = false;
 
             WeakReferenceMessenger.Default.Send(new ScrollToBottomMessage());

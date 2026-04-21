@@ -189,10 +189,8 @@ namespace Scfet.Notification.ViewModels
 
             try
             {
-                //if (!ValidatePagination()) return;
                 var nextPage = (Notifications.Count / Filter.PageSize) + 1;
                 Filter.Page = nextPage;
-                //Filter.Page += 1;
 
                 await LoadNotificationsAsync();
 
@@ -204,10 +202,11 @@ namespace Scfet.Notification.ViewModels
 
                 if (PageResult?.Items != null && PageResult.Items.Any())
                 {
+                    var existingIds = Notifications.Select(n => n.Id).ToHashSet();
                     foreach (var notification in PageResult.Items)
                     {
                         // Проверяем, нет ли уже такого уведомления
-                        if (!Notifications.Any(n => n.Id == notification.Id))
+                        if (!existingIds.Contains(notification.Id))
                         {
                             Notifications.Add(notification);
                         }

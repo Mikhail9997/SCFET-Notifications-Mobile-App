@@ -38,11 +38,16 @@ namespace Scfet.Notification.ViewModels
         private ObservableCollection<ChannelMemberDto> members = new();
 
         [ObservableProperty]
-        private ObservableCollection<ChannelMemberDto> filteredMembers = new();
+        private ChannelRole? currentUserChannelRole;
+
+        // Filter
+        [ObservableProperty]
+        private ChannelMemberFilter filter = new() { PageSize = 20 };
 
         [ObservableProperty]
-        private string searchTerm = string.Empty;
+        private List<int> pageSizes = new() {10, 20, 30, 50 };
 
+        // UI
         [ObservableProperty]
         private bool isChannelLoading = true;
 
@@ -64,26 +69,16 @@ namespace Scfet.Notification.ViewModels
         [ObservableProperty]
         private int membersCount;
 
-        public bool CanManageMembers
-        {
-            get
-            {
-                if (Channel == null) return false;
+        [ObservableProperty]
+        private bool isPagination;
 
-                var currentMember = Members.FirstOrDefault(m => m.UserId == CurrentUserId);
-                if (currentMember == null) return false;
+        [ObservableProperty]
+        private bool isPaginationEnable;
 
-                return currentMember.ChannelRole == ChannelRole.Owner ||
-                       currentMember.ChannelRole == ChannelRole.Admin;
-            }
-        }
+        public bool CanManageMembers => CurrentUserChannelRole == ChannelRole.Owner ||
+                       CurrentUserChannelRole == ChannelRole.Admin;
 
-        public bool IsShowScrollButtons => !IsMembersLoading && !IsMembersLoadFailed && FilteredMembers.Any();
-
-        partial void OnSearchTermChanged(string value)
-        {
-            FilterMembers();
-        }
+        public bool IsShowScrollButtons => !IsMembersLoading && !IsMembersLoadFailed && Members.Any();
 
         public async Task InitializeAsync()
         {
@@ -116,6 +111,7 @@ namespace Scfet.Notification.ViewModels
                 if (response?.Success == true && response.Data != null)
                 {
                     Channel = response.Data;
+                    CurrentUserChannelRole = Channel.UserRole;
                     Title = $"Участники: {Channel.Name}";
                 }
                 else
@@ -133,6 +129,7 @@ namespace Scfet.Notification.ViewModels
             finally
             {
                 IsChannelLoading = false;
+                OnPropertyChanged(nameof(CanManageMembers));
             }
         }
 
@@ -144,10 +141,11 @@ namespace Scfet.Notification.ViewModels
             IsMembersLoading = true;
             IsMembersLoadFailed = false;
             MembersError = string.Empty;
+            Filter.Page = 1;
 
             try
             {
-                var response = await _channelApiService.GetChannelMembersAsync(Guid.Parse(ChannelId));
+                var response = await _channelApiService.GetChannelMembersAsync(Guid.Parse(ChannelId), Filter);
 
                 if (response?.Success == true && response.Data != null)
                 {
@@ -158,8 +156,9 @@ namespace Scfet.Notification.ViewModels
                         Members.Add(member);
                     }
 
-                    MembersCount = Members.Count;
-                    FilterMembers();                
+                    MembersCount = response?.Pagination.TotalCount ?? 0;
+
+                    IsPaginationEnable = response.Pagination?.Page < response.Pagination?.TotalPages;
                 }
                 else
                 {
@@ -177,34 +176,65 @@ namespace Scfet.Notification.ViewModels
             {
                 IsMembersLoading = false;
                 OnPropertyChanged(nameof(IsShowScrollButtons));
-                OnPropertyChanged(nameof(CanManageMembers));
             }
-        }
-
-        private void FilterMembers()
-        {
-            if (string.IsNullOrWhiteSpace(SearchTerm))
-            {
-                FilteredMembers = new ObservableCollection<ChannelMemberDto>(Members);
-            }
-            else
-            {
-                var filtered = Members.Where(m =>
-                    m.FullName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    m.Email.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
-                ).ToList();
-
-                FilteredMembers = new ObservableCollection<ChannelMemberDto>(filtered);
-            }
-
-            OnPropertyChanged(nameof(FilteredMembers));
-            OnPropertyChanged(nameof(IsShowScrollButtons));
         }
 
         [RelayCommand]
-        private async Task SearchAsync()
+        private async Task LoadMoreMembersAsync()
         {
-            FilterMembers();
+            if (IsPagination || !IsPaginationEnable || string.IsNullOrEmpty(ChannelId)) return;
+
+            IsPagination = true;
+
+            try
+            {
+                // Вычисляем следующую страницу
+                var nextPage = (Members.Count / Filter.PageSize) + 1;
+                Filter.Page = nextPage;
+
+                var response = await _channelApiService.GetChannelMembersAsync(Guid.Parse(ChannelId), Filter);
+
+                if (response?.Success == true && response.Data != null)
+                {
+                    var existingIds = Members.Select(m => m.Id).ToHashSet();
+                    foreach (var member in response.Data)
+                    {
+                        if (!existingIds.Contains(member.Id))
+                        {
+                            member.IsCurrentUser = member.UserId == CurrentUserId;
+                            Members.Add(member);
+                        }
+                    }
+
+                    MembersCount = Members.Count;
+
+                    IsPaginationEnable = response.Pagination?.Page < response.Pagination?.TotalPages;
+                }
+            }
+            catch (Exception ex)
+            {
+                // При ошибке откатываем страницу
+                Filter.Page--;
+                Console.WriteLine($"Load more members error: {ex.Message}");
+            }
+            finally
+            {
+                IsPagination = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task ApplyFiltersAsync()
+        {
+            Filter.Page = 1;
+            await LoadMembersAsync();
+        }
+
+        [RelayCommand]
+        private async Task ResetFiltersAsync()
+        {
+            Filter = new() { PageSize = 20 };
+            await LoadMembersAsync();
         }
 
         [RelayCommand]
@@ -408,7 +438,6 @@ namespace Scfet.Notification.ViewModels
                 if (response?.Success == true)
                 {
                     Members.Remove(member);
-                    FilterMembers();
                     MembersCount = Members.Count;
 
                     await Shell.Current.DisplayAlert("Успех", "Участник удален из канала", "OK");

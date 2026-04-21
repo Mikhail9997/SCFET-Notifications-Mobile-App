@@ -17,6 +17,7 @@ namespace Scfet.Notification.Services.Api
         Task<ApiResponse<List<ChannelDto>>?> GetAllChannelsAsync(ChannelFilter filter);
         Task<ApiResponse<ChannelDto>?> GetChannelByIdAsync(Guid channelId);
         Task<ApiResponse<List<ChannelMemberDto>>?> GetChannelMembersAsync(Guid channelId);
+        Task<ApiResponse<List<ChannelMemberDto>>?> GetChannelMembersAsync(Guid channelId, ChannelMemberFilter filter);
         Task<ApiResponse?> UpdateMemberRoleAsync(Guid channelId, Guid userId, ChannelRole newRole);
         Task<ApiResponse?> RemoveMemberAsync(Guid channelId, Guid userId);
         Task<ApiResponse?> LeaveChannelAsync(Guid channelId);
@@ -118,7 +119,30 @@ namespace Scfet.Notification.Services.Api
         {
             try
             {
-                var response = await HttpClient.GetAsync($"channels/{channelId}/members");
+                var response = await HttpClient.GetAsync($"channels/{channelId}/all-members");
+                var content = await response.Content.ReadAsStringAsync();
+
+                return DeserializeResponse<ApiResponse<List<ChannelMemberDto>>>(content);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Get channel members error: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<ApiResponse<List<ChannelMemberDto>>?> GetChannelMembersAsync(Guid channelId, ChannelMemberFilter filter)
+        {
+            try
+            {
+                var query = new Dictionary<string, string?>
+                {
+                    { "page", filter.Page.ToString() },
+                    { "pageSize", filter.PageSize.ToString() },
+                    { "searchTerm", filter.SearchTerm }
+                };
+                var queryString = BuildQueryString(query);
+                var response = await HttpClient.GetAsync($"channels/{channelId}/members?{queryString}");
                 var content = await response.Content.ReadAsStringAsync();
 
                 return DeserializeResponse<ApiResponse<List<ChannelMemberDto>>>(content);
@@ -346,13 +370,13 @@ namespace Scfet.Notification.Services.Api
         private Dictionary<string, string?> BuildChannelFilterQuery(ChannelFilter filter)
         {
             var query = new Dictionary<string, string?>
-        {
-            { "page", filter.Page.ToString() },
-            { "pageSize", filter.PageSize.ToString() },
-            { "sortBy", filter.SortBy.ToString() },
-            { "sortOrder", filter.SortOrder.ToString() },
-            { "searchTerm", filter.SearchTerm }
-        };
+            {
+                { "page", filter.Page.ToString() },
+                { "pageSize", filter.PageSize.ToString() },
+                { "sortBy", filter.SortBy.ToString() },
+                { "sortOrder", filter.SortOrder.ToString() },
+                { "searchTerm", filter.SearchTerm }
+            };
 
             return query;
         }

@@ -28,8 +28,6 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
     {
         InitializeComponent();
         BindingContext = viewModel;
-
-        WeakReferenceMessenger.Default.Register(this);
     }
 
     private async void OnScrollViewScrolled(object sender, ScrolledEventArgs e)
@@ -143,6 +141,7 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
             viewModel.ChannelId = ChannelId;
             await viewModel.InitializeAsync();
         }
+        WeakReferenceMessenger.Default.Register(this);
         MessagesScrollView.Scrolled += OnScrollViewScrolled;
     }
 
