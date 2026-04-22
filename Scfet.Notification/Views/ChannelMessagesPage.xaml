@@ -20,12 +20,25 @@
             </Style>
 
             <Style x:Key="message_avatar" TargetType="Border">
-                <Setter Property="HeightRequest" Value="35"/>
-                <Setter Property="StrokeShape" Value="RoundRectangle 200,200,200,200"/>
-                <Setter Property="WidthRequest" Value="35"/>
+                <Setter Property="StrokeShape">
+                    <RoundRectangle CornerRadius="200"/>
+                </Setter>
                 <Setter Property="StrokeThickness" Value="0"/>
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="BackgroundColor" Value="#E8F0FE"/>
+
+                <Setter Property="HeightRequest">
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="Android, iOS" Value="52"/>
+                        <On Platform="WinUI, MacCatalyst" Value="56"/>
+                    </OnPlatform>
+                </Setter>
+                <Setter Property="WidthRequest">
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="Android, iOS" Value="52"/>
+                        <On Platform="WinUI, MacCatalyst" Value="56"/>
+                    </OnPlatform>
+                </Setter>
             </Style>
 
             <Style x:Key="HeaderBorder" TargetType="Border">
@@ -204,26 +217,24 @@
                                                 VerticalOptions="End">
                                             <Border.Triggers>
                                                 <DataTrigger TargetType="Border" 
-                                                             Binding="{Binding IsOwnMessage}" 
-                                                             Value="True">
+                                                            Binding="{Binding IsOwnMessage}" 
+                                                            Value="True">
                                                     <Setter Property="IsVisible" Value="False" />
                                                 </DataTrigger>
                                                 <DataTrigger TargetType="Border" 
-                                                            Binding="{Binding ShowAvatar}" 
-                                                            Value="False">
+                                                        Binding="{Binding ShowAvatar}" 
+                                                        Value="False">
                                                     <Setter Property="IsVisible" Value="False" />
                                                 </DataTrigger>
                                             </Border.Triggers>
                                             <ff:CachedImage 
                                                 Source="{Binding SenderAvatar}"
                                                 Aspect="AspectFill"
-                                                DownsampleToViewSize="True"
-                                                DownsampleWidth="70"
+                                                DownsampleToViewSize="True"   
+                                                LoadingPlaceholder="avatar_placeholder.png"
+                                                ErrorPlaceholder="avatar_placeholder.png"
                                                 CacheDuration="60"
-                                                RetryCount="1"
-                                                LoadingPlaceholder="placeholder.png"
-                                                ErrorPlaceholder="placeholder.png"
-                                                FadeAnimationEnabled="False"/>
+                                                RetryCount="2"/>
                                         </Border>
 
                                         <!-- Пустое место для выравнивания -->
@@ -356,7 +367,8 @@
                                                 <ff:CachedImage Source="{Binding ImageUrl}"
                                                                 HeightRequest="300"
                                                                 DownsampleToViewSize="True"
-                                                                DownsampleWidth="600"
+                                                                DownsampleWidth="1080"
+                                                                DownsampleUseDipUnits="True"
                                                                 LoadingPlaceholder="placeholder.png"
                                                                 ErrorPlaceholder="placeholder.png"
                                                                 CacheDuration="30"

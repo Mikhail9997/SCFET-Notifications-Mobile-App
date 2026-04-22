@@ -50,7 +50,8 @@ namespace Scfet.Notification.Services
         public event Action<NewMessageEvent>? OnNewMessage;
         public event Action<MessageUpdatedEvent>? OnMessageUpdated;
         public event Action<Guid>? OnMessageDeleted;
-        public event Action<Guid, Guid>? OnMyMessageRead;
+        public event Func<Guid, Guid, Task>? OnMyMessageRead;
+        public event Func<List<Guid>, Guid, Task>? OnMessagesRead;
         #endregion
 
         public event Action? OnConnectionLost;
@@ -272,7 +273,30 @@ namespace Scfet.Notification.Services
 
             _channelHubConnection.On<Guid, Guid>("MessageRead", (messageId, channelId) =>
             {
-                MainThread.BeginInvokeOnMainThread(() => OnMyMessageRead?.Invoke(messageId, channelId));
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    try
+                    {
+                        await OnMyMessageRead?.Invoke(messageId, channelId);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Логирование ошибки
+                        Console.WriteLine($"Error in MessageRead handler: {ex.Message}");
+                    }
+                });
+            });
+
+            _channelHubConnection.On<List<Guid>, Guid>("MessagesRead", async (messageIds, channelId) =>
+            {
+                try
+                {
+                    await OnMessagesRead?.Invoke(messageIds, channelId);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error in MessagesRead handler: {ex.Message}");
+                }
             });
         }
 

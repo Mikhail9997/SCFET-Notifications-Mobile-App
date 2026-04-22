@@ -13,16 +13,17 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
     public string ChannelId { get; set; } = string.Empty;
 
     // Для динамической пагинации
-    private const double LOAD_MORE_THRESHOLD = 100;
+    private const double LOAD_MORE_THRESHOLD = 50;
     private const double BOTTOM_THRESHOLD = 50;
     private bool _isLoadingMore;
     private bool _isRestoringScroll;
-    private double _savedScrollPosition;
 
     // Для дебаунса отметки прочтения
     private IDisposable? _markReadDebouncer;
-    private const int MARK_READ_DEBOUNCE_MS = 500; // Отмечаем не чаще раза в 500мс
-    private const int MARK_READ_SCROLL_THRESHOLD = 200; // Отмечаем только после прокрутки на 200px
+    private const int MARK_READ_IDLE_MS = 2000; // Отмечаем через 2 секунды после остановки скролла
+
+    // Флаг для отслеживания первого скролла (чтобы не отмечать при инициализации)
+    private bool _hasScrolled;
 
     public ChannelMessagesPage(ChannelMessagesViewModel viewModel)
     {
@@ -33,11 +34,10 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
     private async void OnScrollViewScrolled(object sender, ScrolledEventArgs e)
     {
         if (BindingContext is not ChannelMessagesViewModel vm
-            || vm.IsMessagesLoading) return;
-        if (_isRestoringScroll) return;
+            || vm.IsMessagesLoading || _isRestoringScroll) return;
 
         var scrollView = (ScrollView)sender;
-        _savedScrollPosition = e.ScrollY;
+        _hasScrolled = true;
 
         // Проверяем, достигли ли верха для подгрузки
         if (e.ScrollY <= LOAD_MORE_THRESHOLD && !_isLoadingMore && vm.HasMoreMessages)
@@ -48,8 +48,8 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
         // Проверяем, находимся ли внизу
         UpdateScrollToBottomButton(scrollView, vm, e.ScrollY);
 
-        // Отмечаем сообщения прочитанными с дебаунсом
-        DebounceMarkAsRead(vm, e.ScrollY);
+        // Сбрасываем таймер отметки прочитанных при каждом скролле
+        ResetMarkReadTimer(vm);
     }
 
     private async Task LoadMoreMessagesAsync(ScrollView scrollView, ChannelMessagesViewModel vm, double oldScrollY)
@@ -90,21 +90,16 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
         }
     }
 
-    private double _lastMarkReadScrollY;
-
-    private void DebounceMarkAsRead(ChannelMessagesViewModel vm, double currentScrollY)
+    private void ResetMarkReadTimer(ChannelMessagesViewModel vm)
     {
-        // Проверяем, достаточно ли прокрутили для отметки
-        var scrollDelta = Math.Abs(currentScrollY - _lastMarkReadScrollY);
-        if (scrollDelta < MARK_READ_SCROLL_THRESHOLD) return;
-
-        _lastMarkReadScrollY = currentScrollY;
-
-        // Отменяем предыдущий debounce
+        // Отменяем предыдущий таймер
         _markReadDebouncer?.Dispose();
 
-        // Запускаем новый debounce
-        _markReadDebouncer = Observable.Timer(TimeSpan.FromMilliseconds(MARK_READ_DEBOUNCE_MS))
+        // Если еще не было ни одного скролла, не запускаем таймер
+        if (!_hasScrolled) return;
+
+        // Запускаем новый таймер на 2 секунды
+        _markReadDebouncer = Observable.Timer(TimeSpan.FromMilliseconds(MARK_READ_IDLE_MS))
             .Subscribe(async _ =>
             {
                 await MainThread.InvokeOnMainThreadAsync(async () =>
@@ -135,13 +130,13 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        WeakReferenceMessenger.Default.Register(this);
 
         if (BindingContext is ChannelMessagesViewModel viewModel)
         {
             viewModel.ChannelId = ChannelId;
             await viewModel.InitializeAsync();
         }
-        WeakReferenceMessenger.Default.Register(this);
         MessagesScrollView.Scrolled += OnScrollViewScrolled;
     }
 
@@ -156,6 +151,13 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
             viewModel.Cleanup();
         }
         _markReadDebouncer?.Dispose();
+
+        // Если были скроллы, отмечаем прочитанными при уходе
+        if (_hasScrolled && BindingContext is ChannelMessagesViewModel vm)
+        {
+            _ = vm.MarkVisibleMessagesAsReadAsync();
+        }
+
         MessagesScrollView.Scrolled -= OnScrollViewScrolled;
     }
 }

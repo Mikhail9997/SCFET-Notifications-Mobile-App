@@ -38,7 +38,6 @@ namespace Scfet.Notification.ViewModels
         // для статуса прочтения
         private DateTime _lastMarkReadCall = DateTime.MinValue;
         private SemaphoreSlim _markReadSemaphore;
-        private Guid? _lastMarkedMessageId;
 
         private bool _isDisposed;
 
@@ -256,7 +255,7 @@ namespace Scfet.Notification.ViewModels
                         HasMoreMessages = response.Pagination.Page < response.Pagination.TotalPages;
                         CurrentPage = response.Pagination.Page;
                     });
-
+                    await Task.Delay(100);
                     await ScrollToBottomAsync();
                 }
                 else
@@ -522,21 +521,13 @@ namespace Scfet.Notification.ViewModels
             {
                 _lastMarkReadCall = DateTime.UtcNow;
 
-                // Находим последнее непрочитанное чужое сообщение
+                // Находим непрочитанные чужие сообщение
                 var messagesToReadIds = Messages
                     .Where(m => m.SenderId != CurrentUserId && !m.IsRead)
                     .Select(m => m.Id)
                     .ToList();
 
-                Guid? lastUnreadOtherMessageId = messagesToReadIds
-                    .LastOrDefault();
-
-                if (lastUnreadOtherMessageId == null) return;
-
-                // Не отмечаем одно и то же сообщение повторно
-                if (_lastMarkedMessageId == lastUnreadOtherMessageId) return;
-
-                _lastMarkedMessageId = lastUnreadOtherMessageId;
+                if (!messagesToReadIds.Any()) return;
 
                 // Отмечаем на сервере (fire-and-forget, не ждем)
                 _ = Task.Run(async () =>
@@ -820,7 +811,7 @@ namespace Scfet.Notification.ViewModels
         {
             ShowScrollToBottomButton = false;
 
-            WeakReferenceMessenger.Default.Send(new ScrollToBottomMessage());
+            WeakReferenceMessenger.Default.Send(new ScrollToBottomMessage() {Animated = false});
         }
 
         [RelayCommand]
@@ -974,6 +965,7 @@ namespace Scfet.Notification.ViewModels
             _signalRService.OnUserJoined += OnUserJoined;
             _signalRService.OnUserLeft += OnUserLeft;
             _signalRService.OnMyMessageRead += OnMyMessageRead;
+            _signalRService.OnMessagesRead += OnMessagesRead;
         }
 
         private void OnNewMessageReceived(NewMessageEvent message)
@@ -1085,26 +1077,36 @@ namespace Scfet.Notification.ViewModels
             }
         }
 
-        private void OnMyMessageRead(Guid messageId, Guid channelId)
+        private async Task OnMyMessageRead(Guid messageId, Guid channelId)
         {
             if (channelId.ToString() != ChannelId) return;
 
+            await MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                ChannelMessageDto? targetMessage = Messages.FirstOrDefault(m => m.Id == messageId);
+
+                if (targetMessage != null && targetMessage.SenderId == CurrentUserId)
+                {
+                    targetMessage.IsRead = true;
+                    targetMessage.ReadAt = DateTime.UtcNow;
+                }
+            });
+        }
+
+        private async Task OnMessagesRead(List<Guid> messageIds, Guid channelId)
+        {
+            if (channelId.ToString() != ChannelId) return;
+
+            HashSet<Guid> messageIdsHash = messageIds.ToHashSet();
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                var targetMessage = Messages.FirstOrDefault(m => m.Id == messageId);
-                if (targetMessage?.SenderId != CurrentUserId) return;
-
-                var cutoffTime = targetMessage.CreatedAt;
-
-                // Обновляем только свои непрочитанные сообщения до этого времени
-                foreach (var msg in Messages)
+                foreach(var m in Messages)
                 {
-                    if (msg.SenderId == CurrentUserId &&
-                        !msg.IsRead &&
-                        msg.CreatedAt <= cutoffTime)
+                    if (messageIdsHash.Contains(m.Id))
                     {
-                        msg.IsRead = true;
-                        msg.ReadAt = DateTime.UtcNow;
+                        // Помечаем прочитанным
+                        m.IsRead = true;
+                        m.ReadAt = DateTime.UtcNow;
                     }
                 }
             });
@@ -1112,13 +1114,15 @@ namespace Scfet.Notification.ViewModels
 
         private void OnUserJoined(UserJoinedEvent eventData)
         {
-            if (eventData.ChannelId.ToString() != ChannelId) return;
+            if (eventData.ChannelId.ToString() != ChannelId
+                || eventData.UserId != CurrentUserId) return;
             OnlineStatus = "онлайн";
         }
 
         private void OnUserLeft(UserLeftEvent eventData)
         {
-            if (eventData.ChannelId.ToString() != ChannelId) return;
+            if (eventData.ChannelId.ToString() != ChannelId
+                || eventData.UserId != CurrentUserId) return;
             OnlineStatus = "офлайн";
         }
 
@@ -1145,6 +1149,7 @@ namespace Scfet.Notification.ViewModels
             _signalRService.OnUserJoined -= OnUserJoined;
             _signalRService.OnUserLeft -= OnUserLeft;
             _signalRService.OnMyMessageRead -= OnMyMessageRead;
+            _signalRService.OnMessagesRead -= OnMessagesRead;
 
             // Покидаем канал
             if (!string.IsNullOrEmpty(ChannelId))
