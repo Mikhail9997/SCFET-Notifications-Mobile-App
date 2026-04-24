@@ -102,10 +102,10 @@
                         <!-- Заголовок , кнопка создания и кнопка мои заявки -->
                         <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="5">
                             <Label Grid.Column="0" 
-                           Text="Мои каналы" 
-                           FontSize="18" 
-                           FontAttributes="Bold"
-                           VerticalOptions="Center"/>
+                                   Text="Мои каналы" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"/>
 
                             <Button Grid.Column="1" 
                                 Text="+ Создать" 
@@ -135,24 +135,24 @@
                                              Spacing="20"
                                              Padding="30">
                                     <Label Text="📭" 
-                                   FontSize="48" 
-                                   HorizontalOptions="Center" />
+                                           FontSize="48" 
+                                           HorizontalOptions="Center" />
                                     <Label Text="Нет каналов" 
-                                   FontSize="18" 
-                                   HorizontalOptions="Center" />
+                                           FontSize="18" 
+                                           HorizontalOptions="Center" />
                                     <Label Text="Создайте новый канал или примите приглашение" 
-                                   FontSize="14" 
-                                   TextColor="Gray"
-                                   HorizontalOptions="Center"
-                                   HorizontalTextAlignment="Center" />
+                                           FontSize="14" 
+                                           TextColor="Gray"
+                                           HorizontalOptions="Center"
+                                           HorizontalTextAlignment="Center" />
                                 </VerticalStackLayout>
                             </CollectionView.EmptyView>
 
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="models:ChannelDto">
                                     <Border Padding="15" 
-                                    Margin="10,5"
-                                    BackgroundColor="{AppThemeBinding Light='White', Dark='#1E1E1E'}">
+                                            Margin="10,5"
+                                            BackgroundColor="{AppThemeBinding Light='White', Dark='#1E1E1E'}">
                                         <Border.StrokeShape>
                                             <RoundRectangle CornerRadius="10"/>
                                         </Border.StrokeShape>

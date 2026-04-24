@@ -195,176 +195,176 @@
                             <DataTemplate x:DataType="models:ChannelMessageDto">
                                 <VerticalStackLayout Padding="10,5">
 
-                                <!-- Дата-разделитель -->
-                                <Label Text="{Binding CreatedAt, Converter={StaticResource DateHeaderConverter}}"
+                                    <!-- Дата-разделитель -->
+                                    <Label Text="{Binding CreatedAt, Converter={StaticResource DateHeaderConverter}}"
                                        FontSize="11"
                                        TextColor="Gray"
                                        HorizontalOptions="Center"
                                        Margin="0,10"
                                        IsVisible="{Binding ShowDateHeader}"/>
 
-                                <!-- Сообщение -->
-                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="0">
+                                    <!-- Сообщение -->
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="0">
 
-                                    <!-- Единый блок сообщения -->
-                                    <HorizontalStackLayout Grid.Column="{Binding IsOwnMessage, Converter={StaticResource BoolToGridColumnConverter}}"
-                                       Grid.ColumnSpan="2"
-                                       HorizontalOptions="{Binding IsOwnMessage, Converter={StaticResource BoolToLayoutOptionsConverter}}"
-                                       Spacing="8">
+                                        <!-- Единый блок сообщения -->
+                                        <HorizontalStackLayout Grid.Column="{Binding IsOwnMessage, Converter={StaticResource BoolToGridColumnConverter}}"
+                                                   Grid.ColumnSpan="2"
+                                                   HorizontalOptions="{Binding IsOwnMessage, Converter={StaticResource BoolToLayoutOptionsConverter}}"
+                                                   Spacing="8">
 
-                                        <!-- Аватар для чужих сообщений -->
-                                        <Border Style="{StaticResource message_avatar}"
+                                            <!-- Аватар для чужих сообщений -->
+                                            <Border Style="{StaticResource message_avatar}"
                                                 VerticalOptions="End">
-                                            <Border.Triggers>
-                                                <DataTrigger TargetType="Border" 
+                                                <Border.Triggers>
+                                                    <DataTrigger TargetType="Border" 
                                                             Binding="{Binding IsOwnMessage}" 
                                                             Value="True">
-                                                    <Setter Property="IsVisible" Value="False" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="Border" 
+                                                        <Setter Property="IsVisible" Value="False" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Border" 
                                                         Binding="{Binding ShowAvatar}" 
                                                         Value="False">
-                                                    <Setter Property="IsVisible" Value="False" />
-                                                </DataTrigger>
-                                            </Border.Triggers>
-                                            <ff:CachedImage 
-                                                Source="{Binding SenderAvatar}"
-                                                Aspect="AspectFill"
-                                                DownsampleToViewSize="True"   
-                                                LoadingPlaceholder="avatar_placeholder.png"
-                                                ErrorPlaceholder="avatar_placeholder.png"
-                                                CacheDuration="60"
-                                                RetryCount="2"/>
-                                        </Border>
+                                                        <Setter Property="IsVisible" Value="False" />
+                                                    </DataTrigger>
+                                                </Border.Triggers>
+                                                <ff:CachedImage 
+                                                    Source="{Binding SenderAvatar}"
+                                                    Aspect="AspectFill"
+                                                    DownsampleToViewSize="True"   
+                                                    LoadingPlaceholder="avatar_placeholder.png"
+                                                    ErrorPlaceholder="avatar_placeholder.png"
+                                                    CacheDuration="60"
+                                                    RetryCount="2"/>
+                                            </Border>
 
-                                        <!-- Пустое место для выравнивания -->
-                                        <BoxView WidthRequest="28"
+                                            <!-- Пустое место для выравнивания -->
+                                            <BoxView WidthRequest="28"
                                                 HeightRequest="0">
-                                            <BoxView.Triggers>
-                                                <DataTrigger TargetType="BoxView" 
+                                                <BoxView.Triggers>
+                                                    <DataTrigger TargetType="BoxView" 
                                                              Binding="{Binding IsOwnMessage}" 
                                                              Value="True">
-                                                    <Setter Property="IsVisible" Value="True" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="BoxView" 
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="BoxView" 
                                                              Binding="{Binding IsOwnMessage}" 
                                                              Value="False">
-                                                    <Setter Property="IsVisible">
-                                                        <Binding Path="ShowAvatar" 
+                                                        <Setter Property="IsVisible">
+                                                            <Binding Path="ShowAvatar" 
                                                                  Converter="{StaticResource InverseBoolConverter}"/>
-                                                    </Setter>
-                                                </DataTrigger>
-                                            </BoxView.Triggers>
-                                        </BoxView>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </BoxView.Triggers>
+                                            </BoxView>
 
-                                        <!-- Основной контейнер сообщения -->
-                                        <Border x:Name="MessageBorder"
+                                            <!-- Основной контейнер сообщения -->
+                                            <Border x:Name="MessageBorder"
                                                 Padding="12,8"
                                                 MaximumWidthRequest="300"
                                                 BackgroundColor="{AppThemeBinding Light='White', Dark='#1E1E1E'}">
-                                            <Border.StrokeShape>
-                                                <RoundRectangle CornerRadius="12,12,0,12"/>
-                                            </Border.StrokeShape>
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="12,12,0,12"/>
+                                                </Border.StrokeShape>
 
-                                            <!-- Триггеры для своего сообщения -->
-                                            <Border.Triggers>
-                                                <DataTrigger TargetType="Border" 
+                                                <!-- Триггеры для своего сообщения -->
+                                                <Border.Triggers>
+                                                    <DataTrigger TargetType="Border" 
                                                              Binding="{Binding IsOwnMessage}" 
                                                              Value="True">
-                                                    <Setter Property="BackgroundColor">
-                                                        <AppThemeBinding Light="#DCF8C6" Dark="#056162"/>
-                                                    </Setter>
-                                                    <Setter Property="StrokeShape">
-                                                        <RoundRectangle CornerRadius="12,12,12,0"/>
-                                                    </Setter>
-                                                </DataTrigger>
-                                            </Border.Triggers>
+                                                        <Setter Property="BackgroundColor">
+                                                            <AppThemeBinding Light="#DCF8C6" Dark="#056162"/>
+                                                        </Setter>
+                                                        <Setter Property="StrokeShape">
+                                                            <RoundRectangle CornerRadius="12,12,12,0"/>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Border.Triggers>
 
-                                            <VerticalStackLayout Spacing="5">
+                                                <VerticalStackLayout Spacing="5">
 
-                                                <!-- Информация о пользователе (только для чужих) -->
-                                                <VerticalStackLayout Spacing="3">
-                                                    <VerticalStackLayout.Triggers>
-                                                        <DataTrigger TargetType="VerticalStackLayout" 
+                                                    <!-- Информация о пользователе (только для чужих) -->
+                                                    <VerticalStackLayout Spacing="3">
+                                                        <VerticalStackLayout.Triggers>
+                                                            <DataTrigger TargetType="VerticalStackLayout" 
                                                                      Binding="{Binding IsOwnMessage}" 
                                                                      Value="True">
-                                                            <Setter Property="IsVisible" Value="False" />
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="VerticalStackLayout" 
+                                                                <Setter Property="IsVisible" Value="False" />
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="VerticalStackLayout" 
                                                                      Binding="{Binding ShowSenderName}" 
                                                                      Value="False">
-                                                            <Setter Property="IsVisible" Value="False" />
-                                                        </DataTrigger>
-                                                    </VerticalStackLayout.Triggers>
+                                                                <Setter Property="IsVisible" Value="False" />
+                                                            </DataTrigger>
+                                                        </VerticalStackLayout.Triggers>
 
-                                                    <!-- Имя и Фамилия-->
-                                                    <Label Text="{Binding SenderName}" 
+                                                        <!-- Имя и Фамилия-->
+                                                        <Label Text="{Binding SenderName}" 
                                                            FontSize="11" 
                                                            FontAttributes="Bold"
                                                            TextColor="{StaticResource PrimaryColor}"/>
 
-                                                    <!-- Роли -->
-                                                    <HorizontalStackLayout Spacing="3">
-                                                        <!-- Роль в системе пользователя -->
-                                                        <Border BackgroundColor="{Binding SenderRoleString, Converter={StaticResource RoleToColorConverter}}"
+                                                        <!-- Роли -->
+                                                        <HorizontalStackLayout Spacing="3">
+                                                            <!-- Роль в системе пользователя -->
+                                                            <Border BackgroundColor="{Binding SenderRoleString, Converter={StaticResource RoleToColorConverter}}"
                                                                 Padding="8,3"
                                                                 StrokeThickness="0"
                                                                 HorizontalOptions="Start">
-                                                            <Border.StrokeShape>
-                                                                <RoundRectangle CornerRadius="12"/>
-                                                            </Border.StrokeShape>
-                                                            <Label Text="{Binding SenderRoleString, Converter={StaticResource RoleToRussianConverter}}"
+                                                                <Border.StrokeShape>
+                                                                    <RoundRectangle CornerRadius="12"/>
+                                                                </Border.StrokeShape>
+                                                                <Label Text="{Binding SenderRoleString, Converter={StaticResource RoleToRussianConverter}}"
                                                                    FontSize="8"
                                                                    TextColor="White"/>
-                                                        </Border>
-                                                        <!-- Роль на канале -->
-                                                        <Border BackgroundColor="{Binding SenderChannelRole, Converter={StaticResource ChannelRoleToColorConverter}}"
+                                                            </Border>
+                                                            <!-- Роль на канале -->
+                                                            <Border BackgroundColor="{Binding SenderChannelRole, Converter={StaticResource ChannelRoleToColorConverter}}"
                                                                 Padding="8,3"
                                                                 StrokeThickness="0"
                                                                 HorizontalOptions="Start">
-                                                            <Border.StrokeShape>
-                                                                <RoundRectangle CornerRadius="12"/>
-                                                            </Border.StrokeShape>
-                                                            <Label Text="{Binding SenderChannelRole, Converter={StaticResource ChannelRoleToRussianConverter}}"
+                                                                <Border.StrokeShape>
+                                                                    <RoundRectangle CornerRadius="12"/>
+                                                                </Border.StrokeShape>
+                                                                <Label Text="{Binding SenderChannelRole, Converter={StaticResource ChannelRoleToRussianConverter}}"
                                                                    FontSize="8"
                                                                    TextColor="White"/>
-                                                        </Border>
-                                                    </HorizontalStackLayout>
-                                                </VerticalStackLayout>
+                                                            </Border>
+                                                        </HorizontalStackLayout>
+                                                    </VerticalStackLayout>
 
-                                                <!-- Ответ на сообщение -->
-                                                <Border IsVisible="{Binding ReplyToMessage, Converter={StaticResource NullToVisibilityConverter}}"
+                                                    <!-- Ответ на сообщение -->
+                                                    <Border IsVisible="{Binding ReplyToMessage, Converter={StaticResource NullToVisibilityConverter}}"
                                                         Padding="8"
                                                         StrokeThickness="0"
                                                         BackgroundColor="{AppThemeBinding Light='#F0F0F0', Dark='#333333'}">
-                                                    <Border.StrokeShape>
-                                                        <RoundRectangle CornerRadius="8"/>
-                                                    </Border.StrokeShape>
+                                                        <Border.StrokeShape>
+                                                            <RoundRectangle CornerRadius="8"/>
+                                                        </Border.StrokeShape>
 
-                                                    <Border.Triggers>
-                                                        <DataTrigger TargetType="Border" 
+                                                        <Border.Triggers>
+                                                            <DataTrigger TargetType="Border" 
                                                                      Binding="{Binding IsOwnMessage}" 
                                                                      Value="True">
-                                                            <Setter Property="BackgroundColor">
-                                                                <AppThemeBinding Light="#C5E8B7" Dark="#045052"/>
-                                                            </Setter>
-                                                        </DataTrigger>
-                                                    </Border.Triggers>
+                                                                <Setter Property="BackgroundColor">
+                                                                    <AppThemeBinding Light="#C5E8B7" Dark="#045052"/>
+                                                                </Setter>
+                                                            </DataTrigger>
+                                                        </Border.Triggers>
 
-                                                    <VerticalStackLayout Spacing="2">
-                                                        <Label Text="{Binding ReplyToMessage.SenderName}" 
+                                                        <VerticalStackLayout Spacing="2">
+                                                            <Label Text="{Binding ReplyToMessage.SenderName}" 
                                                                FontSize="11" 
                                                                FontAttributes="Bold"
                                                                TextColor="{StaticResource PrimaryColor}"/>
-                                                        <Label Text="{Binding ReplyToMessage.Content}" 
+                                                            <Label Text="{Binding ReplyToMessage.Content}" 
                                                                FontSize="12"
                                                                LineBreakMode="TailTruncation"
                                                                MaxLines="2"/>
-                                                    </VerticalStackLayout>
-                                                </Border>
+                                                        </VerticalStackLayout>
+                                                    </Border>
 
-                                                <!-- Изображение -->
-                                                <ff:CachedImage Source="{Binding ImageUrl}"
+                                                    <!-- Изображение -->
+                                                    <ff:CachedImage Source="{Binding ImageUrl}"
                                                                 HeightRequest="300"
                                                                 DownsampleToViewSize="True"
                                                                 DownsampleWidth="1080"
@@ -373,42 +373,48 @@
                                                                 ErrorPlaceholder="placeholder.png"
                                                                 CacheDuration="30"
                                                                 RetryCount="2"
-                                                                IsVisible="{Binding ImageUrl, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                                                IsVisible="{Binding ImageUrl, Converter={StaticResource NullToVisibilityConverter}}">
+                                                        <ff:CachedImage.GestureRecognizers>
+                                                            <TapGestureRecognizer 
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChannelMessagesViewModel}}, Path=ViewImageCommand}"
+                                                                CommandParameter="{Binding ImageUrl}"/>
+                                                        </ff:CachedImage.GestureRecognizers>
+                                                    </ff:CachedImage>
 
-                                                <!-- Текст сообщения -->
-                                                <Label Text="{Binding Content}" 
+                                                    <!-- Текст сообщения -->
+                                                    <Label Text="{Binding Content}" 
                                                        FontSize="14"
                                                        LineBreakMode="WordWrap"/>
 
-                                                <!-- Время и статус -->
-                                                <HorizontalStackLayout Spacing="5" HorizontalOptions="End">
-                                                    <Label x:Name="TimeLabel"
+                                                    <!-- Время и статус -->
+                                                    <HorizontalStackLayout Spacing="5" HorizontalOptions="End">
+                                                        <Label x:Name="TimeLabel"
                                                            Text="{Binding CreatedAt, Converter={StaticResource MessageTimeConverter}}"
                                                            FontSize="10"
                                                            TextColor="Gray"/>
 
-                                                    <Label x:Name="StatusLabel"
+                                                        <Label x:Name="StatusLabel"
                                                            Text="{Binding IsRead, Converter={StaticResource ReadStatusIconConverter}}"
                                                            FontSize="10"
                                                            TextColor="#6B8E6B"
                                                            IsVisible="{Binding IsOwnMessage}"/>
 
-                                                    <Label x:Name="EditedLabel"
+                                                        <Label x:Name="EditedLabel"
                                                            Text="(изм.)" 
                                                            FontSize="9"
                                                            TextColor="Gray"
                                                            IsVisible="{Binding IsEdited}"/>
-                                                </HorizontalStackLayout>
-                                            </VerticalStackLayout>
-                                        </Border>
-                                    </HorizontalStackLayout>
+                                                    </HorizontalStackLayout>
+                                                </VerticalStackLayout>
+                                            </Border>
+                                        </HorizontalStackLayout>
 
-                                    <!-- Контекстное меню -->
-                                    <Grid.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChannelMessagesViewModel}}, Path=ShowMessageMenuCommand}"
+                                        <!-- Контекстное меню -->
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChannelMessagesViewModel}}, Path=ShowMessageMenuCommand}"
                                           CommandParameter="{Binding .}"/>
-                                    </Grid.GestureRecognizers>
-                                </Grid>
+                                        </Grid.GestureRecognizers>
+                                    </Grid>
                                 </VerticalStackLayout>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -590,5 +596,164 @@
                 </Grid>
             </VerticalStackLayout>
         </Border>
+
+        <!-- Модальное окно просмотра изображения -->
+        <Grid x:Name="ImageViewerOverlay"
+              Grid.RowSpan="3"
+              IsVisible="{Binding IsImageViewerVisible}"
+              BackgroundColor="#E6000000"
+              ZIndex="1000"
+              Padding="20"
+              RowDefinitions="Auto,*,Auto">
+
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding CloseImageViewerCommand}"/>
+            </Grid.GestureRecognizers>
+
+            <!-- Шапка модального окна -->
+            <Border Grid.Row="0"
+                    BackgroundColor="{AppThemeBinding Light='#2A2A2A', Dark='#1A1A1A'}"
+                    Padding="12,8"
+                    StrokeThickness="0"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Fill">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12,12,0,0"/>
+                </Border.StrokeShape>
+
+                <Grid ColumnDefinitions="*,Auto,Auto"
+                    ColumnSpacing="10">
+                    <Label Grid.Column="0"
+                           Text="Просмотр изображения"
+                           TextColor="White"
+                           FontSize="14"
+                           VerticalOptions="Center"/>
+                    <Button Grid.Column="1"
+                            Text="⬇"
+                            Command="{Binding DownloadImageCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            FontSize="20"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            CornerRadius="20"/>
+                    <Button Grid.Column="2"
+                            Text="✕"
+                            Command="{Binding CloseImageViewerCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            FontSize="20"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            CornerRadius="20"/>
+                </Grid>
+            </Border>
+
+            <!-- Область изображения с зумом -->
+            <Grid x:Name="ImageViewerContainer"
+                  Grid.Row="1"
+                  VerticalOptions="Fill"
+                  HorizontalOptions="Fill">
+
+                <Border BackgroundColor="Black"
+                        StrokeThickness="0"
+                        VerticalOptions="Fill"
+                        HorizontalOptions="Fill"
+                        IsVisible="{Binding IsFullImageLoading}">
+
+                    <!-- Индикатор загрузки -->
+                    <VerticalStackLayout VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             Spacing="10">
+                        <ActivityIndicator IsRunning="True"
+                               Color="White"
+                               HeightRequest="40"
+                               WidthRequest="40"/>
+                        <Label Text="Загрузка..."
+                               TextColor="White"
+                               FontSize="12"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Контейнер с жестами -->
+                <Grid IsVisible="{Binding IsFullImageLoading, Converter={StaticResource InverseBoolConverter}}"
+                      VerticalOptions="Fill"
+                      HorizontalOptions="Fill">
+
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2"
+                                  Command="{Binding ToggleZoomCommand}"/>
+                        <PinchGestureRecognizer PinchUpdated="OnPinchUpdated"/>
+                    </Grid.GestureRecognizers>
+
+                    <ScrollView x:Name="ImageViewerScroll"
+                                Orientation="Both"
+                                HorizontalScrollBarVisibility="Default"
+                                VerticalScrollBarVisibility="Default"
+                                VerticalOptions="Fill"
+                                HorizontalOptions="Fill"
+                                InputTransparent="True">
+
+                        <ff:CachedImage x:Name="FullScreenImage"
+                            Source="{Binding FullScreenImageSource}"
+                            Scale="{Binding CurrentScale}"
+                            AnchorX="0.5"
+                            AnchorY="0.5"
+                            Aspect="AspectFit"
+                            WidthRequest="{Binding Source={x:Reference ImageViewerContainer}, Path=Width}"
+                            HeightRequest="{Binding Source={x:Reference ImageViewerContainer}, Path=Height}"
+                            LoadingPlaceholder="placeholder.png"
+                            ErrorPlaceholder="placeholder.png"
+                            CacheDuration="30"
+                            RetryCount="2"/>
+                    </ScrollView>
+                </Grid>
+            </Grid>
+
+            <!-- Подвал с информацией -->
+            <Border Grid.Row="2"
+                    BackgroundColor="{AppThemeBinding Light='#2A2A2A', Dark='#1A1A1A'}"
+                    Padding="12,8"
+                    StrokeThickness="0"
+                    VerticalOptions="End"
+                    HorizontalOptions="Fill">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="0,0,12,12"/>
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <!-- Кнопка уменьшить -->
+                    <Button Grid.Column="0"
+                            Text="➖"
+                            Command="{Binding ZoomOutCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="#CCCCCC"
+                            FontSize="16"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            VerticalOptions="Center"/>
+
+                    <!-- Информация -->
+                    <Label Grid.Column="1"
+                           Text="{Binding ImageViewerInfo}"
+                           TextColor="#CCCCCC"
+                           FontSize="11"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+
+                    <!-- Кнопка увеличить -->
+                    <Button Grid.Column="2"
+                            Text="➕"
+                            Command="{Binding ZoomInCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="#CCCCCC"
+                            FontSize="16"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            Padding="5"
+                            VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </ContentPage>
