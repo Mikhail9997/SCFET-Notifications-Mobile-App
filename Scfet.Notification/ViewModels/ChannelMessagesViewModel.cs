@@ -317,7 +317,6 @@ namespace Scfet.Notification.ViewModels
 
                 if (response?.Success == true && response.Data != null && response.Data.Any())
                 {
-                    // Обработка в фоновом потоке
                     var processedData = await Task.Run(() =>
                     {
                         var newMessages = response.Data.OrderBy(m => m.CreatedAt).ToList();
@@ -356,21 +355,13 @@ namespace Scfet.Notification.ViewModels
                         }
                         // Фильтруем новые сообщения
                         var existingIds = Messages.Select(m => m.Id).ToHashSet();
-                        var uniqueNewMessages = new List<ChannelMessageDto>(newMessages.Count);
                         for (int i = newMessages.Count - 1; i >= 0; i--) 
                         {
                             var message = newMessages[i];
-                            if (existingIds.Add(message.Id))
+                            if (!existingIds.Contains(message.Id))
                             {
-                                uniqueNewMessages.Add(message);
-                            }
-                        }
-                        // Вставляем сообщения в начало коллекции
-                        if (uniqueNewMessages.Count > 0)
-                        {
-                            foreach (var message in uniqueNewMessages)
-                            {
-                                Messages.Insert(0, message); 
+                                // Вставляем сообщения в начало коллекции
+                                Messages.Insert(0, message);
                             }
                         }
 
@@ -576,8 +567,6 @@ namespace Scfet.Notification.ViewModels
                 var result = await _pickImageService.SelectImageAsync();
                 if (result != null)
                 {
-                    if (!await _pickImageService.CheckFileResultAsync(result)) return;
-
                     SelectedImage = result;
                 }
             }
@@ -702,13 +691,6 @@ namespace Scfet.Notification.ViewModels
         {
             CurrentScale = Math.Max(CurrentScale - 0.5, 1.0);
         }
-
-        [RelayCommand]
-        private void ToggleZoom()
-        {
-            CurrentScale = Math.Abs(CurrentScale - 1.0) < 0.1 ? 2.0 : 1.0;
-        }
-
 
         [RelayCommand]
         private void CloseImageViewer()

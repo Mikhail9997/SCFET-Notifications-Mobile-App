@@ -68,11 +68,22 @@
             <!-- Аватарка для карточек -->
             <Style x:Key="card_avatar" TargetType="Border">
                 <Setter Property="StrokeShape" Value="RoundRectangle 50,50,50,50"/>
-                <Setter Property="WidthRequest" Value="50"/>
-                <Setter Property="HeightRequest" Value="50"/>
                 <Setter Property="StrokeThickness" Value="0"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
+
+                <Setter Property="HeightRequest">
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="Android, iOS" Value="52"/>
+                        <On Platform="WinUI, MacCatalyst" Value="56"/>
+                    </OnPlatform>
+                </Setter>
+                <Setter Property="WidthRequest">
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="Android, iOS" Value="52"/>
+                        <On Platform="WinUI, MacCatalyst" Value="56"/>
+                    </OnPlatform>
+                </Setter>
             </Style>
 
             <!-- Аватарка-->

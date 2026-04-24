@@ -121,14 +121,6 @@ namespace Scfet.Notification.ViewModels
         {
             if (result == null) return;
 
-            // Проверяем размер файла (макс 15MB)
-            var fileInfo = new FileInfo(result.FullPath);
-            if (fileInfo.Exists && fileInfo.Length > 15 * 1024 * 1024)
-            {
-                await Shell.Current.DisplayAlert("Ошибка", "Размер изображения не должен превышать 15MB", "OK");
-                return;
-            }
-
             SelectedImage = result;
             var stream = await result.OpenReadAsync();
             ImagePreview = ImageSource.FromStream(() => stream);
@@ -137,7 +129,7 @@ namespace Scfet.Notification.ViewModels
         [RelayCommand]
         private async Task SelectImageAsync()
         {
-            var fileResult = await _pickImageService.SelectImageAsync();
+            var fileResult = await _pickImageService.SelectAvatarAsync();
             if(fileResult != null)
             {
                 await ProcessSelectedImage(fileResult);

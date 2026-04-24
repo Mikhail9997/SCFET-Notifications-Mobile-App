@@ -51,7 +51,7 @@
             </StackLayout>
         </VerticalStackLayout>
 
-        <!-- Основной контент - Grid с 3 строками -->
+        <!-- Основной контент-->
         <Grid IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
               RowDefinitions="Auto,*,Auto">
 
@@ -81,7 +81,7 @@
                                Margin="0,10,0,10"
                                IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}"/>
 
-                        <Label Text="1000×1000 пикселей"
+                        <Label Text="1000×1000 пикселей до 5МБ"
                                FontSize="12"
                                TextColor="Gray"
                                Margin="0,0,0,10"
