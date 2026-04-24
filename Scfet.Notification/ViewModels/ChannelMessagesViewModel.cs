@@ -781,7 +781,7 @@ namespace Scfet.Notification.ViewModels
         {
             var confirm = await Shell.Current.DisplayAlert(
                 "Покинуть канал",
-                "Вы уверены, что хотите покинуть канал?",
+                $"Вы уверены, что хотите покинуть канал \"{Channel?.Name}\"?",
                 "Да", "Нет");
 
             if (!confirm) return;
@@ -791,7 +791,12 @@ namespace Scfet.Notification.ViewModels
                 var response = await _channelService.LeaveChannelAsync(Guid.Parse(ChannelId));
                 if (response?.Success == true)
                 {
+                    await Shell.Current.DisplayAlert("Успех", "Вы покинули канал", "OK");
                     await Shell.Current.GoToAsync("..");
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Ошибка", response?.Message ?? "Не удалось покинуть канал", "OK");
                 }
             }
             catch (Exception ex)

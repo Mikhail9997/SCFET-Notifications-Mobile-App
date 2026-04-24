@@ -81,6 +81,13 @@
                                Margin="0,10,0,10"
                                IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}"/>
 
+                        <Label Text="1000×1000 пикселей"
+                               FontSize="12"
+                               TextColor="Gray"
+                               Margin="0,0,0,10"
+                               HorizontalOptions="Center"
+                               IsVisible="{Binding IsAvatarUploading, Converter={StaticResource InverseBoolConverter}}"/>
+
                         <!-- Предпросмотр выбранного изображения -->
                         <Border IsVisible="{Binding ImagePreview, Converter={StaticResource NullToVisibilityConverter}}"
                                 StrokeShape="RoundRectangle 100"
