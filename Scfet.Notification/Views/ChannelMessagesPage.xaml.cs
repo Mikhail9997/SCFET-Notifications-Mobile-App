@@ -25,9 +25,6 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
     // Флаг для отслеживания первого скролла (чтобы не отмечать при инициализации)
     private bool _hasScrolled;
 
-    // Для обработки изображения
-    private double _startScale;
-    private double _currentScale = 1;
 
     public ChannelMessagesPage(ChannelMessagesViewModel viewModel)
     {
@@ -129,29 +126,6 @@ public partial class ChannelMessagesPage : ContentPage, IRecipient<ScrollToBotto
     public async void Receive(ScrollToBottomMessage message)
     {
         await ScrollToBottom(message.Animated);
-    }
-
-    private void OnPinchUpdated(object? sender, PinchGestureUpdatedEventArgs e)
-    {
-        var viewModel = BindingContext as ChannelMessagesViewModel;
-        if (viewModel == null) return;
-
-        switch (e.Status)
-        {
-            case GestureStatus.Started:
-                _startScale = viewModel.CurrentScale;
-                break;
-
-            case GestureStatus.Running:
-                // Ограничиваем масштаб от 0.5 до 5.0
-                _currentScale = Math.Clamp(_startScale * e.Scale, 0.5, 5.0);
-                viewModel.CurrentScale = _currentScale;
-                break;
-
-            case GestureStatus.Completed:
-                // Масштаб уже сохранен в CurrentScale
-                break;
-        }
     }
 
     protected override async void OnAppearing()

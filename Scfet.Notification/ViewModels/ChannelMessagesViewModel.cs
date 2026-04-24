@@ -692,21 +692,6 @@ namespace Scfet.Notification.ViewModels
         }
 
         [RelayCommand]
-        private void ToggleZoom()
-        {
-            if (Math.Abs(CurrentScale - 1.0) < 0.1)
-            {
-                // Увеличиваем в 2 раза
-                CurrentScale = 2.0;
-            }
-            else
-            {
-                // Сбрасываем масштаб
-                CurrentScale = 1.0;
-            }
-        }
-
-        [RelayCommand]
         private void ZoomIn()
         {
             CurrentScale = Math.Min(CurrentScale + 0.5, 5.0);
@@ -715,8 +700,15 @@ namespace Scfet.Notification.ViewModels
         [RelayCommand]
         private void ZoomOut()
         {
-            CurrentScale = Math.Max(CurrentScale - 0.5, 0.5);
+            CurrentScale = Math.Max(CurrentScale - 0.5, 1.0);
         }
+
+        [RelayCommand]
+        private void ToggleZoom()
+        {
+            CurrentScale = Math.Abs(CurrentScale - 1.0) < 0.1 ? 2.0 : 1.0;
+        }
+
 
         [RelayCommand]
         private void CloseImageViewer()

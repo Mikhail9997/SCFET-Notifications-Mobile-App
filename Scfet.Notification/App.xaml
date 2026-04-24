@@ -34,6 +34,8 @@
             <converters:ChannelRoleToRussianConverter x:Key="ChannelRoleToRussianConverter"/>
             <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
             <converters:InverseBoolToColorConverter x:Key="InverseBoolToColorConverter"/>
+            <converters:ScrollContentSizeConverter x:Key="ScrollContentSizeConverter"/>
+            <converters:ScaleConverter x:Key="ScaleConverter"/>
 
             <Color x:Key="PrimaryColor">#2E86AB</Color>
 

@@ -660,8 +660,6 @@
                         VerticalOptions="Fill"
                         HorizontalOptions="Fill"
                         IsVisible="{Binding IsFullImageLoading}">
-
-                    <!-- Индикатор загрузки -->
                     <VerticalStackLayout VerticalOptions="Center"
                              HorizontalOptions="Center"
                              Spacing="10">
@@ -681,32 +679,40 @@
                       VerticalOptions="Fill"
                       HorizontalOptions="Fill">
 
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2"
-                                  Command="{Binding ToggleZoomCommand}"/>
-                        <PinchGestureRecognizer PinchUpdated="OnPinchUpdated"/>
-                    </Grid.GestureRecognizers>
-
                     <ScrollView x:Name="ImageViewerScroll"
                                 Orientation="Both"
                                 HorizontalScrollBarVisibility="Default"
                                 VerticalScrollBarVisibility="Default"
                                 VerticalOptions="Fill"
-                                HorizontalOptions="Fill"
-                                InputTransparent="True">
+                                HorizontalOptions="Fill">
 
-                        <ff:CachedImage x:Name="FullScreenImage"
-                            Source="{Binding FullScreenImageSource}"
-                            Scale="{Binding CurrentScale}"
-                            AnchorX="0.5"
-                            AnchorY="0.5"
-                            Aspect="AspectFit"
-                            WidthRequest="{Binding Source={x:Reference ImageViewerContainer}, Path=Width}"
-                            HeightRequest="{Binding Source={x:Reference ImageViewerContainer}, Path=Height}"
-                            LoadingPlaceholder="placeholder.png"
-                            ErrorPlaceholder="placeholder.png"
-                            CacheDuration="30"
-                            RetryCount="2"/>
+                        <Grid x:Name="ScrollContent">
+                            <Grid.WidthRequest>
+                                <MultiBinding Converter="{StaticResource ScrollContentSizeConverter}">
+                                    <Binding Source="{x:Reference ImageViewerContainer}" Path="Width"/>
+                                    <Binding Path="CurrentScale"/>
+                                </MultiBinding>
+                            </Grid.WidthRequest>
+                            <Grid.HeightRequest>
+                                <MultiBinding Converter="{StaticResource ScrollContentSizeConverter}">
+                                    <Binding Source="{x:Reference ImageViewerContainer}" Path="Height"/>
+                                    <Binding Path="CurrentScale"/>
+                                </MultiBinding>
+                            </Grid.HeightRequest>
+
+                            <ff:CachedImage x:Name="FullScreenImage"
+                                Source="{Binding FullScreenImageSource}"
+                                Scale="{Binding CurrentScale}"
+                                AnchorX="0.5"
+                                AnchorY="0.5"
+                                Aspect="AspectFit"
+                                WidthRequest="{Binding Source={x:Reference ImageViewerContainer}, Path=Width}"
+                                HeightRequest="{Binding Source={x:Reference ImageViewerContainer}, Path=Height}"
+                                LoadingPlaceholder="placeholder.png"
+                                ErrorPlaceholder="placeholder.png"
+                                CacheDuration="30"
+                                RetryCount="2"/>
+                        </Grid>
                     </ScrollView>
                 </Grid>
             </Grid>
