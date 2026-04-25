@@ -238,6 +238,7 @@ namespace Scfet.Notification.ViewModels
             IsMessagesLoading = true;
             IsMessagesLoadFailed = false;
             MessagesError = string.Empty;
+            ShowScrollToBottomButton = false;
 
             try
             {
@@ -842,7 +843,8 @@ namespace Scfet.Notification.ViewModels
         {
             var actions = new List<string> { "Участники"};
 
-            if (!Channel?.IsOwner == true)
+            if (Channel?.IsOwner != true || 
+                (Channel?.IsOwner == true && Channel?.MembersCount == 1))
             {
                 actions.Add("Покинуть канал");
             }

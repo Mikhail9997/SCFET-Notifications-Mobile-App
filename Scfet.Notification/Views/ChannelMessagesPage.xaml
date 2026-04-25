@@ -238,8 +238,9 @@
                                             </Border>
 
                                             <!-- Пустое место для выравнивания -->
-                                            <BoxView WidthRequest="28"
-                                                HeightRequest="0">
+                                            <BoxView 
+                                                HeightRequest="0"
+                                                WidthRequest="{OnPlatform Default=52, WinUI=56}">
                                                 <BoxView.Triggers>
                                                     <DataTrigger TargetType="BoxView" 
                                                              Binding="{Binding IsOwnMessage}" 
