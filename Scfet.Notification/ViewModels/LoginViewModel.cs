@@ -24,10 +24,10 @@ namespace Scfet.Notification.ViewModels
         }
 
         [ObservableProperty]
-        private string email = "";
+        private string email = string.Empty;
 
         [ObservableProperty]
-        private string password = "";
+        private string password = string.Empty;
 
         [ObservableProperty]
         public bool isAuth;

@@ -84,6 +84,32 @@ namespace Scfet.Notification.ViewModels
         [ObservableProperty]
         public DateTime? selectedEndDate;
 
+        // images
+        [ObservableProperty]
+        private bool isImageLoading;
+
+        [ObservableProperty]
+        private string imageSizeText = string.Empty;
+
+        [ObservableProperty]
+        private bool isImageViewerVisible;
+
+        [ObservableProperty]
+        private ImageSource? fullScreenImageSource;
+
+        [ObservableProperty]
+        private bool isFullImageLoading;
+
+        [ObservableProperty]
+        private string imageViewerInfo = string.Empty;
+
+        [ObservableProperty]
+        private double currentScale = 1.0;
+
+        [ObservableProperty]
+        private string? currentFullImageUrl;
+
+        // UI
         [ObservableProperty]
         private bool isRefreshing;
 
@@ -355,6 +381,106 @@ namespace Scfet.Notification.ViewModels
                 await Shell.Current.DisplayAlert("Ошибка", $"Ошибка загрузки: {ex.Message}", "OK");
             }
         }
+
+        #region Image
+
+        [RelayCommand]
+        private async Task ViewImageAsync(string imageUrl)
+        {
+            if (string.IsNullOrEmpty(imageUrl)) return;
+
+            CurrentFullImageUrl = imageUrl;
+            ImageViewerInfo = "Загрузка изображения...";
+            IsImageViewerVisible = true;
+            IsFullImageLoading = true;
+
+            try
+            {
+                FullScreenImageSource = ImageSource.FromUri(new Uri(imageUrl));
+
+                // Получаем информацию о файле для отображения
+                await Task.Run(async () =>
+                {
+                    try
+                    {
+                        using var httpClient = new HttpClient();
+                        var response = await httpClient.GetAsync(imageUrl, HttpCompletionOption.ResponseHeadersRead);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var fileSize = response.Content.Headers.ContentLength ?? 0;
+                            var contentType = response.Content.Headers.ContentType?.MediaType ?? "image";
+
+                            var info = $"Тип: {contentType.Split('/').Last().ToUpper()}";
+                            if (fileSize > 0)
+                            {
+                                info += $" | Размер: {_fileService.FormatFileSize(fileSize)}";
+                            }
+
+                            await MainThread.InvokeOnMainThreadAsync(() =>
+                            {
+                                ImageViewerInfo = info;
+                            });
+                        }
+                    }
+                    catch
+                    {
+                        await MainThread.InvokeOnMainThreadAsync(() =>
+                        {
+                            ImageViewerInfo = "Изображение";
+                        });
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", $"Не удалось загрузить изображение: {ex.Message}", "OK");
+                CloseImageViewer();
+            }
+            finally
+            {
+                IsFullImageLoading = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task DownloadImageAsync()
+        {
+            if (string.IsNullOrEmpty(CurrentFullImageUrl)) return;
+
+            try
+            {
+                await Browser.Default.OpenAsync(
+                    new Uri(CurrentFullImageUrl),
+                    BrowserLaunchMode.SystemPreferred);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", $"Не удалось открыть изображение: {ex.Message}", "OK");
+            }
+        }
+
+        [RelayCommand]
+        private void ZoomIn()
+        {
+            CurrentScale = Math.Min(CurrentScale + 0.5, 5.0);
+        }
+
+        [RelayCommand]
+        private void ZoomOut()
+        {
+            CurrentScale = Math.Max(CurrentScale - 0.5, 1.0);
+        }
+
+        [RelayCommand]
+        private void CloseImageViewer()
+        {
+            IsImageViewerVisible = false;
+            FullScreenImageSource = null;
+            CurrentFullImageUrl = null;
+            CurrentScale = 1.0;
+        }
+        #endregion
 
         [RelayCommand]
         private async Task GoToRepliesPageAsync(Guid notificationId)

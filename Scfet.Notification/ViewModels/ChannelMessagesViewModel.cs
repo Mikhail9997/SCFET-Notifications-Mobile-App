@@ -515,6 +515,33 @@ namespace Scfet.Notification.ViewModels
             }
         }
 
+        private async Task DeleteMessageAsync(ChannelMessageDto message)
+        {
+            var confirm = await Shell.Current.DisplayAlert(
+                "Удалить сообщение",
+                "Вы уверены, что хотите удалить это сообщение?",
+                "Да", "Нет");
+
+            if (!confirm) return;
+
+            try
+            {
+                var response = await _messageService.DeleteMessageAsync(Guid.Parse(ChannelId), message.Id);
+
+                if (response?.Success == true)
+                {
+                    Messages.Remove(message);
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Ошибка", response?.Message ?? "Не удалось удалить сообщение", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Ошибка", ex.Message, "OK");
+            }
+        }
         public async Task MarkVisibleMessagesAsReadAsync()
         {
             if (string.IsNullOrEmpty(ChannelId)) return;
@@ -807,34 +834,6 @@ namespace Scfet.Notification.ViewModels
                 case "Удалить":
                     await DeleteMessageAsync(message);
                     break;
-            }
-        }
-
-        private async Task DeleteMessageAsync(ChannelMessageDto message)
-        {
-            var confirm = await Shell.Current.DisplayAlert(
-                "Удалить сообщение",
-                "Вы уверены, что хотите удалить это сообщение?",
-                "Да", "Нет");
-
-            if (!confirm) return;
-
-            try
-            {
-                var response = await _messageService.DeleteMessageAsync(Guid.Parse(ChannelId), message.Id);
-
-                if (response?.Success == true)
-                {
-                    Messages.Remove(message);
-                }
-                else
-                {
-                    await Shell.Current.DisplayAlert("Ошибка", response?.Message ?? "Не удалось удалить сообщение", "OK");
-                }
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Ошибка", ex.Message, "OK");
             }
         }
 

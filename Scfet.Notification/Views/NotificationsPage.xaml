@@ -292,6 +292,11 @@
                                                 LoadingPlaceholder="placeholder.png"
                                                 ErrorPlaceholder="placeholder.png"
                                                 RetryCount="2">
+                                            <ff:CachedImage.GestureRecognizers>
+                                                <TapGestureRecognizer 
+                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotificationsViewModel}}, Path=ViewImageCommand}"
+                                                      CommandParameter="{Binding ImageUrl}"/>
+                                            </ff:CachedImage.GestureRecognizers>
                                         </ff:CachedImage>
 
                                         <!-- Заголовок -->
@@ -404,6 +409,171 @@
                 TextColor="White"
                 IsVisible="False"/>
         </VerticalStackLayout>
+
+        <!-- Модальное окно просмотра изображения -->
+        <Grid x:Name="ImageViewerOverlay"
+              Grid.RowSpan="3"
+              IsVisible="{Binding IsImageViewerVisible}"
+              BackgroundColor="#E6000000"
+              ZIndex="1000"
+              Padding="20"
+              RowDefinitions="Auto,*,Auto">
+
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding CloseImageViewerCommand}"/>
+            </Grid.GestureRecognizers>
+
+            <!-- Шапка модального окна -->
+            <Border Grid.Row="0"
+                    BackgroundColor="{AppThemeBinding Light='#2A2A2A', Dark='#1A1A1A'}"
+                    Padding="12,8"
+                    StrokeThickness="0"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Fill">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12,12,0,0"/>
+                </Border.StrokeShape>
+
+                <Grid ColumnDefinitions="*,Auto,Auto"
+                        ColumnSpacing="10">
+                    <Label Grid.Column="0"
+                           Text="Просмотр изображения"
+                           TextColor="White"
+                           FontSize="14"
+                           VerticalOptions="Center"/>
+                    <Button Grid.Column="1"
+                            Text="⬇"
+                            Command="{Binding DownloadImageCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            FontSize="20"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            CornerRadius="20"/>
+                    <Button Grid.Column="2"
+                            Text="✕"
+                            Command="{Binding CloseImageViewerCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            FontSize="20"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            CornerRadius="20"/>
+                </Grid>
+            </Border>
+
+            <!-- Область изображения с зумом -->
+            <Grid x:Name="ImageViewerContainer"
+                  Grid.Row="1"
+                  VerticalOptions="Fill"
+                  HorizontalOptions="Fill">
+
+                <Border BackgroundColor="Black"
+                        StrokeThickness="0"
+                        VerticalOptions="Fill"
+                        HorizontalOptions="Fill"
+                        IsVisible="{Binding IsFullImageLoading}">
+                    <VerticalStackLayout VerticalOptions="Center"
+                                         HorizontalOptions="Center"
+                                         Spacing="10">
+                        <ActivityIndicator IsRunning="True"
+                                           Color="White"
+                                           HeightRequest="40"
+                                           WidthRequest="40"/>
+                        <Label Text="Загрузка..."
+                               TextColor="White"
+                               FontSize="12"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Контейнер с жестами -->
+                <Grid IsVisible="{Binding IsFullImageLoading, Converter={StaticResource InverseBoolConverter}}"
+                      VerticalOptions="Fill"
+                      HorizontalOptions="Fill">
+
+                    <ScrollView x:Name="ImageViewerScroll"
+                        Orientation="Both"
+                        HorizontalScrollBarVisibility="Default"
+                        VerticalScrollBarVisibility="Default"
+                        VerticalOptions="Fill"
+                        HorizontalOptions="Fill">
+
+                        <Grid x:Name="ScrollContent">
+                            <Grid.WidthRequest>
+                                <MultiBinding Converter="{StaticResource ScrollContentSizeConverter}">
+                                    <Binding Source="{x:Reference ImageViewerContainer}" Path="Width"/>
+                                    <Binding Path="CurrentScale"/>
+                                </MultiBinding>
+                            </Grid.WidthRequest>
+                            <Grid.HeightRequest>
+                                <MultiBinding Converter="{StaticResource ScrollContentSizeConverter}">
+                                    <Binding Source="{x:Reference ImageViewerContainer}" Path="Height"/>
+                                    <Binding Path="CurrentScale"/>
+                                </MultiBinding>
+                            </Grid.HeightRequest>
+
+                            <ff:CachedImage x:Name="FullScreenImage"
+                                            Source="{Binding FullScreenImageSource}"
+                                            Scale="{Binding CurrentScale}"
+                                            AnchorX="0.5"
+                                            AnchorY="0.5"
+                                            Aspect="AspectFit"
+                                            WidthRequest="{Binding Source={x:Reference ImageViewerContainer}, Path=Width}"
+                                            HeightRequest="{Binding Source={x:Reference ImageViewerContainer}, Path=Height}"
+                                            LoadingPlaceholder="placeholder.png"
+                                            ErrorPlaceholder="placeholder.png"
+                                            CacheDuration="30"
+                                            RetryCount="2"/>
+                        </Grid>
+                    </ScrollView>
+                </Grid>
+            </Grid>
+
+            <!-- Подвал с информацией -->
+            <Border Grid.Row="2"
+                    BackgroundColor="{AppThemeBinding Light='#2A2A2A', Dark='#1A1A1A'}"
+                    Padding="12,8"
+                    StrokeThickness="0"
+                    VerticalOptions="End"
+                    HorizontalOptions="Fill">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="0,0,12,12"/>
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <!-- Кнопка уменьшить -->
+                    <Button Grid.Column="0"
+                            Text="➖"
+                            Command="{Binding ZoomOutCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="#CCCCCC"
+                            FontSize="16"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            VerticalOptions="Center"/>
+
+                    <!-- Информация -->
+                    <Label Grid.Column="1"
+                           Text="{Binding ImageViewerInfo}"
+                           TextColor="#CCCCCC"
+                           FontSize="11"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+
+                    <!-- Кнопка увеличить -->
+                    <Button Grid.Column="2"
+                            Text="➕"
+                            Command="{Binding ZoomInCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="#CCCCCC"
+                            FontSize="16"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            Padding="5"
+                            VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 
 </ContentPage>

@@ -93,13 +93,6 @@ namespace Scfet.Notification.Services.Api
 
                 var result = DeserializeResponse<ApiResponse<ChannelMessageDto>>(responseContent);
 
-                // Устанавливаем флаг для собственного сообщения
-                if (result?.Data != null)
-                {
-                    var currentUserId = GetCurrentUserIdAsync();
-                    result.Data.IsOwnMessage = result.Data.SenderId == currentUserId;
-                }
-
                 return result;
             }
             catch (Exception ex)
